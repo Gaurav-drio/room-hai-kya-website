@@ -1,166 +1,267 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Room Hai Kya?</title>
-    <script src="https://kit.fontawesome.com/61d1b80f50.js" crossorigin="anonymous"></script> 
+    <script src="https://kit.fontawesome.com/61d1b80f50.js" crossorigin="anonymous"></script>
 
     <style>
-
         /* Enhanced Chatbot Button: Improved Style and Positioning */
-#chatbot-btn {
-  position: fixed;
-  bottom: 25px;
-  right: 25px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  font-size: 24px;
-  cursor: pointer;
-  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
-  z-index: 1000;
-  transition: all 0.3s ease;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+        #chatbot-btn {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-#chatbot-btn:hover {
-    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-    transform: scale(1.1);
-    box-shadow: 0 12px 35px rgba(102, 126, 234, 0.6);
-}
+        #chatbot-btn:hover {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+            transform: scale(1.1);
+            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.6);
+        }
 
-#chatbot-btn.hidden {
-    display: none;
-}
+        #chatbot-btn.hidden {
+            display: none;
+        }
 
-/* Chatbot Sidebar */
-#chatbot-sidebar {
-  position: fixed;
-  bottom: 0;
-  right: -350px;
-  width: 350px;
-  height: 500px;
-  background-color: #fff;
-  border-top-left-radius: 15px;
-  border-bottom-left-radius: 15px;
-  box-shadow: -5px 0 30px rgba(0,0,0,0.2);
-  transition: right 0.3s ease;
-  z-index: 999;
-  display: flex;
-  flex-direction: column;
-}
+        /* Chatbot Sidebar */
+        #chatbot-sidebar {
+            position: fixed;
+            bottom: 0;
+            right: -350px;
+            width: 350px;
+            height: 500px;
+            background-color: #fff;
+            border-top-left-radius: 15px;
+            border-bottom-left-radius: 15px;
+            box-shadow: -5px 0 30px rgba(0, 0, 0, 0.2);
+            transition: right 0.3s ease;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+        }
 
-#chatbot-sidebar.active {
-  right: 0;
-}
+        #chatbot-sidebar.active {
+            right: 0;
+        }
 
-/* Header */
-#chatbot-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  padding: 15px;
-  border-top-left-radius: 15px;
-}
+        /* Header */
+        #chatbot-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-top-left-radius: 15px;
+        }
 
-#chatbot-header h3 {
-  margin: 0;
-  font-size: 18px;
-  font-weight: bold;
-}
+        #chatbot-header h3 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: bold;
+        }
 
-#close-chat {
-  cursor: pointer;
-  font-size: 24px;
-  font-weight: bold;
-  transition: transform 0.2s;
-}
+        #close-chat {
+            cursor: pointer;
+            font-size: 24px;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
 
-#close-chat:hover {
-  transform: scale(1.2);
-}
+        #close-chat:hover {
+            transform: scale(1.2);
+        }
 
-/* Messages */
-#chatbot-messages {
-  flex: 1;
-  padding: 15px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  background-color: #f9f9f9;
-}
+        /* Messages */
+        #chatbot-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            background-color: #f9f9f9;
+        }
 
-.bot-msg, .user-msg {
-  margin: 8px 0;
-  padding: 12px 16px;
-  border-radius: 18px;
-  max-width: 85%;
-  font-size: 14px;
-  line-height: 1.5;
-  word-wrap: break-word;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
+        .bot-msg,
+        .user-msg {
+            margin: 8px 0;
+            padding: 12px 16px;
+            border-radius: 18px;
+            max-width: 85%;
+            font-size: 14px;
+            line-height: 1.5;
+            word-wrap: break-word;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
 
-.bot-msg {
-  background: linear-gradient(135deg, #e5e5e5 0%, #f0f0f0 100%);
-  color: #333;
-  align-self: flex-start;
-  border-bottom-left-radius: 4px;
-}
+        .bot-msg {
+            background: linear-gradient(135deg, #e5e5e5 0%, #f0f0f0 100%);
+            color: #333;
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
 
-.user-msg {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  align-self: flex-end;
-  border-bottom-right-radius: 4px;
-}
+        .user-msg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
 
-/* Input area */
-#chatbot-input-area {
-  display: flex;
-  border-top: 2px solid #eee;
-  padding: 12px;
-  background-color: #fff;
-  gap: 8px;
-}
+        /* Input area */
+        #chatbot-input-area {
+            display: flex;
+            border-top: 2px solid #eee;
+            padding: 12px;
+            background-color: #fff;
+            gap: 8px;
+        }
 
-#chat-input {
-  flex: 1;
-  padding: 10px 15px;
-  border: 2px solid #eee;
-  border-radius: 25px;
-  font-size: 14px;
-  transition: border-color 0.3s;
-}
+        #chat-input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 2px solid #eee;
+            border-radius: 25px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
 
-#chat-input:focus {
-  outline: none;
-  border-color: #667eea;
-}
+        #chat-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
 
-#send-btn {
-  padding: 10px 18px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border: none;
-  border-radius: 25px;
-  cursor: pointer;
-  transition: all 0.3s;
-  font-weight: bold;
-}
+        #send-btn {
+            padding: 10px 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
 
-#send-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-}
+        #send-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Container Layout */
+        .choose-container {
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+            gap: 40px;
+            max-width: 1100px;
+            margin: 80px auto;
+            padding: 20px;
+        }
+
+        .choose-box {
+            flex: 1;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+        }
+
+        /* Left Illustration Styling */
+        .main-illustration {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            object-fit: contain;
+            /* Prevents stretching */
+            margin-bottom: 20px;
+        }
+
+        .illustration-box h2 {
+            font-size: 2rem;
+            color: #2d3436;
+        }
+
+        /* Right Selection Box Styling */
+        .selection-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .selection-box h2 {
+            margin-bottom: 30px;
+        }
+
+        /* User Option Rows */
+        .user-option {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 15px;
+            margin-bottom: 20px;
+            padding: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .user-option:hover {
+            transform: scale(1.02);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .img-wrapper {
+            width: 100%;
+            height: 120px;
+            /* Fixed height for the image area */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .user-type-img {
+            height: 100%;
+            /* Image will fill the height */
+            width: auto;
+            /* Width will adjust proportionally, no stretching */
+            object-fit: contain;
+        }
+
+        .user-link {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        .arrow-btn {
+            text-decoration: none;
+            color: white;
+            font-size: 1.5rem;
+            transition: margin-left 0.3s;
+        }
+
+        .user-option:hover .arrow-btn {
+            margin-left: 10px;
+        }
 
         /* Logo and Header Styling */
         .header-div {
@@ -195,7 +296,7 @@
         }
 
         .tagline {
-            color: rgba(255,255,255,0.9);
+            color: rgba(255, 255, 255, 0.9);
             font-size: 13px;
             position: absolute;
             top: 45px;
@@ -212,22 +313,22 @@
 
         .login-btn {
             text-decoration: none;
-            background: rgba(255,255,255,0.15);
+            background: rgba(255, 255, 255, 0.15);
             color: white;
             padding: 10px 18px;
             border-radius: 25px;
             transition: all 0.3s;
-            border: 2px solid rgba(255,255,255,0.3);
+            border: 2px solid rgba(255, 255, 255, 0.3);
             font-weight: 600;
             font-size: 13px;
             cursor: pointer;
         }
 
         .login-btn:hover {
-            background: rgba(255,255,255,0.25);
-            border-color: rgba(255,255,255,0.6);
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.6);
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
         /* Profile Dropdown Styling */
@@ -240,8 +341,8 @@
             width: 45px;
             height: 45px;
             border-radius: 50%;
-            background: rgba(255,255,255,0.2);
-            border: 2px solid rgba(255,255,255,0.5);
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.5);
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -252,10 +353,10 @@
         }
 
         .profile-icon:hover {
-            background: rgba(255,255,255,0.35);
-            border-color: rgba(255,255,255,0.8);
+            background: rgba(255, 255, 255, 0.35);
+            border-color: rgba(255, 255, 255, 0.8);
             transform: scale(1.1);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
         .profile-dropdown {
@@ -265,7 +366,7 @@
             width: 200px;
             background: white;
             border-radius: 12px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
             padding: 10px 0;
             display: none;
             z-index: 1001;
@@ -421,10 +522,11 @@
                 right: -20px;
             }
         }
+
         nav {
             background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);
             padding: 25px 20px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
             border-top: 2px solid #667eea;
         }
 
@@ -434,6 +536,7 @@
             gap: 15px;
             max-width: 1400px;
             margin: 0 auto;
+            background-color: rgb(226, 224, 224);
         }
 
         select {
@@ -446,7 +549,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             color: #333;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
 
         select:hover {
@@ -486,52 +589,68 @@
 
         .select-bhk {
             background: linear-gradient(white, white) padding-box,
-                        linear-gradient(135deg, #667eea 0%, #764ba2 100%) border-box;
+                linear-gradient(135deg, #667eea 0%, #764ba2 100%) border-box;
             border: 2px solid transparent;
         }
 
         .select-budget {
             background: linear-gradient(white, white) padding-box,
-                        linear-gradient(135deg, #f093fb 0%, #f5576c 100%) border-box;
+                linear-gradient(135deg, #f093fb 0%, #f5576c 100%) border-box;
             border: 2px solid transparent;
         }
 
         .property-type {
             background: linear-gradient(white, white) padding-box,
-                        linear-gradient(135deg, #4facfe 0%, #00f2fe 100%) border-box;
+                linear-gradient(135deg, #4facfe 0%, #00f2fe 100%) border-box;
             border: 2px solid transparent;
         }
 
         .select-posted-by {
             background: linear-gradient(white, white) padding-box,
-                        linear-gradient(135deg, #43e97b 0%, #38f9d7 100%) border-box;
+                linear-gradient(135deg, #43e97b 0%, #38f9d7 100%) border-box;
             border: 2px solid transparent;
         }
 
         /* Category container and poster styling */
         .div-poster {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 50px 20px;
+            /* Replace the URL below with your preferred image */
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+                url('https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80');
+
+            background-size: cover;
+            background-position: center;
+            background-attachment: scroll;
+            /* Use 'fixed' for a parallax effect */
+            padding: 80px 20px;
+            /* Increased padding for better visual impact */
             text-align: center;
             color: white;
             border-radius: 15px;
             margin: 30px 20px;
-            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
         }
 
         .hel-1 {
-            font-size: 42px;
+            font-size: 48px;
             font-weight: 900;
             margin: 0 0 25px 0;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
         }
 
-        .inputBox {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
+        .update-btn {
+            padding: 14px 28px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
         }
 
         .in-1 {
@@ -540,7 +659,7 @@
             border-radius: 30px;
             font-size: 16px;
             min-width: 300px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
             transition: all 0.3s;
             font-weight: 500;
         }
@@ -548,7 +667,7 @@
         .in-1:focus {
             outline: none;
             transform: translateY(-2px);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
         }
 
         .btn-search {
@@ -585,9 +704,9 @@
 
         .update-btn {
             padding: 14px 28px;
-            background: rgba(255,255,255,0.2);
+            background: rgba(255, 255, 255, 0.2);
             color: white;
-            border: 2px solid rgba(255,255,255,0.4);
+            border: 2px solid rgba(255, 255, 255, 0.4);
             border-radius: 25px;
             font-size: 14px;
             font-weight: bold;
@@ -597,10 +716,10 @@
         }
 
         .update-btn:hover {
-            background: rgba(255,255,255,0.3);
-            border-color: rgba(255,255,255,0.8);
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.8);
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
         .post-text {
@@ -653,7 +772,7 @@
             background: white;
             border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
             transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
             flex: 1;
             min-width: 200px;
@@ -727,7 +846,7 @@
         .choose-maindiv img {
             width: 100%;
             border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
 
         .choose-maindiv h2 {
@@ -911,12 +1030,12 @@
             font-size: 1.1em;
             cursor: pointer;
             transition: all 0.3s;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
         .btn-listyouspace:hover {
             transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
             background: #f0f0f0;
         }
 
@@ -924,23 +1043,30 @@
             max-width: 100%;
             flex: 1;
             min-width: 250px;
-            filter: drop-shadow(0 10px 30px rgba(0,0,0,0.15));
+            filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.15));
         }
 
         /* Apartments Section */
+        /* Layout Container */
         .scroll-container {
             max-width: 1400px;
             margin: 40px auto;
-            padding: 0 20px;
+            padding: 20px;
             display: flex;
-            gap: 20px;
+            /* Lines items up horizontally */
+            flex-direction: row;
+            gap: 30px;
+            /* Space between cards */
             overflow-x: auto;
+            /* Enables horizontal scrolling */
             scroll-behavior: smooth;
-            padding-bottom: 10px;
+            padding-bottom: 30px;
+            /* Space for the scrollbar */
         }
 
+        /* Hide default scrollbar for a cleaner look (optional) or style it */
         .scroll-container::-webkit-scrollbar {
-            height: 6px;
+            height: 8px;
         }
 
         .scroll-container::-webkit-scrollbar-track {
@@ -951,6 +1077,77 @@
         .scroll-container::-webkit-scrollbar-thumb {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border-radius: 10px;
+        }
+
+        /* Individual Card Styling */
+        .box-1 {
+            flex: 0 0 380px;
+            /* Crucial: Keeps cards at 380px width and prevents shrinking */
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            border: 1px solid #efefef;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .box-1:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+        }
+
+        /* Header inside card */
+        .flex-1 {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        /* Profile Image */
+        .img-man {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #667eea;
+        }
+
+        /* Text Elements */
+        .h4-tag {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #2d3436;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .col-yello {
+            color: #f1c40f;
+            font-size: 0.9rem;
+        }
+
+        .heading {
+            font-size: 1.2rem;
+            color: #2d3436;
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+
+        .tex-span1 {
+            font-size: 0.95rem;
+            color: #636e72;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* Utility */
+        .tex-light {
+            font-family: sans-serif;
+            color: #2d3436;
+            font-weight: 300;
         }
 
         .div-apar {
@@ -972,7 +1169,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.1);
             opacity: 0;
             transition: opacity 0.3s;
         }
@@ -1037,7 +1234,7 @@
             height: 250px;
             object-fit: cover;
             border-radius: 15px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
             transition: all 0.4s;
         }
 
@@ -1096,7 +1293,7 @@
             flex: 1;
             min-width: 250px;
             border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
         }
 
         /* Benefits Section */
@@ -1118,7 +1315,7 @@
             padding: 30px;
             background: white;
             border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
             transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
             cursor: pointer;
         }
@@ -1144,7 +1341,7 @@
         }
 
         .tex-light {
-            color: #7f8c8d;
+            color: white;
             font-size: 0.95em;
             line-height: 1.6;
         }
@@ -1155,7 +1352,7 @@
             max-width: 380px;
             background: white;
             border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
             overflow: hidden;
             transition: all 0.4s;
             cursor: pointer;
@@ -1220,7 +1417,9 @@
 
         /* Responsive Design */
         @media (max-width: 1024px) {
-            .d-flex, .ta-center .d-flex {
+
+            .d-flex,
+            .ta-center .d-flex {
                 gap: 15px;
             }
 
@@ -1235,7 +1434,10 @@
         }
 
         @media (max-width: 768px) {
-            .heald-card, .heading-2, .heading-3 {
+
+            .heald-card,
+            .heading-2,
+            .heading-3 {
                 font-size: 1.8em;
                 margin: 40px 0 25px 0;
             }
@@ -1323,7 +1525,10 @@
         }
 
         @media (max-width: 480px) {
-            .heald-card, .heading-2, .heading-3 {
+
+            .heald-card,
+            .heading-2,
+            .heading-3 {
                 font-size: 1.5em;
             }
 
@@ -1358,9 +1563,9 @@
                 font-size: 1em;
             }
         }
-
     </style>
 </head>
+
 <body>
     <div class="header-div">
         <h1 class="brand-heading">🏠 Room Hai Kya?</h1>
@@ -1394,7 +1599,7 @@
                 <option value="3bhk">3BHK</option>
                 <option value="4bhk">4BHK+</option>
             </select>
-            
+
             <select class="select-budget">
                 <option><span class="option-heading">Budget</span></option><br>
                 <option> ₹ 2000-5000 </option>
@@ -1510,11 +1715,13 @@
         <div>
             <div class="header-btn">
                 <a href="./pages/post_property.html"><button class="update-btn"><span class="post-text">
-                    <i class="fa-solid fa-signs-post"></i>  Post
+                            <i class="fa-solid fa-signs-post"></i> Post
                             Property</span></button></a>
-                <a href="./pages/maintanance.html"><button class="update-btn"><span class="post-text"> <i class="fa-solid fa-phone"></i> Call for
+                <a href="./pages/maintanance.html"><button class="update-btn"><span class="post-text"> <i
+                                class="fa-solid fa-phone"></i> Call for
                             Maintanance</span></button></a>
-                <a href="./pages/updates.html"><button class="update-btn"><span class="post-text"> <i class="fa-solid fa-magnifying-glass"></i> Explore Letest
+                <a href="./pages/updates.html"><button class="update-btn"><span class="post-text"> <i
+                                class="fa-solid fa-magnifying-glass"></i> Explore Letest
                             Updates</span></button></a>
 
             </div>
@@ -1566,19 +1773,34 @@
         </div>
     </div>
 
-    <div class="d-flex choose-maindiv1">
-        <div class="choose-maindiv mt-100">
-            <img src="./img/index-page-img/homeimg.webp" /> <br><br>
-            <h2>Properties Poster by</h2>
+    <div class="choose-container">
+        <div class="choose-box illustration-box">
+            <img src="./img/index-page-img/homeimg.webp" class="main-illustration" alt="Home Illustration" />
+            <h2>Properties Posted by</h2>
         </div>
-        <div class="choose-maindiv choos-bg">
-            <h2>Choose type of User</h2> <br><br>
-            <img class="owner-img" src="./img/index-page-img/owner.png" />
-            <span class="mt-20">Owner <a class="choos-acker" href="./pages/post_property.html "> &#8594; </a>
-                <br><br></span>
-            <img class="owner-img" src="./img/index-page-img/programmer.png" />
-            <span class="mt-20"></span> User <a class="choos-acker ml-220" href="./pages/userlogin.html"> &#8594; </a>
-            <br><br></span>
+
+        <div class="choose-box selection-box">
+            <h2>Choose type of User</h2>
+
+            <div class="user-option">
+                <div class="img-wrapper">
+                    <img class="user-type-img" src="./img/index-page-img/owner.png" alt="Owner" />
+                </div>
+                <div class="user-link">
+                    <span>Owner</span>
+                    <a href="./pages/post_property.html" class="arrow-btn">&#8594;</a>
+                </div>
+            </div>
+
+            <div class="user-option">
+                <div class="img-wrapper">
+                    <img class="user-type-img" src="./img/index-page-img/programmer.png" alt="User" />
+                </div>
+                <div class="user-link">
+                    <span>User</span>
+                    <a href="./pages/userlogin.html" class="arrow-btn">&#8594;</a>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -1629,27 +1851,33 @@
     <h1 class="heald-card mt-60">Aparments, Villas and more</h1>
     <div class="scroll-container">
         <div class="div-apar">
-            <div class="apar-span"><a class="apar-anchor" href="./pages/1bhk.html"><b>Residential <br>Apartment</b></a></div>
+            <div class="apar-span"><a class="apar-anchor" href="./pages/1bhk.html"><b>Residential <br>Apartment</b></a>
+            </div>
         </div>
 
         <div class="div-apar bg-vill">
-            <div class="apar-span"><a class="apar-anchor" href="./pages/3bhk.html"><b>Independent<br>House/Villa</b></a></div>
+            <div class="apar-span"><a class="apar-anchor" href="./pages/3bhk.html"><b>Independent<br>House/Villa</b></a>
+            </div>
         </div>
 
         <div class="div-apar bg-builder">
-            <div class="apar-span"><a class="apar-anchor" href="./pages/2bhk.html"><b>Independent <br>Builder Floor</b></a></div>
+            <div class="apar-span"><a class="apar-anchor" href="./pages/2bhk.html"><b>Independent <br>Builder
+                        Floor</b></a></div>
         </div>
 
         <div class="div-apar bg-studio">
-            <div class="apar-span"><a class="apar-anchor" href="./pages/1rk.html"><b> 1 RK/ Studio <br>Apartment</b></a></div>
+            <div class="apar-span"><a class="apar-anchor" href="./pages/1rk.html"><b> 1 RK/ Studio <br>Apartment</b></a>
+            </div>
         </div>
 
         <div class="div-apar bg-farmhouse">
-            <div class="apar-span"><a class="apar-anchor" href="./pages/single-room.html"><b>Farm House <br>.</b></a></div>
+            <div class="apar-span"><a class="apar-anchor" href="./pages/single-room.html"><b>Farm House <br>.</b></a>
+            </div>
         </div>
 
         <div class="div-apar bg-service">
-            <div class="apar-span"><a class="apar-anchor" href="./pages/1bhk.html"><b>Serviced <br>Apartments</b></a></div>
+            <div class="apar-span"><a class="apar-anchor" href="./pages/1bhk.html"><b>Serviced <br>Apartments</b></a>
+            </div>
         </div>
 
     </div>
@@ -1677,8 +1905,9 @@
             <img class="poster1-img" src="./img/index-page-img/poster1.png" />
         </div>
         <div class="findmyroom-tex">
-            <h1 class="heading-3 tex-light">Why use RoomFound?</h1> <br> <br>
-            <span class="poster-tex color-light"> <span class="color-lired">RoomFound</span> is a one-stop destination
+            <h1 class="heading-3 tex-light">Why use Room Hai Kya??</h1> <br> <br>
+            <span class="poster-tex color-light"> <span class="color-lired">Room Hai Kya?</span> is a one-stop
+                destination
                 for anyone looking out for roommates, flatmates, co-living spaces or PGs. We understand that finding the
                 right living situation can be a challenge, which is why we make the process easy and stress-free.
                 Whether you're a student searching for a roommate or a young professional seeking a flatmate, our
@@ -1687,12 +1916,12 @@
 
                 Our platform allows you to browse through a wide range of listings for co-living spaces, PGs, and flats,
                 and find the perfect match for your lifestyle and preferences. So, why wait? Start your search today and
-                find your ideal living situation with <span class="color-lired">RoomFound</span>!</span>
+                find your ideal living situation with <span class="color-lired">Room Hai Kya?</span>!</span>
         </div>
     </div>
 
 
-    <h1 class=" heading-3 tex-light mt-60">Why Use RoomFound</h1><br><br>
+    <h1 class=" heading-3 tex-light mt-60">Why Use Room Hai Kya?</h1><br><br>
     <div class="d-flex-cen">
 
         <div class="div-nobrocker">
@@ -1720,165 +1949,143 @@
         </div>
     </div>
 
-    <h1 class="heading-3 tex-light">Our Customers Love Us</h1>
+    <h1 class="heading-3 tex-light" style="text-align: center; margin-top: 50px;">Our Customers Love Us</h1>
+
     <div class="scroll-container">
-
-        <div class="d-flex-1">
-
-            <div class="box-1">
-                <div class="div-1">
-                    <div class="flex-1">
-                        <div> <img class="img-man " src="./img/index-page-img/levic.jpg" /></div>
-                        <div class="flex-2"> <span class="h4-tag">Lewis Daniels </span> <br />
-                            <span class="tex-span span2">
-                                <i class="fa-sharp fa-solid fa-star col-yello"></i>
-                                <i class="fa-sharp fa-solid fa-star col-yello"></i>
-                                <i class="fa-sharp fa-solid fa-star col-yello"></i>
-                                <i class="fa-sharp fa-solid fa-star col-yello"></i>
-                                <i class="fa-sharp fa-solidr fa-star col-yello"></i>
-                            </span>
+        <div class="box-1">
+            <div class="div-1">
+                <div class="flex-1">
+                    <img class="img-man" src="./img/index-page-img/levic.jpg" alt="Lewis" />
+                    <div class="flex-2">
+                        <span class="h4-tag">Lewis Daniels</span>
+                        <div class="star-rating">
+                            <i class="fa-sharp fa-solid fa-star col-yello"></i>
+                            <i class="fa-sharp fa-solid fa-star col-yello"></i>
+                            <i class="fa-sharp fa-solid fa-star col-yello"></i>
+                            <i class="fa-sharp fa-solid fa-star col-yello"></i>
+                            <i class="fa-sharp fa-solid fa-star col-yello"></i>
                         </div>
                     </div>
-                    <h3 class="heading">Helps us to find good properties</h3>
-                    <span class="tex-span1">
-                        "The site really helps us to find good properties in the <br>least amount of time without any
-                        headache of brokerage. <br>I was so scared in Pune due to the issues of high <br>
-                        deposit as well as brokerage. I was new and had no time. <br>But then I found NoBroker. It is
-                        simply a..." </span> <br /> <br />
                 </div>
+                <h3 class="heading">Helps us to find good properties</h3>
+                <p class="tex-span1">
+                    "The site really helps us to find good properties in the least amount of time without any headache
+                    of brokerage. I was so scared in Pune due to the issues of high deposit as well as brokerage. I was
+                    new and had no time. But then I found NoBroker. It is simply a..."
+                </p>
             </div>
+        </div>
 
-            <div class="box-1">
-                <div class="div-1">
-                    <div class="flex-1">
-                        <div> <img class="img-man " src="./img/index-page-img/ayan.jpg" /></div>
-                        <div class="flex-2"> <span class="h4-tag">Ayan </span> <br />
-                            <span class="tex-span span2">
-                                <i class="fa-sharp fa-solid fa-star col-yello"></i>
-                                <i class="fa-sharp fa-solid fa-star col-yello"></i>
-                                <i class="fa-sharp fa-solid fa-star col-yello"></i>
-                                <i class="fa-sharp fa-solid fa-star col-yello"></i>
-                                <i class="fa-sharp fa-solid fa-star col-yello"></i>
-                            </span>
+        <div class="box-1">
+            <div class="div-1">
+                <div class="flex-1">
+                    <img class="img-man" src="./img/index-page-img/ayan.jpg" alt="Ayan" />
+                    <div class="flex-2">
+                        <span class="h4-tag">Ayan</span>
+                        <div class="star-rating">
+                            <i class="fa-sharp fa-solid fa-star col-yello"></i>
+                            <i class="fa-sharp fa-solid fa-star col-yello"></i>
+                            <i class="fa-sharp fa-solid fa-star col-yello"></i>
+                            <i class="fa-sharp fa-solid fa-star col-yello"></i>
+                            <i class="fa-sharp fa-solid fa-star col-yello"></i>
                         </div>
                     </div>
-                    <h3 class="heading">It's a nice experience</h3>
-                    <span class="tex-span1">
-                        "It was a nice experience with Nobroker. They helped me <br> to find a new home to stay as it
-                        was difficult for <br>me as an individual to find a home with friendly <br>roommates. Thankfully
-                        Nobroker helped me to get one <br>with all kind of facilities." </span> <br /> <br />
                 </div>
+                <h3 class="heading">It's a nice experience</h3>
+                <p class="tex-span1">
+                    "It was a nice experience with Nobroker. They helped me to find a new home to stay as it was
+                    difficult for me as an individual to find a home with friendly roommates. Thankfully Nobroker helped
+                    me to get one with all kind of facilities."
+                </p>
             </div>
+        </div>
 
-            <div class="box-1">
-                <div class="div-1">
-                    <div class="flex-1">
-                        <div> <img class="img-man " src="./img/index-page-img/prabhudev.jpg" /></div>
-                        <div class="flex-2"> <span class="h4-tag">Prabhu Dev </span> <br />
-                            <span class="tex-span span2">
-                                <i class="fa-sharp fa-solid fa-star col-yello"></i>
-                                <i class="fa-sharp fa-solid fa-star col-yello"></i>
-                                <i class="fa-sharp fa-solid fa-star col-yello"></i>
-                                <i class="fa-sharp fa-solid fa-star col-yello"></i>
-                                <i class="fa-sharp fa-regular fa-star col-yello"></i>
-                            </span>
+        <div class="box-1">
+            <div class="div-1">
+                <div class="flex-1">
+                    <img class="img-man" src="./img/index-page-img/prabhudev.jpg" alt="Prabhu" />
+                    <div class="flex-2">
+                        <span class="h4-tag">Prabhu Dev</span>
+                        <div class="star-rating">
+                            <i class="fa-sharp fa-solid fa-star col-yello"></i>
+                            <i class="fa-sharp fa-solid fa-star col-yello"></i>
+                            <i class="fa-sharp fa-solid fa-star col-yello"></i>
+                            <i class="fa-sharp fa-solid fa-star col-yello"></i>
+                            <i class="fa-sharp fa-regular fa-star col-yello"></i>
                         </div>
                     </div>
-                    <h3 class="heading">Found Great Place to Stay via NoBroker</h3>
-                    <span class="tex-span1">
-                        "RoomFound provides a great place to stay with safe <br />
-                        environment, it they show you something about property <br />that is always same as it No fake
-                        pictures"</span> <br /> <br />
                 </div>
+                <h3 class="heading">Found Great Place to Stay</h3>
+                <p class="tex-span1">
+                    "Room Hai Kya? provides a great place to stay with safe environment, it they show you something
+                    about property that is always same as it No fake pictures."
+                </p>
             </div>
+        </div>
 
-            <div class="box-1">
-                <div class="div-1">
-                    <div class="flex-1">
-                        <div> <img class="img-man " src="./img/index-page-img/balaso.jpg" /></div>
-                        <div class="flex-2"> <span class="h4-tag">Balasubramanyam K.C. </span> <br />
-                            <span class="tex-span span2">
-                                <i class="fa-sharp fa-solid fa-star col-yello"></i>
-                                <i class="fa-sharp fa-solid fa-star col-yello"></i>
-                                <i class="fa-sharp fa-solid fa-star col-yello"></i>
-                                <i class="fa-sharp fa-solid fa-star col-yello"></i>
-                                <i class="fa-sharp fa-regular fa-star col-yello"></i>
-                            </span>
+        <div class="box-1">
+            <div class="div-1">
+                <div class="flex-1">
+                    <img class="img-man" src="./img/index-page-img/balaso.jpg" alt="Balasubramanyam" />
+                    <div class="flex-2">
+                        <span class="h4-tag">Balasubramanyam K.C.</span>
+                        <div class="star-rating">
+                            <i class="fa-sharp fa-solid fa-star col-yello"></i>
+                            <i class="fa-sharp fa-solid fa-star col-yello"></i>
+                            <i class="fa-sharp fa-solid fa-star col-yello"></i>
+                            <i class="fa-sharp fa-solid fa-star col-yello"></i>
+                            <i class="fa-sharp fa-regular fa-star col-yello"></i>
                         </div>
                     </div>
-                    <h3 class="heading">Excellent Service</h3>
-                    <span class="tex-span1">
-                        "Excellent service and an equally involved team. I opted <br>for the Relax plan and got a good
-                        deal on my <br>
-                        property. Highly recommended app" </span> <br /> <br />
                 </div>
+                <h3 class="heading">Excellent Service</h3>
+                <p class="tex-span1">
+                    "Excellent service and an equally involved team. I opted for the Relax plan and got a good deal on
+                    my property. Highly recommended app."
+                </p>
             </div>
+        </div>
 
-            <div class="box-1">
-                <div class="div-1">
-                    <div class="flex-1">
-                        <div> <img class="img-man " src="./img/index-page-img/levic.jpg" /></div>
-                        <div class="flex-2"> <span class="h4-tag">Anoop Nair </span> <br />
-                            <span class="tex-span span2">
-                                <i class="fa-sharp fa-solid fa-star col-yello"></i>
-                                <i class="fa-sharp fa-solid fa-star col-yello"></i>
-                                <i class="fa-sharp fa-solid fa-star col-yello"></i>
-                                <i class="fa-sharp fa-regular fa-star col-yello"></i>
-                                <i class="fa-sharp fa-regular fa-star col-yello"></i>
-                            </span>
+        <div class="box-1">
+            <div class="div-1">
+                <div class="flex-1">
+                    <img class="img-man" src="./img/index-page-img/levic.jpg" alt="Anoop" />
+                    <div class="flex-2">
+                        <span class="h4-tag">Anoop Nair</span>
+                        <div class="star-rating">
+                            <i class="fa-sharp fa-solid fa-star col-yello"></i>
+                            <i class="fa-sharp fa-solid fa-star col-yello"></i>
+                            <i class="fa-sharp fa-solid fa-star col-yello"></i>
+                            <i class="fa-sharp fa-regular fa-star col-yello"></i>
+                            <i class="fa-sharp fa-regular fa-star col-yello"></i>
                         </div>
                     </div>
-                    <h3 class="heading">Best Option</h3>
-                    <span class="tex-span1">
-                        "The service was great and very professional. I went <br>with the Relax plan. My RM Sayantan
-                        Gupta is really <br>efficient. He noted my requirements quite well and <br>suggested me a list
-                        of options. I shortlisted one <br>from them and in just one visit, I was able to finalize
-                        ..."</span> <br /> <br />
                 </div>
-            </div>
-
-            <div class="box-1">
-
-                <div class="div-1">
-                    <div class="flex-1">
-                        <div> <img class="img-man " src="./img/index-page-img/thisha.jpg" /></div>
-                        <div class="flex-2"> <span class="h4-tag">Tiasha </span> <br />
-                            <span class="tex-span span2">
-                                <i class="fa-sharp fa-solid fa-star col-yello"></i>
-                                <i class="fa-sharp fa-solid fa-star col-yello"></i>
-                                <i class="fa-sharp fa-solid fa-star col-yello"></i>
-                                <i class="fa-sharp fa-regular fa-star col-yello"></i>
-                                <i class="fa-sharp fa-regular fa-star col-yello"></i>
-                            </span>
-                        </div>
-                    </div>
-                    <h3 class="heading">Appreciate Positive and quick responses <br>
-                        from RM</h3>
-                    <span class="tex-span1">
-                        "RMs of RoomFound team, I really would like to <br> appreciate positive and quick responses
-                        from you guys . <br>Thank you for excellent service through paid plans of <br>RoomFound.com."
-                    </span> <br /> <br />
-                </div>
+                <h3 class="heading">Best Option</h3>
+                <p class="tex-span1">
+                    "The service was great and very professional. I went with the Relax plan. My RM Sayantan Gupta is
+                    really efficient. He noted my requirements quite well and suggested me a list of options."
+                </p>
             </div>
         </div>
     </div>
- 
 
 
 
 
 
 
-   
 
- 
+
+
+
 
 
     <div class="container-foot">
         <div class="container-foot1">
             <div class="con-foot">
-                <h1 class="heding1-t"> 🏠<span class="tex-red">RoomFound</span></h1><br /> <br>
-                <span class="color-light">RoomFound is India's fastest growing Property Rental <br />
+                <h1 class="heding1-t"> 🏠<span class="tex-red">Room Hai Kya?</span></h1><br /> <br>
+                <span class="color-light">Room Hai Kya? is India's fastest growing Property Rental <br />
                     Rental Network' attempting to provide better rental <br />
                     solutions via design & technology.<br /><br />
                     We help find,books rental homes of choice across <br />
@@ -1891,7 +2098,7 @@
                 </span>
             </div class="con-foot">
             <div class="con-foot">
-                <h2 class="heding1-t">RoomFound</h2><br>
+                <h2 class="heding1-t">Room Hai Kya?</h2><br>
                 <a class="foot-anchor color-light" href="#">our service</a><br>
                 <a class="foot-anchor color-light" href="#">Price Trends</a><br>
                 <a class="foot-anchor color-light" href="#">Post your proprety</a><br>
@@ -1923,7 +2130,7 @@
 
 
                 <a class="foot-anchor color-light" href="mailto:abhijeetbk154@gmail.com">Email -
-                    Roomfound@gmail.com</a><br /> <br><br>
+                    Room Hai Kya?@gmail.com</a><br /> <br><br>
 
                 <h2 class="heding1-t "> Connect With us</h2><br /> <br><br>
 
@@ -1943,310 +2150,312 @@
 
         </div>
         <div class="fotr-cont">
-            <span class="foot-tex color-light">Copyright ©2025-2026 <span style="color: #667eea;">RoomFound</span> - Find Your Home, Your Way!</span>
+            <span class="foot-tex color-light">Copyright ©2025-2026 <span style="color: #667eea;">Room Hai Kya?</span> -
+                Find Your Home, Your Way!</span>
         </div>
     </div>
-    
+
     <button id="chatbot-btn"><i class="fas fa-comment-dots"></i></button>
 
-<div id="chatbot-sidebar">
-  <div id="chatbot-header">
-    <h3>RoomFound Chatbot</h3>
-    <span id="close-chat">&times;</span>
-  </div>
-  <div id="chatbot-messages">
-    <div class="bot-msg">👋 Hi there! I'm the RoomFound Assistant. How can I help you find your perfect home today?</div>
-  </div>
-  <div id="chatbot-input-area">
-    <input type="text" id="chat-input" placeholder="Ask about properties, services, or maintenance..." />
-    <button id="send-btn"><i class="fas fa-paper-plane"></i></button>
-  </div>
-</div>
+    <div id="chatbot-sidebar">
+        <div id="chatbot-header">
+            <h3>Room Hai Kya? Chatbot</h3>
+            <span id="close-chat">&times;</span>
+        </div>
+        <div id="chatbot-messages">
+            <div class="bot-msg">👋 Hi there! I'm the Room Hai Kya? Assistant. How can I help you find your perfect home
+                today?</div>
+        </div>
+        <div id="chatbot-input-area">
+            <input type="text" id="chat-input" placeholder="Ask about properties, services, or maintenance..." />
+            <button id="send-btn"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
 
-<script>
-  const chatbotBtn = document.getElementById('chatbot-btn');
-  const chatbotSidebar = document.getElementById('chatbot-sidebar');
-  const closeChat = document.getElementById('close-chat');
-  const sendBtn = document.getElementById('send-btn');
-  const chatInput = document.getElementById('chat-input');
-  const chatMessages = document.getElementById('chatbot-messages');
+    <script>
+        const chatbotBtn = document.getElementById('chatbot-btn');
+        const chatbotSidebar = document.getElementById('chatbot-sidebar');
+        const closeChat = document.getElementById('close-chat');
+        const sendBtn = document.getElementById('send-btn');
+        const chatInput = document.getElementById('chat-input');
+        const chatMessages = document.getElementById('chatbot-messages');
 
-  // --- Chatbot Sidebar Visibility Logic ---
-  chatbotBtn.addEventListener('click', () => {
-    chatbotSidebar.classList.add('active');
-    chatbotBtn.classList.add('hidden'); // Hide button
-  });
+        // --- Chatbot Sidebar Visibility Logic ---
+        chatbotBtn.addEventListener('click', () => {
+            chatbotSidebar.classList.add('active');
+            chatbotBtn.classList.add('hidden'); // Hide button
+        });
 
-  closeChat.addEventListener('click', () => {
-    chatbotSidebar.classList.remove('active');
-    chatbotBtn.classList.remove('hidden'); // Show button
-  });
+        closeChat.addEventListener('click', () => {
+            chatbotSidebar.classList.remove('active');
+            chatbotBtn.classList.remove('hidden'); // Show button
+        });
 
-  sendBtn.addEventListener('click', sendMessage);
-  chatInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') sendMessage();
-  });
+        sendBtn.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
 
-  // Profile dropdown toggle
-  const profileBtn = document.getElementById('profileBtn');
-  const profileDropdown = document.getElementById('profileDropdown');
+        // Profile dropdown toggle
+        const profileBtn = document.getElementById('profileBtn');
+        const profileDropdown = document.getElementById('profileDropdown');
 
-  profileBtn.addEventListener('click', () => {
-    profileDropdown.classList.toggle('show');
-  });
+        profileBtn.addEventListener('click', () => {
+            profileDropdown.classList.toggle('show');
+        });
 
-  // Close dropdown when clicking outside
-  document.addEventListener('click', (e) => {
-    if (!e.target.closest('.profile-container')) {
-      profileDropdown.classList.remove('show');
-    }
-  });
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.profile-container')) {
+                profileDropdown.classList.remove('show');
+            }
+        });
 
-  function getBotResponse(userMessage) {
-    const msg = userMessage.toLowerCase().trim();
+        function getBotResponse(userMessage) {
+            const msg = userMessage.toLowerCase().trim();
 
-    // --- Utility Functions for Flexible Matching ---
-    const containsAny = (keywords) => keywords.some(keyword => msg.includes(keyword));
-    const containsAll = (keywords) => keywords.every(keyword => msg.includes(keyword));
+            // --- Utility Functions for Flexible Matching ---
+            const containsAny = (keywords) => keywords.some(keyword => msg.includes(keyword));
+            const containsAll = (keywords) => keywords.every(keyword => msg.includes(keyword));
 
-    // --- 1. Personal & Greeting Responses ---
-    if (containsAny(['hello', 'hi', 'hey', 'greetings'])) {
-      return 'Hello! I can help you find a room, check property availability, or direct you to maintenance. What can I assist you with today?';
-    }
+            // --- 1. Personal & Greeting Responses ---
+            if (containsAny(['hello', 'hi', 'hey', 'greetings'])) {
+                return 'Hello! I can help you find a room, check property availability, or direct you to maintenance. What can I assist you with today?';
+            }
 
-    if (containsAny(['my name is', 'i am', 'call me'])) {
-        const nameMatch = msg.match(/(my name is|i am|call me)\s+([a-zA-Z\s]+)/);
-        if (nameMatch && nameMatch[2]) {
-            const userName = nameMatch[2].trim().split(' ')[0]; 
-            return `Nice to meet you, **${userName}**! Let's find your perfect home. Are you looking to **Rent** or **Post a Property**?`;
+            if (containsAny(['my name is', 'i am', 'call me'])) {
+                const nameMatch = msg.match(/(my name is|i am|call me)\s+([a-zA-Z\s]+)/);
+                if (nameMatch && nameMatch[2]) {
+                    const userName = nameMatch[2].trim().split(' ')[0];
+                    return `Nice to meet you, **${userName}**! Let's find your perfect home. Are you looking to **Rent** or **Post a Property**?`;
+                }
+            }
+
+            if (containsAny(['who are you', 'your name', 'what are you'])) {
+                return 'I am the **Room Hai Kya? Assistant**, your virtual expert for finding homes. I specialize in helping you discover the perfect property on Room Hai Kya?!';
+            }
+
+            if (containsAny(['thanks', 'thank you', 'bye', 'goodbye'])) {
+                return 'You\'re most welcome! Feel free to reach out anytime. Happy house hunting! 👋';
+            }
+
+            // --- 2. StayLEO Purpose and Mission ---
+            if (containsAny(['what is stayleo', 'what do you do', 'about stayleo', 'mission'])) {
+                return 'Room Hai Kya? is India\'s fastest-growing Property Rental Network. Our goal is to provide better housing solutions via design and technology, all while helping you **avoid broker fees**!';
+            }
+
+            if (containsAny(['broker', 'brokerage', 'commission'])) {
+                return 'Yes! StayLEO connects you directly with verified owners, which means you **avoid paying brokerage fees** entirely. That\'s a huge saving!';
+            }
+
+            // --- 3. Property Search & Types (BHK/Budget) ---
+            if (containsAny(['search', 'find room', 'look for', 'available'])) {
+                return 'You can start by using the search bar to enter your desired **City**, or use the dropdown filters in the navigation bar for **BHK**, **Budget**, and **Property Type**. Which city are you interested in?';
+            }
+
+            if (containsAny(['city', 'location', 'area', 'pune', 'mumbai', 'delhi', 'bangalore'])) {
+                // This is where you acknowledge the location search but guide them to the tool.
+                return 'We have properties in major Indian cities. To see current listings, please type your desired city into the **Search bar** on the main page. I can tell you about our **Property Types** if you like!';
+            }
+
+            if (containsAny(['bhk', 'room type', 'bedroom', 'single room', '1bhk', '2bhk', '3bhk'])) {
+                return 'We offer various room types: **Single Rooms**, **1RK**, **1BHK**, **2BHK**, and **3BHK**. What size are you looking for? You can use the **BHK dropdown** to filter easily.';
+            }
+
+            if (containsAny(['budget', 'rent range', 'how much', 'cost', 'price'])) {
+                return 'Our rental properties generally range from **₹3000** for single rooms up to **₹30000+** for larger apartments. Use the **Budget dropdown** in the navigation bar to set your price limit.';
+            }
+
+            if (containsAny(['furnished', 'unfurnished', 'semi-furnished'])) {
+                return 'We list homes that are **Furnished**, **Semifurnished**, and **Unfurnished**. You can find filters for this under the **Tenants Preferred** dropdown.';
+            }
+
+            // --- 4. Site Actions & Support ---
+            if (containsAny(['post property', 'list space', 'owner', 'landlord', 'put up'])) {
+                return 'To list a property, please go to the **Owner Login** or click the **Post Property** button on the main page. It\'s a quick, free listing process!';
+            }
+
+            if (containsAny(['maintenance', 'issue', 'repair', 'call', 'help line'])) {
+                return 'For any maintenance requests, the quickest way is to click the **"Call for Maintanance"** button below the search bar. This connects you with our support team.';
+            }
+
+            if (containsAny(['user login', 'tenant login'])) {
+                return 'To log in as a tenant/user, please click the **"User Login"** link at the top right of the page.';
+            }
+
+            if (containsAny(['about us', 'contact us', 'support'])) {
+                return 'You can find links for **About us** and **Contact us** in the footer of the page. Need immediate assistance? Try the **Toll Free** number listed at the bottom!';
+            }
+
+            // --- Default/Fallback Response ---
+            return "I'm still learning! I can provide detailed answers on: **What StayLEO does**, **How to search for rooms (City/BHK/Budget)**, **Post Property**, or **Maintenance**. How can I help you rephrase your question?";
         }
-    }
-    
-    if (containsAny(['who are you', 'your name', 'what are you'])) {
-      return 'I am the **RoomFound Assistant**, your virtual expert for finding homes. I specialize in helping you discover the perfect property on RoomFound!';
-    }
-    
-    if (containsAny(['thanks', 'thank you', 'bye', 'goodbye'])) {
-        return 'You\'re most welcome! Feel free to reach out anytime. Happy house hunting! 👋';
-    }
-    
-    // --- 2. StayLEO Purpose and Mission ---
-    if (containsAny(['what is stayleo', 'what do you do', 'about stayleo', 'mission'])) {
-        return 'RoomFound is India\'s fastest-growing Property Rental Network. Our goal is to provide better housing solutions via design and technology, all while helping you **avoid broker fees**!';
-    }
-    
-    if (containsAny(['broker', 'brokerage', 'commission'])) {
-        return 'Yes! StayLEO connects you directly with verified owners, which means you **avoid paying brokerage fees** entirely. That\'s a huge saving!';
-    }
 
-    // --- 3. Property Search & Types (BHK/Budget) ---
-    if (containsAny(['search', 'find room', 'look for', 'available'])) {
-        return 'You can start by using the search bar to enter your desired **City**, or use the dropdown filters in the navigation bar for **BHK**, **Budget**, and **Property Type**. Which city are you interested in?';
-    }
-    
-    if (containsAny(['city', 'location', 'area', 'pune', 'mumbai', 'delhi', 'bangalore'])) {
-        // This is where you acknowledge the location search but guide them to the tool.
-        return 'We have properties in major Indian cities. To see current listings, please type your desired city into the **Search bar** on the main page. I can tell you about our **Property Types** if you like!';
-    }
-    
-    if (containsAny(['bhk', 'room type', 'bedroom', 'single room', '1bhk', '2bhk', '3bhk'])) {
-        return 'We offer various room types: **Single Rooms**, **1RK**, **1BHK**, **2BHK**, and **3BHK**. What size are you looking for? You can use the **BHK dropdown** to filter easily.';
-    }
-    
-    if (containsAny(['budget', 'rent range', 'how much', 'cost', 'price'])) {
-        return 'Our rental properties generally range from **₹3000** for single rooms up to **₹30000+** for larger apartments. Use the **Budget dropdown** in the navigation bar to set your price limit.';
-    }
-    
-    if (containsAny(['furnished', 'unfurnished', 'semi-furnished'])) {
-        return 'We list homes that are **Furnished**, **Semifurnished**, and **Unfurnished**. You can find filters for this under the **Tenants Preferred** dropdown.';
-    }
+        function sendMessage() {
+            const userMsg = chatInput.value.trim();
+            if (userMsg === '') return;
 
-    // --- 4. Site Actions & Support ---
-    if (containsAny(['post property', 'list space', 'owner', 'landlord', 'put up'])) {
-      return 'To list a property, please go to the **Owner Login** or click the **Post Property** button on the main page. It\'s a quick, free listing process!';
-    }
-    
-    if (containsAny(['maintenance', 'issue', 'repair', 'call', 'help line'])) {
-      return 'For any maintenance requests, the quickest way is to click the **"Call for Maintanance"** button below the search bar. This connects you with our support team.';
-    }
-    
-    if (containsAny(['user login', 'tenant login'])) {
-        return 'To log in as a tenant/user, please click the **"User Login"** link at the top right of the page.';
-    }
-    
-    if (containsAny(['about us', 'contact us', 'support'])) {
-        return 'You can find links for **About us** and **Contact us** in the footer of the page. Need immediate assistance? Try the **Toll Free** number listed at the bottom!';
-    }
+            // 1. Display User Message
+            const userMsgDiv = document.createElement('div');
+            userMsgDiv.classList.add('user-msg');
+            userMsgDiv.textContent = userMsg;
+            chatMessages.appendChild(userMsgDiv);
+            chatInput.value = '';
 
-    // --- Default/Fallback Response ---
-    return "I'm still learning! I can provide detailed answers on: **What StayLEO does**, **How to search for rooms (City/BHK/Budget)**, **Post Property**, or **Maintenance**. How can I help you rephrase your question?";
-  }
+            // Auto-scroll to bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
 
-  function sendMessage() {
-    const userMsg = chatInput.value.trim();
-    if (userMsg === '') return;
+            // 2. Get and Display Bot Response
+            const botText = getBotResponse(userMsg);
 
-    // 1. Display User Message
-    const userMsgDiv = document.createElement('div');
-    userMsgDiv.classList.add('user-msg');
-    userMsgDiv.textContent = userMsg;
-    chatMessages.appendChild(userMsgDiv);
-    chatInput.value = '';
-    
-    // Auto-scroll to bottom
-    chatMessages.scrollTop = chatMessages.scrollHeight;
+            // Typing delay for a natural feel
+            setTimeout(() => {
+                const botReplyDiv = document.createElement('div');
+                botReplyDiv.classList.add('bot-msg');
+                botReplyDiv.innerHTML = botText;
+                chatMessages.appendChild(botReplyDiv);
 
-    // 2. Get and Display Bot Response
-    const botText = getBotResponse(userMsg);
+                // Auto-scroll to bottom again after bot reply
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }, 800);
+        }
 
-    // Typing delay for a natural feel
-    setTimeout(() => {
-      const botReplyDiv = document.createElement('div');
-      botReplyDiv.classList.add('bot-msg');
-      botReplyDiv.innerHTML = botText; 
-      chatMessages.appendChild(botReplyDiv);
-      
-      // Auto-scroll to bottom again after bot reply
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-    }, 800);
-  }
+        // --- BHK dropdown navigation on home page ---
+        const bhkSelect = document.getElementById('bhk-select');
+        if (bhkSelect) {
+            bhkSelect.addEventListener('change', (event) => {
+                const value = event.target.value;
+                if (!value) return;
+                let target = '';
+                if (value === 'single') target = './pages/singlerooms.html';
+                else if (value === '1rk') target = './pages/1rk.html';
+                else if (value === '1bhk') target = './pages/1bhk.html';
+                else if (value === '2bhk') target = './pages/2bhk.html';
+                else if (value === '3bhk') target = './pages/3bhk.html';
+                else if (value === '4bhk') target = './pages/1bhk.html';
+                if (target) {
+                    window.location.href = target;
+                }
+            });
+        }
 
-  // --- BHK dropdown navigation on home page ---
-  const bhkSelect = document.getElementById('bhk-select');
-  if (bhkSelect) {
-    bhkSelect.addEventListener('change', (event) => {
-      const value = event.target.value;
-      if (!value) return;
-      let target = '';
-      if (value === 'single') target = './pages/singlerooms.html';
-      else if (value === '1rk') target = './pages/1rk.html';
-      else if (value === '1bhk') target = './pages/1bhk.html';
-      else if (value === '2bhk') target = './pages/2bhk.html';
-      else if (value === '3bhk') target = './pages/3bhk.html';
-      else if (value === '4bhk') target = './pages/1bhk.html';
-      if (target) {
-        window.location.href = target;
-      }
-    });
-  }
+        // --- Budget filter ---
+        const budgetSelect = document.querySelector('.select-budget');
+        if (budgetSelect) {
+            budgetSelect.addEventListener('change', () => {
+                const budget = budgetSelect.value;
+                if (budget && budget !== 'Budget') {
+                    alert(`Filtering properties with budget: ${budget}`);
+                }
+            });
+        }
 
-  // --- Budget filter ---
-  const budgetSelect = document.querySelector('.select-budget');
-  if (budgetSelect) {
-    budgetSelect.addEventListener('change', () => {
-      const budget = budgetSelect.value;
-      if (budget && budget !== 'Budget') {
-        alert(`Filtering properties with budget: ${budget}`);
-      }
-    });
-  }
+        // --- Property Type filter ---
+        const propertyTypeSelects = document.querySelectorAll('.property-type');
+        propertyTypeSelects.forEach(select => {
+            select.addEventListener('change', () => {
+                const selected = select.value;
+                if (selected && selected !== 'Property Type' && selected !== 'Furnishing' && selected !== 'Tenants Preferred' && selected !== 'Facing' && selected !== 'Bathroom') {
+                    console.log(`Filter applied: ${selected}`);
+                }
+            });
+        });
 
-  // --- Property Type filter ---
-  const propertyTypeSelects = document.querySelectorAll('.property-type');
-  propertyTypeSelects.forEach(select => {
-    select.addEventListener('change', () => {
-      const selected = select.value;
-      if (selected && selected !== 'Property Type' && selected !== 'Furnishing' && selected !== 'Tenants Preferred' && selected !== 'Facing' && selected !== 'Bathroom') {
-        console.log(`Filter applied: ${selected}`);
-      }
-    });
-  });
+        // --- Posted By filter ---
+        const postedBySelect = document.querySelector('.select-posted-by');
+        if (postedBySelect) {
+            postedBySelect.addEventListener('change', () => {
+                const postedBy = postedBySelect.value;
+                if (postedBy && postedBy !== 'Posted By') {
+                    alert(`Showing properties posted by: ${postedBy}`);
+                }
+            });
+        }
 
-  // --- Posted By filter ---
-  const postedBySelect = document.querySelector('.select-posted-by');
-  if (postedBySelect) {
-    postedBySelect.addEventListener('change', () => {
-      const postedBy = postedBySelect.value;
-      if (postedBy && postedBy !== 'Posted By') {
-        alert(`Showing properties posted by: ${postedBy}`);
-      }
-    });
-  }
+        // --- Sort filter ---
+        const sortFilter = document.getElementById('sort-filter');
+        if (sortFilter) {
+            sortFilter.addEventListener('change', () => {
+                const sortBy = sortFilter.value;
+                if (sortBy && sortBy !== 'Sort By') {
+                    alert(`Sorting by: ${sortBy}`);
+                }
+            });
+        }
 
-  // --- Sort filter ---
-  const sortFilter = document.getElementById('sort-filter');
-  if (sortFilter) {
-    sortFilter.addEventListener('change', () => {
-      const sortBy = sortFilter.value;
-      if (sortBy && sortBy !== 'Sort By') {
-        alert(`Sorting by: ${sortBy}`);
-      }
-    });
-  }
+        // --- Amenities filter ---
+        const amenitiesFilter = document.getElementById('amenities-filter');
+        if (amenitiesFilter) {
+            amenitiesFilter.addEventListener('change', () => {
+                const amenity = amenitiesFilter.value;
+                if (amenity && amenity !== 'Furnishing' && amenity !== 'With Parking' && amenity !== 'With Balcony' && amenity !== 'With Gym' && amenity !== 'With Pool' && amenity !== 'With Garden') {
+                    console.log(`Amenity filter: ${amenity}`);
+                }
+            });
+        }
 
-  // --- Amenities filter ---
-  const amenitiesFilter = document.getElementById('amenities-filter');
-  if (amenitiesFilter) {
-    amenitiesFilter.addEventListener('change', () => {
-      const amenity = amenitiesFilter.value;
-      if (amenity && amenity !== 'Furnishing' && amenity !== 'With Parking' && amenity !== 'With Balcony' && amenity !== 'With Gym' && amenity !== 'With Pool' && amenity !== 'With Garden') {
-        console.log(`Amenity filter: ${amenity}`);
-      }
-    });
-  }
+        // --- Additional filter (Bathroom/Facing) ---
+        const additionalFilter = document.getElementById('additional-filter');
+        if (additionalFilter) {
+            additionalFilter.addEventListener('change', () => {
+                const additional = additionalFilter.value;
+                if (additional && additional !== 'Bathroom' && additional !== 'Facing') {
+                    console.log(`Additional filter: ${additional}`);
+                }
+            });
+        }
 
-  // --- Additional filter (Bathroom/Facing) ---
-  const additionalFilter = document.getElementById('additional-filter');
-  if (additionalFilter) {
-    additionalFilter.addEventListener('change', () => {
-      const additional = additionalFilter.value;
-      if (additional && additional !== 'Bathroom' && additional !== 'Facing') {
-        console.log(`Additional filter: ${additional}`);
-      }
-    });
-  }
+        // --- Tenants filter ---
+        const tenantsFilter = document.getElementById('tenants-filter');
+        if (tenantsFilter) {
+            tenantsFilter.addEventListener('change', () => {
+                const tenant = tenantsFilter.value;
+                if (tenant && tenant !== 'Tenants Preferred' && tenant !== 'Immediately') {
+                    console.log(`Tenant filter: ${tenant}`);
+                }
+            });
+        }
 
-  // --- Tenants filter ---
-  const tenantsFilter = document.getElementById('tenants-filter');
-  if (tenantsFilter) {
-    tenantsFilter.addEventListener('change', () => {
-      const tenant = tenantsFilter.value;
-      if (tenant && tenant !== 'Tenants Preferred' && tenant !== 'Immediately') {
-        console.log(`Tenant filter: ${tenant}`);
-      }
-    });
-  }
+        // --- Search functionality with filters ---
+        const searchBtn = document.getElementById('search-btn');
+        const citySearch = document.getElementById('city-search');
+        if (searchBtn) {
+            searchBtn.addEventListener('click', () => {
+                const city = citySearch.value.trim();
+                const bhk = document.getElementById('bhk-select').value;
+                const budget = document.querySelector('.select-budget').value;
+                const postedBy = document.querySelector('.select-posted-by').value;
 
-  // --- Search functionality with filters ---
-  const searchBtn = document.getElementById('search-btn');
-  const citySearch = document.getElementById('city-search');
-  if (searchBtn) {
-    searchBtn.addEventListener('click', () => {
-      const city = citySearch.value.trim();
-      const bhk = document.getElementById('bhk-select').value;
-      const budget = document.querySelector('.select-budget').value;
-      const postedBy = document.querySelector('.select-posted-by').value;
-      
-      if (city) {
-        const params = new URLSearchParams();
-        params.append('city', city);
-        if (bhk) params.append('bhk', bhk);
-        if (budget && budget !== 'Budget') params.append('budget', budget);
-        if (postedBy && postedBy !== 'Posted By') params.append('postedBy', postedBy);
-        
-        alert(`🔍 Searching for properties in ${city}${bhk ? ' (' + bhk.toUpperCase() + ')' : ''}. Showing available listings...`);
-        window.location.href = './pages/1bhk.html?' + params.toString();
-      } else {
-        alert('⚠️ Please enter a city name');
-      }
-    });
-    
-    // Allow Enter key to search
-    if (citySearch) {
-      citySearch.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') searchBtn.click();
-      });
-    }
-  }
+                if (city) {
+                    const params = new URLSearchParams();
+                    params.append('city', city);
+                    if (bhk) params.append('bhk', bhk);
+                    if (budget && budget !== 'Budget') params.append('budget', budget);
+                    if (postedBy && postedBy !== 'Posted By') params.append('postedBy', postedBy);
 
-  // --- List Your Space button functionality ---
-  const listSpaceBtn = document.querySelector('.btn-listyouspace');
-  if (listSpaceBtn) {
-    listSpaceBtn.addEventListener('click', () => {
-      window.location.href = './pages/post_property.html';
-    });
-  }
-</script>
+                    alert(`🔍 Searching for properties in ${city}${bhk ? ' (' + bhk.toUpperCase() + ')' : ''}. Showing available listings...`);
+                    window.location.href = './pages/1bhk.html?' + params.toString();
+                } else {
+                    alert('⚠️ Please enter a city name');
+                }
+            });
+
+            // Allow Enter key to search
+            if (citySearch) {
+                citySearch.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') searchBtn.click();
+                });
+            }
+        }
+
+        // --- List Your Space button functionality ---
+        const listSpaceBtn = document.querySelector('.btn-listyouspace');
+        if (listSpaceBtn) {
+            listSpaceBtn.addEventListener('click', () => {
+                window.location.href = './pages/post_property.html';
+            });
+        }
+    </script>
 
 
 
