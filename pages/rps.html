@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        
+        :root {
+            --rock: #e74c3c;
+            --paper: #3498db;
+            --scissors: #f1c40f;
+            --primary-text: #2c3e50;
+            --bg-color: #ecf0f1;
+            --win-color: #2ecc71;
+            --lose-color: #e74c3c;
+            --draw-color: #f39c12;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--primary-text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+        }
+
+        h1 {
+            color: var(--primary-text);
+            margin-bottom: 20px;
+            font-size: 2.2em;
+        }
+
+        .score-board {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 25px;
+            font-size: 1.2em;
+            background: var(--primary-text);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .choices {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .choice-btn {
+            flex: 1;
+            padding: 15px 5px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 30px;
+            transition: transform 0.1s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            color: white;
+        }
+
+        .choice-btn:active {
+            transform: scale(0.95);
+        }
+
+        #rock-btn { background-color: var(--rock); }
+        #paper-btn { background-color: var(--paper); }
+        #scissors-btn { background-color: var(--scissors); }
+
+        .result-area {
+            min-height: 80px;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        #result-text {
+            font-size: 1.4em;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+        
+        .result-message.win { color: var(--win-color); }
+        .result-message.lose { color: var(--lose-color); }
+        .result-message.draw { color: var(--draw-color); }
+
+        #game-info {
+            font-size: 1.1em;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>✊ Rock Paper Scissors 🖐️</h1>
+
+        <div class="score-board">
+            <span id="player-score">Player: 0</span>
+            <span id="computer-score">Computer: 0</span>
+        </div>
+
+        <div class="choices">
+            <button class="choice-btn" id="rock-btn" data-choice="rock">✊</button>
+            <button class="choice-btn" id="paper-btn" data-choice="paper">🖐️</button>
+            <button class="choice-btn" id="scissors-btn" data-choice="scissors">✌️</button>
+        </div>
+
+        <div class="result-area">
+            <p id="result-text">Make your choice to start the game!</p>
+        </div>
+
+        <p id="game-info">First to 3 points wins the match.</p>
+        <a href="games.html" style="display: block; margin-top: 20px; color: #3498db; text-decoration: none;">← Back to Games</a>
+    </div>
+
+    <script>
+        const choices = ['rock', 'paper', 'scissors'];
+        const choiceButtons = document.querySelectorAll('.choice-btn');
+        const resultText = document.getElementById('result-text');
+        const playerScoreSpan = document.getElementById('player-score');
+        const computerScoreSpan = document.getElementById('computer-score');
+        const gameInfo = document.getElementById('game-info');
+
+        let playerScore = 0;
+        let computerScore = 0;
+        const winningScore = 3;
+        let gameActive = true;
+
+        // Function to determine winner
+        function determineWinner(player, computer) {
+            if (player === computer) {
+                return 'draw';
+            } else if (
+                (player === 'rock' && computer === 'scissors') ||
+                (player === 'paper' && computer === 'rock') ||
+                (player === 'scissors' && computer === 'paper')
+            ) {
+                return 'win';
+            } else {
+                return 'lose';
+            }
+        }
+
+        // Function to handle player choice
+        function playRound(playerChoice) {
+            if (!gameActive) return;
+
+            const computerChoice = choices[Math.floor(Math.random() * choices.length)];
+            const result = determineWinner(playerChoice, computerChoice);
+
+            let message = `You chose ${playerChoice.toUpperCase()}, Computer chose ${computerChoice.toUpperCase()}. `;
+            let resultClass = '';
+
+            if (result === 'win') {
+                playerScore++;
+                message += 'You Win this round!';
+                resultClass = 'win';
+            } else if (result === 'lose') {
+                computerScore++;
+                message += 'You Lose this round.';
+                resultClass = 'lose';
+            } else {
+                message += 'It\'s a Draw.';
+                resultClass = 'draw';
+            }
+
+            playerScoreSpan.textContent = `Player: ${playerScore}`;
+            computerScoreSpan.textContent = `Computer: ${computerScore}`;
+            resultText.textContent = message;
+            resultText.className = 'result-message ' + resultClass;
+
+            checkForGameEnd();
+        }
+
+        // Function to check for game end
+        function checkForGameEnd() {
+            if (playerScore === winningScore) {
+                resultText.textContent = '🥳 GAME OVER! YOU WIN THE MATCH!';
+                resultText.className = 'result-message win';
+                gameActive = false;
+                gameInfo.textContent = 'Press any button to start a new match!';
+                resetGameListeners();
+            } else if (computerScore === winningScore) {
+                resultText.textContent = '😭 GAME OVER! COMPUTER WINS THE MATCH!';
+                resultText.className = 'result-message lose';
+                gameActive = false;
+                gameInfo.textContent = 'Press any button to start a new match!';
+                resetGameListeners();
+            }
+        }
+
+        // Function to reset game state
+        function resetGame() {
+            playerScore = 0;
+            computerScore = 0;
+            playerScoreSpan.textContent = 'Player: 0';
+            computerScoreSpan.textContent = 'Computer: 0';
+            resultText.textContent = 'Make your choice to start the game!';
+            resultText.className = '';
+            gameInfo.textContent = 'First to 3 points wins the match.';
+            gameActive = true;
+            setupGameListeners();
+        }
+
+        // Setup event listeners
+        function setupGameListeners() {
+            choiceButtons.forEach(button => {
+                button.onclick = () => playRound(button.dataset.choice);
+            });
+        }
+        
+        // Reset listeners for the 'Press any button to start a new match!' prompt
+        function resetGameListeners() {
+             choiceButtons.forEach(button => {
+                button.onclick = () => resetGame();
+            });
+        }
+
+        // Initialize game
+        setupGameListeners();
+
+    </script>
+</body>
+</html>

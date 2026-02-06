@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Wallet - RoomFound</title>
+    <script src="https://kit.fontawesome.com/61d1b80f50.js" crossorigin="anonymous"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #2c3e50;
+            padding: 15px 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .brand-heading-1 {
+            color: white;
+            font-size: 24px;
+            margin: 0;
+        }
+
+        .nav-items {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-items button {
+            padding: 10px 20px;
+            background-color: #d8232a;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .nav-items button:hover {
+            background-color: #a31c20;
+            transform: translateY(-2px);
+        }
+
+        nav a {
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .wallet-header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        .wallet-header h1 {
+            color: #d8232a;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+        }
+
+        .user-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 5px solid #d8232a;
+        }
+
+        .user-info p {
+            margin: 10px 0;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .points-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .points-section h2 {
+            margin-bottom: 10px;
+        }
+
+        .points-display {
+            font-size: 3.5em;
+            font-weight: bold;
+            margin: 20px 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .points-label {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+
+        .game-points {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .game-points h3 {
+            color: #d8232a;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #d8232a;
+        }
+
+        .game-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+            transition: all 0.3s;
+        }
+
+        .game-row:hover {
+            background-color: #f8f9fa;
+            padding-left: 10px;
+        }
+
+        .game-row:last-child {
+            border-bottom: none;
+        }
+
+        .game-name {
+            font-weight: bold;
+            color: #333;
+            flex: 1;
+        }
+
+        .game-points-earned {
+            color: #667eea;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .btn-games {
+            background-color: #667eea;
+            color: white;
+        }
+
+        .btn-games:hover {
+            background-color: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-home {
+            background-color: #d8232a;
+            color: white;
+        }
+
+        .btn-home:hover {
+            background-color: #a31c20;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(216, 35, 42, 0.4);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+
+        .empty-state i {
+            font-size: 3em;
+            margin-bottom: 15px;
+            color: #ddd;
+        }
+
+        .leaderboard {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .leaderboard h3 {
+            color: #d8232a;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #d8232a;
+        }
+
+        .leaderboard-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .rank {
+            background: #d8232a;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            border-radius: 10px;
+        }
+
+        @media (max-width: 600px) {
+            .wallet-header h1 {
+                font-size: 2em;
+            }
+
+            .points-display {
+                font-size: 2.5em;
+            }
+
+            .nav {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .nav-items {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .nav-items button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav>
+        <h1 class="brand-heading-1">🏠 RoomFound</h1>
+        <div class="nav-items">
+            <a href="/index.html"><button>🏠 Home</button></a>
+            <a href="./games.html"><button>🎮 Games</button></a>
+            <a href="./userlogin.html"><button>👤 Login</button></a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Wallet Header -->
+        <div class="wallet-header">
+            <h1>💰 My RoomFound Wallet</h1>
+            <p>Manage your RoomFound Points & Rewards</p>
+        </div>
+
+        <!-- User Info -->
+        <div class="user-info" id="userInfo">
+            <p><strong>User:</strong> <span id="userName">Not logged in</span></p>
+            <p><strong>Email:</strong> <span id="userEmail">Not available</span></p>
+            <p><strong>Member Since:</strong> <span id="memberDate">Today</span></p>
+        </div>
+
+        <!-- Points Display -->
+        <div class="points-section">
+            <h2>Your Total Points</h2>
+            <div class="points-display" id="totalPoints">0</div>
+            <div class="points-label">Redeem for exciting rewards!</div>
+        </div>
+
+        <!-- Game Points Breakdown -->
+        <div class="game-points">
+            <h3>📊 Points by Game</h3>
+            <div id="gamePointsList">
+                <div class="empty-state">
+                    <i class="fas fa-gamepad"></i>
+                    <p>Play games to earn points!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Leaderboard -->
+        <div class="leaderboard">
+            <h3>🏆 Top Earners This Week</h3>
+            <div class="leaderboard-row">
+                <div style="display: flex; align-items: center; flex: 1;">
+                    <div class="rank">1</div>
+                    <strong>You</strong>
+                </div>
+                <span id="userLeaderboardPoints">0 pts</span>
+            </div>
+            <div class="leaderboard-row">
+                <div style="display: flex; align-items: center; flex: 1;">
+                    <div class="rank">2</div>
+                    <strong>Game Master Pro</strong>
+                </div>
+                <span>2500 pts</span>
+            </div>
+            <div class="leaderboard-row">
+                <div style="display: flex; align-items: center; flex: 1;">
+                    <div class="rank">3</div>
+                    <strong>Puzzle Legend</strong>
+                </div>
+                <span>2200 pts</span>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <a href="./games.html"><button class="btn btn-games">🎮 Play Games</button></a>
+            <a href="/index.html"><button class="btn btn-home">🏠 Back to Home</button></a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025-2026 <strong>RoomFound</strong> - Find Your Perfect Home | Points System Active</p>
+    </footer>
+
+    <script>
+        // Load user data from localStorage
+        function loadUserData() {
+            const userData = localStorage.getItem('roomHaikya_user');
+            const gamePoints = localStorage.getItem('roomHaikya_gamePoints');
+
+            if (userData) {
+                const user = JSON.parse(userData);
+                document.getElementById('userName').textContent = user.name || 'User';
+                document.getElementById('userEmail').textContent = user.email || 'Not provided';
+                
+                const loginDate = new Date(user.lastLogin);
+                document.getElementById('memberDate').textContent = loginDate.toLocaleDateString();
+            }
+
+            // Load and display game points
+            if (gamePoints) {
+                const points = JSON.parse(gamePoints);
+                let totalPoints = 0;
+                let gameHTML = '';
+
+                for (const [game, pts] of Object.entries(points)) {
+                    totalPoints += pts;
+                    gameHTML += `
+                        <div class="game-row">
+                            <span class="game-name">🎮 ${game}</span>
+                            <span class="game-points-earned">+${pts} pts</span>
+                        </div>
+                    `;
+                }
+
+                document.getElementById('gamePointsList').innerHTML = gameHTML || '<div class="empty-state"><i class="fas fa-gamepad"></i><p>Play games to earn points!</p></div>';
+                document.getElementById('totalPoints').textContent = totalPoints;
+                document.getElementById('userLeaderboardPoints').textContent = totalPoints + ' pts';
+            }
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', loadUserData);
+
+        // Simulate earning points from games
+        function addGamePoints(gameName, points) {
+            let gamePoints = localStorage.getItem('roomHaikya_gamePoints');
+            gamePoints = gamePoints ? JSON.parse(gamePoints) : {};
+            
+            gamePoints[gameName] = (gamePoints[gameName] || 0) + points;
+            localStorage.setItem('roomHaikya_gamePoints', JSON.stringify(gamePoints));
+            loadUserData();
+        }
+
+        // Make points earning function available globally
+        window.addGamePoints = addGamePoints;
+    </script>
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Click Challenge</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        
+        :root {
+            --primary-color: #2ecc71;
+            --secondary-color: #27ae60;
+            --bg-color: #ecf0f1;
+            --text-color: #2c3e50;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            flex-direction: column;
+        }
+
+        .game-area {
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 2.5em;
+        }
+
+        .info-panel {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+            padding: 15px;
+            background: var(--text-color);
+            color: white;
+            border-radius: 10px;
+            font-size: 1.2em;
+        }
+
+        .stat-value {
+            font-weight: 900;
+            color: var(--primary-color);
+            display: block;
+            font-size: 1.5em;
+        }
+
+        #click-button {
+            width: 80%;
+            height: 150px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 2em;
+            font-weight: bold;
+            box-shadow: 0 8px 0 var(--secondary-color);
+            transition: background-color 0.1s, transform 0.1s, box-shadow 0.1s;
+            margin-bottom: 20px;
+        }
+
+        #click-button:active:not(:disabled) {
+            transform: translateY(4px);
+            box-shadow: 0 4px 0 var(--secondary-color);
+        }
+
+        #click-button:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        #message {
+            min-height: 40px;
+            font-size: 1.4em;
+            font-weight: 700;
+        }
+
+        #start-button {
+            background-color: #3498db;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            margin-top: 15px;
+            transition: background-color 0.2s;
+        }
+        
+        #start-button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-area">
+        <h1>⚡ Click Challenge (5s)</h1>
+        
+        <div class="info-panel">
+            <div>Clicks: <span id="click-count" class="stat-value">0</span></div>
+            <div>Time Left: <span id="time-left" class="stat-value">5.00</span>s</div>
+        </div>
+
+        <button id="click-button" disabled>Click the START button below!</button>
+
+        <p id="message">Hit START to begin the 5-second countdown!</p>
+
+        <button id="start-button">START</button>
+        <a href="games.html" style="display: block; margin-top: 25px; color: #3498db; text-decoration: none;">← Back to Games</a>
+    </div>
+
+    <script>
+        const CLICK_DURATION = 5; // seconds
+        const clickButton = document.getElementById('click-button');
+        const startButton = document.getElementById('start-button');
+        const clickCountDisplay = document.getElementById('click-count');
+        const timeLeftDisplay = document.getElementById('time-left');
+        const messageDisplay = document.getElementById('message');
+
+        let clickCount = 0;
+        let timeLeft = CLICK_DURATION;
+        let timerInterval;
+
+        function updateDisplay() {
+            clickCountDisplay.textContent = clickCount;
+            timeLeftDisplay.textContent = timeLeft.toFixed(2);
+        }
+
+        function clickHandler() {
+            clickCount++;
+            updateDisplay();
+        }
+
+        function startGame() {
+            // Reset state
+            clickCount = 0;
+            timeLeft = CLICK_DURATION;
+            updateDisplay();
+            
+            // Update UI for active game
+            clickButton.disabled = false;
+            startButton.disabled = true;
+            clickButton.textContent = "CLICK ME!";
+            messageDisplay.textContent = "GO! GO! GO!";
+            
+            // Setup click listener
+            clickButton.addEventListener('click', clickHandler);
+            
+            // Start Timer
+            let startTime = Date.now();
+            timerInterval = setInterval(() => {
+                const elapsed = (Date.now() - startTime) / 1000;
+                timeLeft = Math.max(0, CLICK_DURATION - elapsed);
+                
+                updateDisplay();
+
+                if (timeLeft <= 0) {
+                    endGame();
+                }
+            }, 10);
+        }
+
+        function endGame() {
+            clearInterval(timerInterval);
+            clickButton.removeEventListener('click', clickHandler);
+            
+            clickButton.disabled = true;
+            startButton.disabled = false;
+            clickButton.textContent = "STOPPED";
+            
+            messageDisplay.textContent = `Time's Up! You scored ${clickCount} clicks in ${CLICK_DURATION} seconds!`;
+        }
+        
+        // Initial setup
+        startButton.addEventListener('click', startGame);
+        updateDisplay();
+    </script>
+</body>
+</html>

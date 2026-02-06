@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GamesZone - RoomFound</title>
+    <script src="https://kit.fontawesome.com/61d1b80f50.js" crossorigin="anonymous"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --background-color: #f4f4f4;
+            --card-bg: #ffffff;
+            --shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--primary-color);
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+            min-height: 100vh;
+        }
+
+        /* Navigation Bar */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(44, 62, 80, 0.95);
+            padding: 15px 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .brand-heading {
+            color: white;
+            font-size: 26px;
+            margin: 0;
+            font-weight: bold;
+        }
+
+        .nav-items {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-items button {
+            padding: 10px 20px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .nav-items button:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+        }
+
+        nav a {
+            text-decoration: none;
+        }
+
+        /* Header Section */
+        .header-section {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: slideDown 0.6s ease;
+        }
+
+        h1 {
+            font-size: 3.5em;
+            margin-bottom: 10px;
+            color: white;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+            font-weight: 900;
+        }
+
+        .subtitle {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        .instruction {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            padding: 15px 25px;
+            border-radius: 10px;
+            color: white;
+            border: 1px solid rgba(255,255,255,0.2);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Gallery Grid */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .game-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-decoration: none;
+            color: var(--primary-color);
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            position: relative;
+            border: 3px solid transparent;
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            border-color: var(--accent-color);
+        }
+
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 100%);
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .game-card:hover::before {
+            opacity: 1;
+        }
+
+        .game-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            font-weight: bold;
+            color: white;
+            border-bottom: 5px solid var(--accent-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="80" r="2" fill="rgba(255,255,255,0.1)"/></svg>');
+            opacity: 0.3;
+        }
+        
+        .game-image.rps { background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); }
+        .game-image.guess { background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); }
+        .game-image.click { background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%); }
+        .game-image.tic { background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%); }
+        .game-image.memory { background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%); }
+        .game-image.snake { background: linear-gradient(135deg, #1abc9c 0%, #16a085 100%); }
+        .game-image.pong { background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%); }
+
+        .game-info {
+            padding: 25px;
+            text-align: left;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-info h2 {
+            margin: 0 0 12px 0;
+            font-size: 1.8em;
+            color: var(--accent-color);
+            font-weight: 700;
+        }
+
+        .game-info p {
+            margin: 0;
+            color: #7f8c8d;
+            font-size: 0.95em;
+            flex: 1;
+            line-height: 1.6;
+        }
+
+        .points-badge {
+            background: linear-gradient(135deg, #f39c12 0%, #e74c3c 100%);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-top: 12px;
+            display: inline-block;
+            box-shadow: 0 4px 10px rgba(244, 205, 39, 0.3);
+        }
+
+        /* Points Display */
+        .points-display {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 15px;
+            color: white;
+            border: 2px solid rgba(255,255,255,0.3);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .points-display strong {
+            font-size: 1.8em;
+            display: block;
+            margin-top: 10px;
+            color: #f39c12;
+        }
+
+        /* Animations */
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .game-card:hover .game-image {
+            animation: pulse 0.6s ease;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5em;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-items {
+                width: 100%;
+                flex-direction: column;
+            }
+
+            .nav-items button {
+                width: 100%;
+            }
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 50px;
+            padding: 30px;
+            background: rgba(0,0,0,0.1);
+            border-top: 2px solid rgba(255,255,255,0.2);
+            color: white;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        footer p {
+            margin: 10px 0;
+        }
+
+        footer a {
+            color: #f39c12;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <h1 class="brand-heading">🏠 RoomFound</h1>
+        <div class="nav-items">
+            <a href="/index.html"><button>🏠 Home</button></a>
+            <a href="./wallet.html"><button>💰 Wallet</button></a>
+            <a href="./userlogin.html"><button>👤 Login</button></a>
+        </div>
+    </nav>
+
+    <!-- Header Section -->
+    <div class="header-section">
+        <h1>🎮 GamesZone - RoomFound</h1>
+        <p class="subtitle">Pick Your Game & Earn RoomFound Points!</p>
+        <div class="instruction">
+            <p><i class="fas fa-star"></i> Play games to earn RoomFound points and compete in the leaderboard! 
+            <strong>Login</strong> to track your progress and rewards.</p>
+        </div>
+    </div>
+
+    <!-- Points Display -->
+    <div class="points-display" id="pointsDisplay">
+        <span>🏆 Your RoomFound Points</span>
+        <strong id="userPoints">0</strong>
+    </div>
+
+    <!-- Games Grid -->
+    <div class="gallery-grid">
+        
+        <a class="game-card" href="rps.html" onclick="recordGameStart('Rock Paper Scissors')">
+            <div class="game-image rps">✂️ RPS</div>
+            <div class="game-info">
+                <h2>Rock Paper Scissors</h2>
+                <p>A classic hand game against the computer. Win to earn points quickly!</p>
+                <span class="points-badge">⭐ +50 pts/win</span>
+            </div>
+        </a>
+
+        <a class="game-card" href="guess.html" onclick="recordGameStart('Guess the Number')">
+            <div class="game-image guess">🎯 Guess</div>
+            <div class="game-info">
+                <h2>Guess the Number</h2>
+                <p>Try to guess the secret number between 1 and 100 in the fewest attempts.</p>
+                <span class="points-badge">⭐ +75 pts/win</span>
+            </div>
+        </a>
+
+        <a class="game-card" href="click.html" onclick="recordGameStart('Click Challenge')">
+            <div class="game-image click">⚡ Click</div>
+            <div class="game-info">
+                <h2>Click Challenge</h2>
+                <p>Test your speed! Click the button as many times as possible in 5 seconds.</p>
+                <span class="points-badge">⭐ +30 pts/play</span>
+            </div>
+        </a>
+
+        <a class="game-card" href="tic.html" onclick="recordGameStart('Tic Tac Toe')">
+            <div class="game-image tic">⭕ Tic Tac</div>
+            <div class="game-info">
+                <h2>Tic Tac Toe</h2>
+                <p>The timeless 3x3 game for two players. Beat the AI to earn points!</p>
+                <span class="points-badge">⭐ +60 pts/win</span>
+            </div>
+        </a>
+        
+        <a class="game-card" href="memory.html" onclick="recordGameStart('Memory Game')">
+            <div class="game-image memory">🧠 Memory</div>
+            <div class="game-info">
+                <h2>Memory Game</h2>
+                <p>Flip cards and match pairs. Test your concentration and earn big rewards!</p>
+                <span class="points-badge">⭐ +80 pts/win</span>
+            </div>
+        </a>
+
+        <a class="game-card" href="snake.html" onclick="recordGameStart('Snake Game')">
+            <div class="game-image snake">🐍 Snake</div>
+            <div class="game-info">
+                <h2>Snake Game</h2>
+                <p>Classic arcade game. Guide the snake to eat food and grow longer!</p>
+                <span class="points-badge">⭐ +40 pts/play</span>
+            </div>
+        </a>
+
+        <a class="game-card" href="pong.html" onclick="recordGameStart('Pong Game')">
+            <div class="game-image pong">🏓 Pong</div>
+            <div class="game-info">
+                <h2>Pong Game</h2>
+                <p>Single-player version of the classic paddle-and-ball arcade game.</p>
+                <span class="points-badge">⭐ +45 pts/play</span>
+            </div>
+        </a>
+
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p><strong>🏆 RoomFound Games Zone</strong></p>
+        <p>Earn points by playing games and unlock amazing rewards!</p>
+        <p>Login to your account to track your progress across all games.</p>
+        <p style="margin-top: 15px; opacity: 0.8;">© 2025-2026 RoomFound - Your Gaming Companion</p>
+    </footer>
+
+    <script>
+        // Load and display user points on page load
+        function updatePointsDisplay() {
+            const gamePoints = localStorage.getItem('roomHaikya_gamePoints');
+            if (gamePoints) {
+                const points = JSON.parse(gamePoints);
+                let totalPoints = 0;
+                for (const pts of Object.values(points)) {
+                    totalPoints += pts;
+                }
+                document.getElementById('userPoints').textContent = totalPoints;
+            }
+        }
+
+        // Record when user starts a game (for game pages to award points)
+        function recordGameStart(gameName) {
+            sessionStorage.setItem('currentGame', gameName);
+            return true;
+        }
+
+        // Award points to a game (called from individual game pages)
+        window.awardGamePoints = function(gameName, points) {
+            let gamePoints = localStorage.getItem('roomHaikya_gamePoints');
+            gamePoints = gamePoints ? JSON.parse(gamePoints) : {};
+            
+            gamePoints[gameName] = (gamePoints[gameName] || 0) + points;
+            localStorage.setItem('roomHaikya_gamePoints', JSON.stringify(gamePoints));
+            updatePointsDisplay();
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', updatePointsDisplay);
+
+        // Auto-update points every 5 seconds (for real-time updates from other tabs)
+        setInterval(updatePointsDisplay, 5000);
+    </script>
+</body>
+</html>
+            .gallery-grid {
+                padding: 0 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🎮 GamesZone - Pick Your Game!</h1>
+
+    <div class="gallery-grid">
+        
+        <a class="game-card" href="rps.html">
+            <div class="game-image rps">Rock Paper Scissors (RPS)</div>
+            <div class="game-info">
+                <h2>Rock Paper Scissors</h2>
+                <p>A classic hand game against the computer. Best of three wins!</p>
+            </div>
+        </a>
+
+        <a class="game-card" href="guess.html">
+            <div class="game-image guess">Guess the Number</div>
+            <div class="game-info">
+                <h2>Guess the Number</h2>
+                <p>Try to guess the secret number between 1 and 100 in the fewest attempts.</p>
+            </div>
+        </a>
+
+        <a class="game-card" href="click.html">
+            <div class="game-image click">Click Challenge</div>
+            <div class="game-info">
+                <h2>Click Challenge</h2>
+                <p>Test your speed! Click the button as many times as possible in 5 seconds.</p>
+            </div>
+        </a>
+
+        <a class="game-card" href="tic.html">
+            <div class="game-image tic">Tic Tac Toe</div>
+            <div class="game-info">
+                <h2>Tic Tac Toe</h2>
+                <p>The timeless 3x3 game for two players (X and O).</p>
+            </div>
+        </a>
+        
+        <a class="game-card" href="memory.html">
+            <div class="game-image memory">Memory Game</div>
+            <div class="game-info">
+                <h2>Memory Game</h2>
+                <p>Flip cards and match pairs. Test your concentration!</p>
+            </div>
+        </a>
+
+        <a class="game-card" href="snake.html">
+            <div class="game-image snake">Snake Game</div>
+            <div class="game-info">
+                <h2>Snake Game</h2>
+                <p>Classic arcade game. Guide the snake to eat food and grow longer!</p>
+            </div>
+        </a>
+
+        <a class="game-card" href="pong.html">
+            <div class="game-image pong">Pong Game</div>
+            <div class="game-info">
+                <h2>Pong Game</h2>
+                <p>Single-player version of the classic paddle-and-ball arcade game.</p>
+            </div>
+        </a>
+
+    </div>
+</body>
+</html>

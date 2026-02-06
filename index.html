@@ -1,0 +1,2255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room Hai Kya?</title>
+    <script src="https://kit.fontawesome.com/61d1b80f50.js" crossorigin="anonymous"></script> 
+
+    <style>
+
+        /* Enhanced Chatbot Button: Improved Style and Positioning */
+#chatbot-btn {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+  z-index: 1000;
+  transition: all 0.3s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#chatbot-btn:hover {
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    transform: scale(1.1);
+    box-shadow: 0 12px 35px rgba(102, 126, 234, 0.6);
+}
+
+#chatbot-btn.hidden {
+    display: none;
+}
+
+/* Chatbot Sidebar */
+#chatbot-sidebar {
+  position: fixed;
+  bottom: 0;
+  right: -350px;
+  width: 350px;
+  height: 500px;
+  background-color: #fff;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+  box-shadow: -5px 0 30px rgba(0,0,0,0.2);
+  transition: right 0.3s ease;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+}
+
+#chatbot-sidebar.active {
+  right: 0;
+}
+
+/* Header */
+#chatbot-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 15px;
+  border-top-left-radius: 15px;
+}
+
+#chatbot-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+#close-chat {
+  cursor: pointer;
+  font-size: 24px;
+  font-weight: bold;
+  transition: transform 0.2s;
+}
+
+#close-chat:hover {
+  transform: scale(1.2);
+}
+
+/* Messages */
+#chatbot-messages {
+  flex: 1;
+  padding: 15px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  background-color: #f9f9f9;
+}
+
+.bot-msg, .user-msg {
+  margin: 8px 0;
+  padding: 12px 16px;
+  border-radius: 18px;
+  max-width: 85%;
+  font-size: 14px;
+  line-height: 1.5;
+  word-wrap: break-word;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.bot-msg {
+  background: linear-gradient(135deg, #e5e5e5 0%, #f0f0f0 100%);
+  color: #333;
+  align-self: flex-start;
+  border-bottom-left-radius: 4px;
+}
+
+.user-msg {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  align-self: flex-end;
+  border-bottom-right-radius: 4px;
+}
+
+/* Input area */
+#chatbot-input-area {
+  display: flex;
+  border-top: 2px solid #eee;
+  padding: 12px;
+  background-color: #fff;
+  gap: 8px;
+}
+
+#chat-input {
+  flex: 1;
+  padding: 10px 15px;
+  border: 2px solid #eee;
+  border-radius: 25px;
+  font-size: 14px;
+  transition: border-color 0.3s;
+}
+
+#chat-input:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+#send-btn {
+  padding: 10px 18px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-weight: bold;
+}
+
+#send-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+        /* Logo and Header Styling */
+        .header-div {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+            flex-wrap: wrap;
+        }
+
+        .logo-text {
+            background: linear-gradient(135deg, #fff 0%, #f0f0f0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-shadow: none;
+        }
+
+        .brand-heading {
+            margin: 0;
+            font-size: 32px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+        }
+
+        .tagline {
+            color: rgba(255,255,255,0.9);
+            font-size: 13px;
+            position: absolute;
+            top: 45px;
+            left: 40px;
+            font-style: italic;
+            letter-spacing: 0.5px;
+        }
+
+        .btns {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .login-btn {
+            text-decoration: none;
+            background: rgba(255,255,255,0.15);
+            color: white;
+            padding: 10px 18px;
+            border-radius: 25px;
+            transition: all 0.3s;
+            border: 2px solid rgba(255,255,255,0.3);
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .login-btn:hover {
+            background: rgba(255,255,255,0.25);
+            border-color: rgba(255,255,255,0.6);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Profile Dropdown Styling */
+        .profile-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .profile-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.5);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            transition: all 0.3s;
+            outline: none;
+        }
+
+        .profile-icon:hover {
+            background: rgba(255,255,255,0.35);
+            border-color: rgba(255,255,255,0.8);
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .profile-dropdown {
+            position: absolute;
+            top: 55px;
+            right: 0;
+            width: 200px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            padding: 10px 0;
+            display: none;
+            z-index: 1001;
+        }
+
+        .profile-dropdown.show {
+            display: block;
+        }
+
+        .profile-dropdown a {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 12px 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #333;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .profile-dropdown a:hover {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            padding-left: 25px;
+        }
+
+        .profile-dropdown a:first-child {
+            border-radius: 12px 12px 0 0;
+        }
+
+        .profile-dropdown a:last-child {
+            border-radius: 0 0 12px 12px;
+        }
+
+        /* Enhanced Footer Styling */
+        .container-foot {
+            background: linear-gradient(135deg, #f8f9fc 0%, #f0f4f8 100%);
+            padding: 60px 0;
+            width: 100%;
+        }
+
+        .container-foot1 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .con-foot {
+            padding: 0;
+        }
+
+        .con-foot h1,
+        .con-foot h2 {
+            color: #2c3e50;
+            font-size: 1.3em;
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
+
+        .con-foot h1 {
+            font-size: 1.5em;
+        }
+
+        .con-foot h1 .tex-red,
+        .con-foot h2 .tex-red {
+            color: #667eea;
+            font-weight: 900;
+        }
+
+        .foot-anchor {
+            color: #666;
+            text-decoration: none;
+            font-size: 14px;
+            line-height: 1.8;
+            display: inline-block;
+            transition: all 0.3s;
+        }
+
+        .foot-anchor:hover {
+            color: #667eea;
+            transform: translateX(5px);
+            text-decoration: underline;
+        }
+
+        .foot-icon {
+            font-size: 28px;
+            color: #667eea;
+            margin-right: 12px;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+
+        .foot-icon:hover {
+            transform: scale(1.2) translateY(-3px);
+            color: #764ba2;
+        }
+
+        .con-foot .color-light {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.8;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        .fotr-cont {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            padding: 30px 40px;
+            text-align: center;
+            border-top: 3px solid #667eea;
+        }
+
+        .foot-tex {
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .foot-tex span[style] {
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        /* Responsive Footer */
+        @media (max-width: 768px) {
+            .container-foot1 {
+                grid-template-columns: 1fr;
+                gap: 30px;
+                padding: 0 20px;
+            }
+
+            .con-foot {
+                border-bottom: 1px solid #e0e0e0;
+                padding-bottom: 30px;
+            }
+
+            .con-foot:last-child {
+                border-bottom: none;
+            }
+
+            .container-foot {
+                padding: 40px 0;
+            }
+
+            .profile-dropdown {
+                right: -20px;
+            }
+        }
+        nav {
+            background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);
+            padding: 25px 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            border-top: 2px solid #667eea;
+        }
+
+        .selects {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        select {
+            padding: 14px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #333;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        select:hover {
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            background: linear-gradient(white, white);
+        }
+
+        select::-webkit-input-placeholder {
+            color: #999;
+        }
+
+        option {
+            padding: 10px;
+            background: white;
+            color: #333;
+            font-weight: 500;
+        }
+
+        optgroup {
+            font-weight: bold;
+            color: #667eea;
+            background: #f5f5f5;
+        }
+
+        optgroup option {
+            padding-left: 20px;
+            font-weight: normal;
+            color: #333;
+        }
+
+        .select-bhk {
+            background: linear-gradient(white, white) padding-box,
+                        linear-gradient(135deg, #667eea 0%, #764ba2 100%) border-box;
+            border: 2px solid transparent;
+        }
+
+        .select-budget {
+            background: linear-gradient(white, white) padding-box,
+                        linear-gradient(135deg, #f093fb 0%, #f5576c 100%) border-box;
+            border: 2px solid transparent;
+        }
+
+        .property-type {
+            background: linear-gradient(white, white) padding-box,
+                        linear-gradient(135deg, #4facfe 0%, #00f2fe 100%) border-box;
+            border: 2px solid transparent;
+        }
+
+        .select-posted-by {
+            background: linear-gradient(white, white) padding-box,
+                        linear-gradient(135deg, #43e97b 0%, #38f9d7 100%) border-box;
+            border: 2px solid transparent;
+        }
+
+        /* Category container and poster styling */
+        .div-poster {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 50px 20px;
+            text-align: center;
+            color: white;
+            border-radius: 15px;
+            margin: 30px 20px;
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+        }
+
+        .hel-1 {
+            font-size: 42px;
+            font-weight: 900;
+            margin: 0 0 25px 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .inputBox {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .in-1 {
+            padding: 16px 22px;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            min-width: 300px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .in-1:focus {
+            outline: none;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+        }
+
+        .btn-search {
+            padding: 16px 32px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 8px 20px rgba(245, 87, 108, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-search:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(245, 87, 108, 0.5);
+        }
+
+        .btn-search:active {
+            transform: translateY(-1px);
+        }
+
+        .header-btn {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .update-btn {
+            padding: 14px 28px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid rgba(255,255,255,0.4);
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+        }
+
+        .update-btn:hover {
+            background: rgba(255,255,255,0.3);
+            border-color: rgba(255,255,255,0.8);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .post-text {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* ===== CONTENT SECTIONS STYLING ===== */
+
+        /* Section Headings */
+        .heald-card {
+            text-align: center;
+            font-size: 2.5em;
+            font-weight: 900;
+            margin: 60px 0 40px 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -1px;
+        }
+
+        .heading-2,
+        .heading-3 {
+            text-align: center;
+            font-size: 2.2em;
+            font-weight: 800;
+            margin: 50px 0 35px 0;
+            color: #2c3e50;
+            letter-spacing: -0.5px;
+        }
+
+        .heading-3 {
+            font-size: 2em;
+        }
+
+        /* Room Cards Section */
+        .d-flex {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            padding: 20px;
+            margin: 0 auto;
+            max-width: 1400px;
+        }
+
+        .rk1-div {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            flex: 1;
+            min-width: 200px;
+            max-width: 280px;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .rk1-div:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.25);
+            border-color: #667eea;
+        }
+
+        .rk1-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .rk1-divsub {
+            padding: 25px 20px;
+            text-align: center;
+        }
+
+        .rk1-span {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .color-light {
+            color: #7f8c8d;
+            font-size: 0.95em;
+        }
+
+        .rk1-anchor {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 0.9em;
+            transition: all 0.3s;
+        }
+
+        .rk1-anchor:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Choose User Section */
+        .choose-maindiv1 {
+            margin: 60px auto;
+            max-width: 1200px;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .choose-maindiv {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .choose-maindiv img {
+            width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .choose-maindiv h2 {
+            color: #2c3e50;
+            font-size: 1.8em;
+            margin: 20px 0;
+            font-weight: 800;
+        }
+
+        .choos-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px;
+            border-radius: 15px;
+            color: white;
+            text-align: center;
+        }
+
+        .choos-bg h2 {
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .owner-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 15px 0;
+            border: 4px solid white;
+            transition: all 0.3s;
+        }
+
+        .owner-img:hover {
+            transform: scale(1.1);
+        }
+
+        .choos-acker {
+            color: white;
+            font-size: 1.5em;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            display: inline-block;
+            margin-left: 10px;
+        }
+
+        .choos-acker:hover {
+            transform: scale(1.3) translateX(5px);
+        }
+
+        .mt-20 {
+            margin-top: 20px;
+            display: block;
+        }
+
+        .mt-100 {
+            margin-top: 0;
+        }
+
+        .ml-220 {
+            margin-left: 220px;
+        }
+
+        /* Rental Collections */
+        .ta-center {
+            text-align: center;
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .rent-collection {
+            flex: 1;
+            min-width: 250px;
+            padding: 30px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border-radius: 15px;
+            margin: 15px;
+            cursor: pointer;
+            transition: all 0.4s;
+            border: 2px solid transparent;
+        }
+
+        .rent-collection:hover {
+            transform: translateY(-8px);
+            border-color: #667eea;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+        }
+
+        .forfamily-tex {
+            color: #667eea;
+            font-size: 1.4em;
+            font-weight: 800;
+            text-decoration: none;
+        }
+
+        .rent-collection.bg-1 {
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(56, 142, 60, 0.1));
+        }
+
+        .rent-collection.bg-1 .forfamily-tex {
+            color: #388e3c;
+        }
+
+        .rent-collection.bg-1:hover {
+            border-color: #388e3c;
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.2), rgba(56, 142, 60, 0.2));
+        }
+
+        .rent-collection.bg-2 {
+            background: linear-gradient(135deg, rgba(233, 30, 99, 0.1), rgba(194, 24, 91, 0.1));
+        }
+
+        .rent-collection.bg-2 .forfamily-tex {
+            color: #e91e63;
+        }
+
+        .rent-collection.bg-2:hover {
+            border-color: #e91e63;
+            background: linear-gradient(135deg, rgba(233, 30, 99, 0.2), rgba(194, 24, 91, 0.2));
+        }
+
+        .rent-collection.bg-3 {
+            background: linear-gradient(135deg, rgba(255, 152, 0, 0.1), rgba(245, 127, 23, 0.1));
+        }
+
+        .rent-collection.bg-3 .forfamily-tex {
+            color: #ff9800;
+        }
+
+        .rent-collection.bg-3:hover {
+            border-color: #ff9800;
+            background: linear-gradient(135deg, rgba(255, 152, 0, 0.2), rgba(245, 127, 23, 0.2));
+        }
+
+        .ml-30 {
+            margin-left: 30px;
+            color: #7f8c8d;
+            font-weight: 500;
+        }
+
+        /* List Your Space Section */
+        .poster2-main {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            align-items: center;
+            gap: 40px;
+            box-shadow: 0 15px 50px rgba(102, 126, 234, 0.25);
+        }
+
+        .poster-subdiv {
+            flex: 1;
+            min-width: 300px;
+            color: white;
+        }
+
+        .poster-subdiv h1 {
+            font-size: 2em;
+            font-weight: 900;
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+
+        .poster-subdiv span {
+            font-size: 1.1em;
+            line-height: 1.8;
+            opacity: 0.95;
+        }
+
+        .btn-listyouspace {
+            margin-top: 30px;
+            padding: 15px 40px;
+            background: white;
+            color: #667eea;
+            border: none;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-listyouspace:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            background: #f0f0f0;
+        }
+
+        .misco-img {
+            max-width: 100%;
+            flex: 1;
+            min-width: 250px;
+            filter: drop-shadow(0 10px 30px rgba(0,0,0,0.15));
+        }
+
+        /* Apartments Section */
+        .scroll-container {
+            max-width: 1400px;
+            margin: 40px auto;
+            padding: 0 20px;
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            padding-bottom: 10px;
+        }
+
+        .scroll-container::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .scroll-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .scroll-container::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+        }
+
+        .div-apar {
+            min-width: 250px;
+            height: 250px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.4s;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.25);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .div-apar::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(255,255,255,0.1);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .div-apar:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+        }
+
+        .div-apar:hover::before {
+            opacity: 1;
+        }
+
+        .div-apar.bg-vill {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .div-apar.bg-builder {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .div-apar.bg-studio {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .div-apar.bg-farmhouse {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+
+        .div-apar.bg-service {
+            background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
+        }
+
+        .apar-span {
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100%;
+        }
+
+        .apar-anchor {
+            color: white;
+            text-decoration: none;
+            font-size: 1.3em;
+            font-weight: 800;
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        /* Furnishing Section */
+        .furni-div {
+            flex: 1;
+            min-width: 250px;
+            text-align: center;
+            margin: 15px;
+            transition: all 0.4s;
+        }
+
+        .furnished-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: all 0.4s;
+        }
+
+        .furni-div:hover .furnished-img {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.25);
+        }
+
+        .firni-anchor {
+            display: inline-block;
+            margin-top: 15px;
+            font-size: 1.2em;
+            font-weight: 800;
+            color: #667eea;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .firni-anchor:hover {
+            color: #764ba2;
+            transform: scale(1.1);
+        }
+
+        /* Why Use Section */
+        .poster-main {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 40px;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .findmyroom-tex {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .findmyroom-tex h1 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        .poster-tex {
+            font-size: 1.1em;
+            line-height: 1.8;
+            text-align: justify;
+        }
+
+        .color-lired {
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .poster1-img {
+            max-width: 100%;
+            flex: 1;
+            min-width: 250px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        /* Benefits Section */
+        .d-flex-cen {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            max-width: 1400px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .div-nobrocker {
+            flex: 1;
+            min-width: 220px;
+            max-width: 280px;
+            text-align: center;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            cursor: pointer;
+        }
+
+        .div-nobrocker:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.25);
+            border-top: 4px solid #667eea;
+        }
+
+        .div-nobrocker img {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 15px;
+        }
+
+        .tex-size {
+            font-size: 1.2em;
+            font-weight: 800;
+            color: #2c3e50;
+            display: block;
+            margin: 15px 0;
+        }
+
+        .tex-light {
+            color: #7f8c8d;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        /* Customer Reviews */
+        .box-1 {
+            min-width: 320px;
+            max-width: 380px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            overflow: hidden;
+            transition: all 0.4s;
+            cursor: pointer;
+        }
+
+        .box-1:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.2);
+            border-top: 4px solid #667eea;
+        }
+
+        .div-1 {
+            padding: 25px;
+        }
+
+        .flex-1 {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .img-man {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #667eea;
+        }
+
+        .flex-2 {
+            flex: 1;
+        }
+
+        .h4-tag {
+            font-weight: 800;
+            color: #2c3e50;
+            font-size: 1.1em;
+        }
+
+        .heading {
+            color: #2c3e50;
+            font-size: 1.1em;
+            font-weight: 700;
+            margin: 15px 0;
+        }
+
+        .tex-span {
+            color: #7f8c8d;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .col-yello {
+            color: #ffc107;
+        }
+
+        .tex-span1 {
+            font-size: 0.95em;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .d-flex, .ta-center .d-flex {
+                gap: 15px;
+            }
+
+            .poster2-main {
+                padding: 30px;
+                gap: 30px;
+            }
+
+            .choose-maindiv1 {
+                gap: 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .heald-card, .heading-2, .heading-3 {
+                font-size: 1.8em;
+                margin: 40px 0 25px 0;
+            }
+
+            .d-flex {
+                gap: 15px;
+                padding: 15px;
+            }
+
+            .rk1-div {
+                max-width: 100%;
+                min-width: 150px;
+            }
+
+            .choose-maindiv1 {
+                flex-direction: column;
+                gap: 20px;
+                margin: 40px 15px;
+            }
+
+            .ta-center .d-flex {
+                flex-direction: column;
+            }
+
+            .rent-collection {
+                margin: 10px;
+                padding: 20px;
+            }
+
+            .poster2-main {
+                flex-direction: column;
+                padding: 25px 15px;
+                margin: 50px 15px;
+            }
+
+            .poster-main {
+                flex-direction: column;
+                padding: 20px 15px;
+                margin: 40px 15px;
+            }
+
+            .d-flex-cen {
+                gap: 15px;
+                padding: 0 15px;
+            }
+
+            .div-nobrocker {
+                min-width: 160px;
+                max-width: 80%;
+            }
+
+            .scroll-container {
+                padding: 0 15px 10px 15px;
+            }
+
+            .div-apar {
+                min-width: 200px;
+                height: 200px;
+            }
+
+            .furni-div {
+                min-width: 180px;
+            }
+
+            .furnished-img {
+                height: 180px;
+            }
+
+            .ml-220 {
+                margin-left: 0;
+            }
+
+            .header-btn {
+                gap: 10px;
+            }
+
+            .update-btn {
+                padding: 10px 15px;
+                font-size: 12px;
+            }
+
+            .post-text {
+                font-size: 0.9em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .heald-card, .heading-2, .heading-3 {
+                font-size: 1.5em;
+            }
+
+            .rk1-div {
+                max-width: 100%;
+            }
+
+            .div-nobrocker {
+                max-width: 100%;
+                min-width: 90%;
+            }
+
+            .box-1 {
+                max-width: 100%;
+                min-width: 90%;
+            }
+
+            .div-apar {
+                min-width: 180px;
+                height: 180px;
+            }
+
+            .poster2-main {
+                padding: 20px 10px;
+            }
+
+            .findmyroom-tex h1 {
+                font-size: 1.5em;
+            }
+
+            .poster-tex {
+                font-size: 1em;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="header-div">
+        <h1 class="brand-heading">🏠 Room Hai Kya?</h1>
+        <span class="btns">
+            <a href="./pages/games.html" class="login-btn"><span class="user"><b>🎮 Games</b></span></a>
+            <a href="./pages/about.html" class="login-btn"><span class="user"><b>ℹ️ About</b></span></a>
+            <a href="./pages/service.html" class="login-btn"><span class="user"><b>🔧 Services</b></span></a>
+            <a href="./pages/wallet.html" class="login-btn"><span class="user"><b>💰 Wallet</b></span></a>
+            <div class="profile-container">
+                <button class="profile-icon" id="profileBtn">👤</button>
+                <div class="profile-dropdown" id="profileDropdown">
+                    <a href="./pages/userlogin.html">User Login</a>
+                    <a href="./pages/post_property.html">Owner Login</a>
+                    <a href="#" onclick="chatbotBtn.click(); return false;">Post a Complaint</a>
+                    <a href="#" onclick="chatbotBtn.click(); return false;">Help</a>
+                    <a href="#" onclick="document.location.href='tel:9373700515';">Contact</a>
+                </div>
+            </div>
+        </span>
+    </div>
+
+
+    <nav>
+        <div class="selects">
+            <select class="select-bhk" id="bhk-select">
+                <option value="">BHK</option>
+                <option value="single">Single Room</option>
+                <option value="1rk">1RK</option>
+                <option value="1bhk">1BHK</option>
+                <option value="2bhk">2BHK</option>
+                <option value="3bhk">3BHK</option>
+                <option value="4bhk">4BHK+</option>
+            </select>
+            
+            <select class="select-budget">
+                <option><span class="option-heading">Budget</span></option><br>
+                <option> ₹ 2000-5000 </option>
+                <option> ₹ 5000-8000 </option>
+                <option> ₹ 8000-12000 </option>
+                <option> ₹ 12000-15000</option>
+                <option> ₹ 15000-20000</option>
+                <option> ₹ 20000-30000</option>
+                <option> ₹ 30000-50000</option>
+                <option> ₹ 50000+ </option>
+            </select>
+
+            <select class="property-type">
+                <optgroup label="Residential">
+                    <option>Property Type</option>
+                    <option>Flat/Apartment</option>
+                    <option>House</option>
+                    <option>Villa</option>
+                    <option>Shared Flat</option>
+                    <option>Hostel</option>
+                    <option>PG</option>
+                </optgroup>
+                <optgroup label="Commercial">
+                    <option>Office</option>
+                    <option>Shop</option>
+                    <option>Showrooms</option>
+                    <option>Godown</option>
+                    <option>Industrial Building</option>
+                </optgroup>
+                <optgroup label="Others">
+                    <option>Agricultural Land</option>
+                    <option>Farm House</option>
+                    <option>Co-living Space</option>
+                </optgroup>
+            </select>
+
+            <select class="property-type" id="tenants-filter">
+                <optgroup label="Tenant Type">
+                    <option>Tenants Preferred</option>
+                    <option>Bachelors</option>
+                    <option>Family</option>
+                    <option>Single</option>
+                    <option>Married Couples</option>
+                </optgroup>
+                <optgroup label="Availability">
+                    <option>Immediately</option>
+                    <option>Within 1 Month</option>
+                    <option>1 - 3 Months</option>
+                    <option>3 - 6 Months</option>
+                    <option>6 Months +</option>
+                </optgroup>
+            </select>
+
+            <select class="property-type" id="amenities-filter">
+                <optgroup label="Furnishing">
+                    <option>Furnishing</option>
+                    <option>Furnished</option>
+                    <option>Semi-Furnished</option>
+                    <option>Unfurnished</option>
+                </optgroup>
+                <optgroup label="Amenities">
+                    <option>With Parking</option>
+                    <option>With Balcony</option>
+                    <option>With Gym</option>
+                    <option>With Pool</option>
+                    <option>With Garden</option>
+                </optgroup>
+            </select>
+
+            <select class="property-type" id="additional-filter">
+                <optgroup label="Bathroom">
+                    <option>Bathroom</option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3+</option>
+                </optgroup>
+                <optgroup label="Facing">
+                    <option>Facing</option>
+                    <option>North</option>
+                    <option>South</option>
+                    <option>East</option>
+                    <option>West</option>
+                </optgroup>
+            </select>
+
+            <select class="select-posted-by">
+                <option>Posted By</option><br>
+                <option>Owner </option>
+                <option>Agent </option>
+                <option>Builder</option>
+            </select>
+
+            <select class="property-type" id="sort-filter">
+                <option>Sort By</option>
+                <option>Latest First</option>
+                <option>Price: Low to High</option>
+                <option>Price: High to Low</option>
+                <option>Most Relevant</option>
+                <option>Most Viewed</option>
+            </select>
+        </div>
+    </nav>
+    <div class="div-poster">
+        <h1 class="hel-1">Find your perfect Room for Rent</h1>
+        <div class="inputBox">
+            <input type="text" class="in-1" placeholder="Search your City " id="city-search">
+            <button class="btn-search" id="search-btn">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                Search
+            </button>
+
+        </div>
+        <div>
+            <div class="header-btn">
+                <a href="./pages/post_property.html"><button class="update-btn"><span class="post-text">
+                    <i class="fa-solid fa-signs-post"></i>  Post
+                            Property</span></button></a>
+                <a href="./pages/maintanance.html"><button class="update-btn"><span class="post-text"> <i class="fa-solid fa-phone"></i> Call for
+                            Maintanance</span></button></a>
+                <a href="./pages/updates.html"><button class="update-btn"><span class="post-text"> <i class="fa-solid fa-magnifying-glass"></i> Explore Letest
+                            Updates</span></button></a>
+
+            </div>
+
+        </div>
+    </div>
+    <div class="category-container"></div>
+
+    <h1 class="heald-card">Find Your Rooms </h1>
+    <div class="d-flex">
+        <div class="rk1-div">
+            <img class="rk1-img" src="./img/index-page-img/singleroom.avif" /><br>
+            <div class="rk1-divsub">
+                <span class="rk1-span"><b>Single Rooms</b></span> <br> <br>
+                <span class="color-light"> 100+ 1RK Rooms</span> <br>
+                <span><span class="color-light">starting</span> ₹ 3000 - 5000 </span><br><br>
+                <a class="rk1-anchor color-lired" href="./pages/singlerooms.html">SHOW MORE</a> <br>
+            </div>
+        </div>
+
+        <div class="rk1-div">
+            <img class="rk1-img" src="./img/index-page-img/1RKroom.avif" /><br>
+            <div class="rk1-divsub">
+                <span class="rk1-span"><b>1 BHK Rooms</b></span> <br> <br>
+                <span class="color-light"> 100+ 1BHK Rooms</span> <br>
+                <span><span class="color-light">starting</span> ₹ 5000 - 7000 </span><br><br>
+                <a class="rk1-anchor color-lired" href="./pages/1bhk.html">SHOW MORE</a> <br>
+            </div>
+        </div>
+
+        <div class="rk1-div">
+            <img class="rk1-img" src="./img/index-page-img/1bhkroom.avif" /><br>
+            <div class="rk1-divsub">
+                <span class="rk1-span"><b>2 BHK Rooms</b></span> <br> <br>
+                <span class="color-light"> 100+ 1RK Rooms</span> <br>
+                <span><span class="color-light">starting</span> ₹ 7000 - 10000 </span><br><br>
+                <a class="rk1-anchor color-lired" href="./pages/2bhk.html">SHOW MORE</a> <br>
+            </div>
+        </div>
+
+        <div class="rk1-div">
+            <img class="rk1-img" src="./img/index-page-img/2bhkroom.avif" /><br>
+            <div class="rk1-divsub">
+                <span class="rk1-span"><b>3 BHK Rooms</b></span> <br> <br>
+                <span class="color-light"> 100+ 1RK Rooms</span> <br>
+                <span><span class="color-light">starting</span> ₹ 10000 - 13000 </span><br><br>
+                <a class="rk1-anchor color-lired" href="./pages/3bhk.html">SHOW MORE</a> <br>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex choose-maindiv1">
+        <div class="choose-maindiv mt-100">
+            <img src="./img/index-page-img/homeimg.webp" /> <br><br>
+            <h2>Properties Poster by</h2>
+        </div>
+        <div class="choose-maindiv choos-bg">
+            <h2>Choose type of User</h2> <br><br>
+            <img class="owner-img" src="./img/index-page-img/owner.png" />
+            <span class="mt-20">Owner <a class="choos-acker" href="./pages/post_property.html "> &#8594; </a>
+                <br><br></span>
+            <img class="owner-img" src="./img/index-page-img/programmer.png" />
+            <span class="mt-20"></span> User <a class="choos-acker ml-220" href="./pages/userlogin.html"> &#8594; </a>
+            <br><br></span>
+        </div>
+    </div>
+
+    <h1 class="heading-2 heading-3 tex-light">Curated rental collections</h1>
+    <div class="ta-center">
+
+        <div class="d-flex">
+
+            <div class="rent-collection">
+                <a class="forfamily-tex " href="./pages/2bhk.html">For Family</a><br />
+                <span class="ml-30">180+ Properties</span>
+            </div>
+
+            <div class="rent-collection bg-1">
+                <a class="forfamily-tex" href="./pages/singlerooms.html">For Single Men</a><br />
+                <span class="ml-30">210+ Properties</span>
+            </div>
+        </div>
+
+        <div class="d-flex">
+            <div class="rent-collection bg-2">
+                <a class="forfamily-tex" href="./pages/singlerooms.html">For Single Women</a><br />
+                <span class="ml-30">150+ Properties</span>
+            </div>
+
+            <div class="rent-collection bg-3">
+                <a class="forfamily-tex" href="./pages/1bhk.html">For Tenants With Company Lease</a><br />
+                <span class="ml-30">60+ Properties</span>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="d-flex poster2-main  ">
+
+
+        <div class="poster-subdiv">
+            <h1 class=" tex-light mt-60 "> List your Co-living space with RoomOnRent</h1> <br> <br>
+            <span>Convert your vacant space into revenue generating Asset. <br>
+                Get the space listed and obtain visibility from lakhs of <br>
+                users who are looking for a space in Top Cities of India.
+            </span> <br><br><br>
+            <button class="btn-listyouspace">List Your Space</button>
+        </div>
+        <div><img class="misco-img" src="./img/index-page-img/Miscommunication-rafiki.png" /></div>
+    </div>
+
+    <h1 class="heald-card mt-60">Aparments, Villas and more</h1>
+    <div class="scroll-container">
+        <div class="div-apar">
+            <div class="apar-span"><a class="apar-anchor" href="./pages/1bhk.html"><b>Residential <br>Apartment</b></a></div>
+        </div>
+
+        <div class="div-apar bg-vill">
+            <div class="apar-span"><a class="apar-anchor" href="./pages/3bhk.html"><b>Independent<br>House/Villa</b></a></div>
+        </div>
+
+        <div class="div-apar bg-builder">
+            <div class="apar-span"><a class="apar-anchor" href="./pages/2bhk.html"><b>Independent <br>Builder Floor</b></a></div>
+        </div>
+
+        <div class="div-apar bg-studio">
+            <div class="apar-span"><a class="apar-anchor" href="./pages/1rk.html"><b> 1 RK/ Studio <br>Apartment</b></a></div>
+        </div>
+
+        <div class="div-apar bg-farmhouse">
+            <div class="apar-span"><a class="apar-anchor" href="./pages/single-room.html"><b>Farm House <br>.</b></a></div>
+        </div>
+
+        <div class="div-apar bg-service">
+            <div class="apar-span"><a class="apar-anchor" href="./pages/1bhk.html"><b>Serviced <br>Apartments</b></a></div>
+        </div>
+
+    </div>
+
+    <h1 class="heading-3 tex-light mt-60">Homes by Furnishing</h1>
+
+    <div class=" d-flex">
+        <div class="furni-div">
+            <img class="furnished-img" src="./img/index-page-img/furnish.webp"><br>
+            <a class="firni-anchor" href="./pages/1bhk.html">Furnished</a>
+        </div>
+
+        <div class="furni-div">
+            <img class="furnished-img" src="./img/index-page-img/semifurnish.webp"><br>
+            <a class="firni-anchor" href="./pages/2bhk.html">Semifurnished</a>
+        </div>
+
+        <div class="furni-div">
+            <img class="furnished-img" src="./img/index-page-img/unfurnish.webp"><br>
+            <a class="firni-anchor" href="./pages/3bhk.html">Unurnished</a>
+        </div>
+    </div>
+    <div class="d-flex poster-main">
+        <div>
+            <img class="poster1-img" src="./img/index-page-img/poster1.png" />
+        </div>
+        <div class="findmyroom-tex">
+            <h1 class="heading-3 tex-light">Why use RoomFound?</h1> <br> <br>
+            <span class="poster-tex color-light"> <span class="color-lired">RoomFound</span> is a one-stop destination
+                for anyone looking out for roommates, flatmates, co-living spaces or PGs. We understand that finding the
+                right living situation can be a challenge, which is why we make the process easy and stress-free.
+                Whether you're a student searching for a roommate or a young professional seeking a flatmate, our
+                platform provides a streamlined and efficient way to connect with like-minded individuals in search of a
+                shared living space.
+
+                Our platform allows you to browse through a wide range of listings for co-living spaces, PGs, and flats,
+                and find the perfect match for your lifestyle and preferences. So, why wait? Start your search today and
+                find your ideal living situation with <span class="color-lired">RoomFound</span>!</span>
+        </div>
+    </div>
+
+
+    <h1 class=" heading-3 tex-light mt-60">Why Use RoomFound</h1><br><br>
+    <div class="d-flex-cen">
+
+        <div class="div-nobrocker">
+            <img src="./img/index-page-img/brocker.png"><br /><br />
+            <span class="tex-size tex-light"><b>Avoid Brocker</b></span><br>
+            <span class="tex-light">We direct connect you to verified <br /> owners to save brokerag</span>
+        </div>
+
+        <div class="div-nobrocker">
+            <img src="./img/index-page-img/ferr-listing.png"><br /><br />
+            <span class="tex-size tex-light"><b>Free Listing</b></span><br>
+            <span class="tex-light"> Easy listing process.Also <br /> using WhatsApp</span>
+        </div>
+
+        <div class="div-nobrocker">
+            <img src="./img/index-page-img/shortlist-with.png"><br /><br />
+            <span class="tex-size tex-light"><b>Shortlist Without Visit</b></span><br>
+            <span class="tex-light">Extenesive information <br /> make it easy</span>
+        </div>
+
+        <div class="div-nobrocker">
+            <img src="./img/index-page-img/rental-aggriment.png"><br /><br />
+            <span class="tex-size tex-light"><b>Rental Agreement</b></span><br>
+            <span class="tex-light">Asiistance in creating Rental <br /> agreement & Paper work</span>
+        </div>
+    </div>
+
+    <h1 class="heading-3 tex-light">Our Customers Love Us</h1>
+    <div class="scroll-container">
+
+        <div class="d-flex-1">
+
+            <div class="box-1">
+                <div class="div-1">
+                    <div class="flex-1">
+                        <div> <img class="img-man " src="./img/index-page-img/levic.jpg" /></div>
+                        <div class="flex-2"> <span class="h4-tag">Lewis Daniels </span> <br />
+                            <span class="tex-span span2">
+                                <i class="fa-sharp fa-solid fa-star col-yello"></i>
+                                <i class="fa-sharp fa-solid fa-star col-yello"></i>
+                                <i class="fa-sharp fa-solid fa-star col-yello"></i>
+                                <i class="fa-sharp fa-solid fa-star col-yello"></i>
+                                <i class="fa-sharp fa-solidr fa-star col-yello"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <h3 class="heading">Helps us to find good properties</h3>
+                    <span class="tex-span1">
+                        "The site really helps us to find good properties in the <br>least amount of time without any
+                        headache of brokerage. <br>I was so scared in Pune due to the issues of high <br>
+                        deposit as well as brokerage. I was new and had no time. <br>But then I found NoBroker. It is
+                        simply a..." </span> <br /> <br />
+                </div>
+            </div>
+
+            <div class="box-1">
+                <div class="div-1">
+                    <div class="flex-1">
+                        <div> <img class="img-man " src="./img/index-page-img/ayan.jpg" /></div>
+                        <div class="flex-2"> <span class="h4-tag">Ayan </span> <br />
+                            <span class="tex-span span2">
+                                <i class="fa-sharp fa-solid fa-star col-yello"></i>
+                                <i class="fa-sharp fa-solid fa-star col-yello"></i>
+                                <i class="fa-sharp fa-solid fa-star col-yello"></i>
+                                <i class="fa-sharp fa-solid fa-star col-yello"></i>
+                                <i class="fa-sharp fa-solid fa-star col-yello"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <h3 class="heading">It's a nice experience</h3>
+                    <span class="tex-span1">
+                        "It was a nice experience with Nobroker. They helped me <br> to find a new home to stay as it
+                        was difficult for <br>me as an individual to find a home with friendly <br>roommates. Thankfully
+                        Nobroker helped me to get one <br>with all kind of facilities." </span> <br /> <br />
+                </div>
+            </div>
+
+            <div class="box-1">
+                <div class="div-1">
+                    <div class="flex-1">
+                        <div> <img class="img-man " src="./img/index-page-img/prabhudev.jpg" /></div>
+                        <div class="flex-2"> <span class="h4-tag">Prabhu Dev </span> <br />
+                            <span class="tex-span span2">
+                                <i class="fa-sharp fa-solid fa-star col-yello"></i>
+                                <i class="fa-sharp fa-solid fa-star col-yello"></i>
+                                <i class="fa-sharp fa-solid fa-star col-yello"></i>
+                                <i class="fa-sharp fa-solid fa-star col-yello"></i>
+                                <i class="fa-sharp fa-regular fa-star col-yello"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <h3 class="heading">Found Great Place to Stay via NoBroker</h3>
+                    <span class="tex-span1">
+                        "RoomFound provides a great place to stay with safe <br />
+                        environment, it they show you something about property <br />that is always same as it No fake
+                        pictures"</span> <br /> <br />
+                </div>
+            </div>
+
+            <div class="box-1">
+                <div class="div-1">
+                    <div class="flex-1">
+                        <div> <img class="img-man " src="./img/index-page-img/balaso.jpg" /></div>
+                        <div class="flex-2"> <span class="h4-tag">Balasubramanyam K.C. </span> <br />
+                            <span class="tex-span span2">
+                                <i class="fa-sharp fa-solid fa-star col-yello"></i>
+                                <i class="fa-sharp fa-solid fa-star col-yello"></i>
+                                <i class="fa-sharp fa-solid fa-star col-yello"></i>
+                                <i class="fa-sharp fa-solid fa-star col-yello"></i>
+                                <i class="fa-sharp fa-regular fa-star col-yello"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <h3 class="heading">Excellent Service</h3>
+                    <span class="tex-span1">
+                        "Excellent service and an equally involved team. I opted <br>for the Relax plan and got a good
+                        deal on my <br>
+                        property. Highly recommended app" </span> <br /> <br />
+                </div>
+            </div>
+
+            <div class="box-1">
+                <div class="div-1">
+                    <div class="flex-1">
+                        <div> <img class="img-man " src="./img/index-page-img/levic.jpg" /></div>
+                        <div class="flex-2"> <span class="h4-tag">Anoop Nair </span> <br />
+                            <span class="tex-span span2">
+                                <i class="fa-sharp fa-solid fa-star col-yello"></i>
+                                <i class="fa-sharp fa-solid fa-star col-yello"></i>
+                                <i class="fa-sharp fa-solid fa-star col-yello"></i>
+                                <i class="fa-sharp fa-regular fa-star col-yello"></i>
+                                <i class="fa-sharp fa-regular fa-star col-yello"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <h3 class="heading">Best Option</h3>
+                    <span class="tex-span1">
+                        "The service was great and very professional. I went <br>with the Relax plan. My RM Sayantan
+                        Gupta is really <br>efficient. He noted my requirements quite well and <br>suggested me a list
+                        of options. I shortlisted one <br>from them and in just one visit, I was able to finalize
+                        ..."</span> <br /> <br />
+                </div>
+            </div>
+
+            <div class="box-1">
+
+                <div class="div-1">
+                    <div class="flex-1">
+                        <div> <img class="img-man " src="./img/index-page-img/thisha.jpg" /></div>
+                        <div class="flex-2"> <span class="h4-tag">Tiasha </span> <br />
+                            <span class="tex-span span2">
+                                <i class="fa-sharp fa-solid fa-star col-yello"></i>
+                                <i class="fa-sharp fa-solid fa-star col-yello"></i>
+                                <i class="fa-sharp fa-solid fa-star col-yello"></i>
+                                <i class="fa-sharp fa-regular fa-star col-yello"></i>
+                                <i class="fa-sharp fa-regular fa-star col-yello"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <h3 class="heading">Appreciate Positive and quick responses <br>
+                        from RM</h3>
+                    <span class="tex-span1">
+                        "RMs of RoomFound team, I really would like to <br> appreciate positive and quick responses
+                        from you guys . <br>Thank you for excellent service through paid plans of <br>RoomFound.com."
+                    </span> <br /> <br />
+                </div>
+            </div>
+        </div>
+    </div>
+ 
+
+
+
+
+
+
+   
+
+ 
+
+
+    <div class="container-foot">
+        <div class="container-foot1">
+            <div class="con-foot">
+                <h1 class="heding1-t"> 🏠<span class="tex-red">RoomFound</span></h1><br /> <br>
+                <span class="color-light">RoomFound is India's fastest growing Property Rental <br />
+                    Rental Network' attempting to provide better rental <br />
+                    solutions via design & technology.<br /><br />
+                    We help find,books rental homes of choice across <br />
+                    Indian cities. We assist with move-in, provide home <br />
+                    maintence service from cleaning, damages to rent <br />
+                    payment & even move-out.<br /><br />
+                    Whatever be your budget, Whatever you may call a <br />
+                    home (a bed, a room of an entire house), we have<br />
+                    something for you!
+                </span>
+            </div class="con-foot">
+            <div class="con-foot">
+                <h2 class="heding1-t">RoomFound</h2><br>
+                <a class="foot-anchor color-light" href="#">our service</a><br>
+                <a class="foot-anchor color-light" href="#">Price Trends</a><br>
+                <a class="foot-anchor color-light" href="#">Post your proprety</a><br>
+                <a class="foot-anchor color-light" href="#">Builders in Maharashtra</a><br>
+                <a class="foot-anchor color-light" href="#">Area Converter</a><br>
+                <a class="foot-anchor color-light" href="#">Articles</a><br>
+                <a class="foot-anchor color-light" href="#">Customer Service</a><br>
+                <a class="foot-anchor color-light" href="#">Sitemap</a><br>
+
+            </div>
+            <div class="con-foot">
+                <h2 class="heding1-t">Website</h2> <br />
+
+
+                <a class="foot-anchor color-light" href="#"> About us </a><br>
+                <a class="foot-anchor color-light" href="#"> Contact us </a><br>
+                <a class="foot-anchor color-light" href="#"> Terms & Condition </a><br>
+                <a class="foot-anchor color-light" href="#"> Request info </a><br>
+                <a class="foot-anchor color-light" href="#"> Feedback </a><br>
+                <a class="foot-anchor color-light" href="#"> Report a Problem </a><br>
+                <a class="foot-anchor color-light" href="#"> Privacy Policy </a><br>
+                <a class="foot-anchor color-light" href="#"> Grievance </a><br>
+                <a class="foot-anchor color-light" href="#"> Safety Guide </a><br>
+            </div>
+
+            <div class="con-foot">
+                <h2 class="heding1-t"> Contact Us</h2><br />
+                <a class="foot-anchor color-light" href="tel:9373700515">Toll Free-9373700515</a><br />
+
+
+                <a class="foot-anchor color-light" href="mailto:abhijeetbk154@gmail.com">Email -
+                    Roomfound@gmail.com</a><br /> <br><br>
+
+                <h2 class="heding1-t "> Connect With us</h2><br /> <br><br>
+
+                <a href="https://www.facebook.com/"><i class="fa-brands fa-facebook foot-icon"></i></a>
+                <a class="foot-anchor" href="https://www.youtube.com/channel/UCbKy0fUfvXZlZzyaZ1c7OyQ"><i
+                        class="fa-brands fa-youtube foot-icon"></i></a>
+                <a class="foot-anchor" href="https://www.twitter.com/abhijeetkokat "><i
+                        class="fa-brands fa-twitter foot-icon"></i></a>
+                <a class="foot-anchor" href="https://www.instagram.com/abhijeet_kokat_007/"><i
+                        class="fa-brands fa-instagram foot-icon"></i></a>
+                <a class="foot-anchor"
+                    href="https://github.com/Abhijeetkokat007/Room-on-Rent-IGCP1-First-group-project"><i
+                        class="fa-brands fa-github foot-icon"></i></a>
+
+
+            </div>
+
+        </div>
+        <div class="fotr-cont">
+            <span class="foot-tex color-light">Copyright ©2025-2026 <span style="color: #667eea;">RoomFound</span> - Find Your Home, Your Way!</span>
+        </div>
+    </div>
+    
+    <button id="chatbot-btn"><i class="fas fa-comment-dots"></i></button>
+
+<div id="chatbot-sidebar">
+  <div id="chatbot-header">
+    <h3>RoomFound Chatbot</h3>
+    <span id="close-chat">&times;</span>
+  </div>
+  <div id="chatbot-messages">
+    <div class="bot-msg">👋 Hi there! I'm the RoomFound Assistant. How can I help you find your perfect home today?</div>
+  </div>
+  <div id="chatbot-input-area">
+    <input type="text" id="chat-input" placeholder="Ask about properties, services, or maintenance..." />
+    <button id="send-btn"><i class="fas fa-paper-plane"></i></button>
+  </div>
+</div>
+
+<script>
+  const chatbotBtn = document.getElementById('chatbot-btn');
+  const chatbotSidebar = document.getElementById('chatbot-sidebar');
+  const closeChat = document.getElementById('close-chat');
+  const sendBtn = document.getElementById('send-btn');
+  const chatInput = document.getElementById('chat-input');
+  const chatMessages = document.getElementById('chatbot-messages');
+
+  // --- Chatbot Sidebar Visibility Logic ---
+  chatbotBtn.addEventListener('click', () => {
+    chatbotSidebar.classList.add('active');
+    chatbotBtn.classList.add('hidden'); // Hide button
+  });
+
+  closeChat.addEventListener('click', () => {
+    chatbotSidebar.classList.remove('active');
+    chatbotBtn.classList.remove('hidden'); // Show button
+  });
+
+  sendBtn.addEventListener('click', sendMessage);
+  chatInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') sendMessage();
+  });
+
+  // Profile dropdown toggle
+  const profileBtn = document.getElementById('profileBtn');
+  const profileDropdown = document.getElementById('profileDropdown');
+
+  profileBtn.addEventListener('click', () => {
+    profileDropdown.classList.toggle('show');
+  });
+
+  // Close dropdown when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.profile-container')) {
+      profileDropdown.classList.remove('show');
+    }
+  });
+
+  function getBotResponse(userMessage) {
+    const msg = userMessage.toLowerCase().trim();
+
+    // --- Utility Functions for Flexible Matching ---
+    const containsAny = (keywords) => keywords.some(keyword => msg.includes(keyword));
+    const containsAll = (keywords) => keywords.every(keyword => msg.includes(keyword));
+
+    // --- 1. Personal & Greeting Responses ---
+    if (containsAny(['hello', 'hi', 'hey', 'greetings'])) {
+      return 'Hello! I can help you find a room, check property availability, or direct you to maintenance. What can I assist you with today?';
+    }
+
+    if (containsAny(['my name is', 'i am', 'call me'])) {
+        const nameMatch = msg.match(/(my name is|i am|call me)\s+([a-zA-Z\s]+)/);
+        if (nameMatch && nameMatch[2]) {
+            const userName = nameMatch[2].trim().split(' ')[0]; 
+            return `Nice to meet you, **${userName}**! Let's find your perfect home. Are you looking to **Rent** or **Post a Property**?`;
+        }
+    }
+    
+    if (containsAny(['who are you', 'your name', 'what are you'])) {
+      return 'I am the **RoomFound Assistant**, your virtual expert for finding homes. I specialize in helping you discover the perfect property on RoomFound!';
+    }
+    
+    if (containsAny(['thanks', 'thank you', 'bye', 'goodbye'])) {
+        return 'You\'re most welcome! Feel free to reach out anytime. Happy house hunting! 👋';
+    }
+    
+    // --- 2. StayLEO Purpose and Mission ---
+    if (containsAny(['what is stayleo', 'what do you do', 'about stayleo', 'mission'])) {
+        return 'RoomFound is India\'s fastest-growing Property Rental Network. Our goal is to provide better housing solutions via design and technology, all while helping you **avoid broker fees**!';
+    }
+    
+    if (containsAny(['broker', 'brokerage', 'commission'])) {
+        return 'Yes! StayLEO connects you directly with verified owners, which means you **avoid paying brokerage fees** entirely. That\'s a huge saving!';
+    }
+
+    // --- 3. Property Search & Types (BHK/Budget) ---
+    if (containsAny(['search', 'find room', 'look for', 'available'])) {
+        return 'You can start by using the search bar to enter your desired **City**, or use the dropdown filters in the navigation bar for **BHK**, **Budget**, and **Property Type**. Which city are you interested in?';
+    }
+    
+    if (containsAny(['city', 'location', 'area', 'pune', 'mumbai', 'delhi', 'bangalore'])) {
+        // This is where you acknowledge the location search but guide them to the tool.
+        return 'We have properties in major Indian cities. To see current listings, please type your desired city into the **Search bar** on the main page. I can tell you about our **Property Types** if you like!';
+    }
+    
+    if (containsAny(['bhk', 'room type', 'bedroom', 'single room', '1bhk', '2bhk', '3bhk'])) {
+        return 'We offer various room types: **Single Rooms**, **1RK**, **1BHK**, **2BHK**, and **3BHK**. What size are you looking for? You can use the **BHK dropdown** to filter easily.';
+    }
+    
+    if (containsAny(['budget', 'rent range', 'how much', 'cost', 'price'])) {
+        return 'Our rental properties generally range from **₹3000** for single rooms up to **₹30000+** for larger apartments. Use the **Budget dropdown** in the navigation bar to set your price limit.';
+    }
+    
+    if (containsAny(['furnished', 'unfurnished', 'semi-furnished'])) {
+        return 'We list homes that are **Furnished**, **Semifurnished**, and **Unfurnished**. You can find filters for this under the **Tenants Preferred** dropdown.';
+    }
+
+    // --- 4. Site Actions & Support ---
+    if (containsAny(['post property', 'list space', 'owner', 'landlord', 'put up'])) {
+      return 'To list a property, please go to the **Owner Login** or click the **Post Property** button on the main page. It\'s a quick, free listing process!';
+    }
+    
+    if (containsAny(['maintenance', 'issue', 'repair', 'call', 'help line'])) {
+      return 'For any maintenance requests, the quickest way is to click the **"Call for Maintanance"** button below the search bar. This connects you with our support team.';
+    }
+    
+    if (containsAny(['user login', 'tenant login'])) {
+        return 'To log in as a tenant/user, please click the **"User Login"** link at the top right of the page.';
+    }
+    
+    if (containsAny(['about us', 'contact us', 'support'])) {
+        return 'You can find links for **About us** and **Contact us** in the footer of the page. Need immediate assistance? Try the **Toll Free** number listed at the bottom!';
+    }
+
+    // --- Default/Fallback Response ---
+    return "I'm still learning! I can provide detailed answers on: **What StayLEO does**, **How to search for rooms (City/BHK/Budget)**, **Post Property**, or **Maintenance**. How can I help you rephrase your question?";
+  }
+
+  function sendMessage() {
+    const userMsg = chatInput.value.trim();
+    if (userMsg === '') return;
+
+    // 1. Display User Message
+    const userMsgDiv = document.createElement('div');
+    userMsgDiv.classList.add('user-msg');
+    userMsgDiv.textContent = userMsg;
+    chatMessages.appendChild(userMsgDiv);
+    chatInput.value = '';
+    
+    // Auto-scroll to bottom
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+    // 2. Get and Display Bot Response
+    const botText = getBotResponse(userMsg);
+
+    // Typing delay for a natural feel
+    setTimeout(() => {
+      const botReplyDiv = document.createElement('div');
+      botReplyDiv.classList.add('bot-msg');
+      botReplyDiv.innerHTML = botText; 
+      chatMessages.appendChild(botReplyDiv);
+      
+      // Auto-scroll to bottom again after bot reply
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }, 800);
+  }
+
+  // --- BHK dropdown navigation on home page ---
+  const bhkSelect = document.getElementById('bhk-select');
+  if (bhkSelect) {
+    bhkSelect.addEventListener('change', (event) => {
+      const value = event.target.value;
+      if (!value) return;
+      let target = '';
+      if (value === 'single') target = './pages/singlerooms.html';
+      else if (value === '1rk') target = './pages/1rk.html';
+      else if (value === '1bhk') target = './pages/1bhk.html';
+      else if (value === '2bhk') target = './pages/2bhk.html';
+      else if (value === '3bhk') target = './pages/3bhk.html';
+      else if (value === '4bhk') target = './pages/1bhk.html';
+      if (target) {
+        window.location.href = target;
+      }
+    });
+  }
+
+  // --- Budget filter ---
+  const budgetSelect = document.querySelector('.select-budget');
+  if (budgetSelect) {
+    budgetSelect.addEventListener('change', () => {
+      const budget = budgetSelect.value;
+      if (budget && budget !== 'Budget') {
+        alert(`Filtering properties with budget: ${budget}`);
+      }
+    });
+  }
+
+  // --- Property Type filter ---
+  const propertyTypeSelects = document.querySelectorAll('.property-type');
+  propertyTypeSelects.forEach(select => {
+    select.addEventListener('change', () => {
+      const selected = select.value;
+      if (selected && selected !== 'Property Type' && selected !== 'Furnishing' && selected !== 'Tenants Preferred' && selected !== 'Facing' && selected !== 'Bathroom') {
+        console.log(`Filter applied: ${selected}`);
+      }
+    });
+  });
+
+  // --- Posted By filter ---
+  const postedBySelect = document.querySelector('.select-posted-by');
+  if (postedBySelect) {
+    postedBySelect.addEventListener('change', () => {
+      const postedBy = postedBySelect.value;
+      if (postedBy && postedBy !== 'Posted By') {
+        alert(`Showing properties posted by: ${postedBy}`);
+      }
+    });
+  }
+
+  // --- Sort filter ---
+  const sortFilter = document.getElementById('sort-filter');
+  if (sortFilter) {
+    sortFilter.addEventListener('change', () => {
+      const sortBy = sortFilter.value;
+      if (sortBy && sortBy !== 'Sort By') {
+        alert(`Sorting by: ${sortBy}`);
+      }
+    });
+  }
+
+  // --- Amenities filter ---
+  const amenitiesFilter = document.getElementById('amenities-filter');
+  if (amenitiesFilter) {
+    amenitiesFilter.addEventListener('change', () => {
+      const amenity = amenitiesFilter.value;
+      if (amenity && amenity !== 'Furnishing' && amenity !== 'With Parking' && amenity !== 'With Balcony' && amenity !== 'With Gym' && amenity !== 'With Pool' && amenity !== 'With Garden') {
+        console.log(`Amenity filter: ${amenity}`);
+      }
+    });
+  }
+
+  // --- Additional filter (Bathroom/Facing) ---
+  const additionalFilter = document.getElementById('additional-filter');
+  if (additionalFilter) {
+    additionalFilter.addEventListener('change', () => {
+      const additional = additionalFilter.value;
+      if (additional && additional !== 'Bathroom' && additional !== 'Facing') {
+        console.log(`Additional filter: ${additional}`);
+      }
+    });
+  }
+
+  // --- Tenants filter ---
+  const tenantsFilter = document.getElementById('tenants-filter');
+  if (tenantsFilter) {
+    tenantsFilter.addEventListener('change', () => {
+      const tenant = tenantsFilter.value;
+      if (tenant && tenant !== 'Tenants Preferred' && tenant !== 'Immediately') {
+        console.log(`Tenant filter: ${tenant}`);
+      }
+    });
+  }
+
+  // --- Search functionality with filters ---
+  const searchBtn = document.getElementById('search-btn');
+  const citySearch = document.getElementById('city-search');
+  if (searchBtn) {
+    searchBtn.addEventListener('click', () => {
+      const city = citySearch.value.trim();
+      const bhk = document.getElementById('bhk-select').value;
+      const budget = document.querySelector('.select-budget').value;
+      const postedBy = document.querySelector('.select-posted-by').value;
+      
+      if (city) {
+        const params = new URLSearchParams();
+        params.append('city', city);
+        if (bhk) params.append('bhk', bhk);
+        if (budget && budget !== 'Budget') params.append('budget', budget);
+        if (postedBy && postedBy !== 'Posted By') params.append('postedBy', postedBy);
+        
+        alert(`🔍 Searching for properties in ${city}${bhk ? ' (' + bhk.toUpperCase() + ')' : ''}. Showing available listings...`);
+        window.location.href = './pages/1bhk.html?' + params.toString();
+      } else {
+        alert('⚠️ Please enter a city name');
+      }
+    });
+    
+    // Allow Enter key to search
+    if (citySearch) {
+      citySearch.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') searchBtn.click();
+      });
+    }
+  }
+
+  // --- List Your Space button functionality ---
+  const listSpaceBtn = document.querySelector('.btn-listyouspace');
+  if (listSpaceBtn) {
+    listSpaceBtn.addEventListener('click', () => {
+      window.location.href = './pages/post_property.html';
+    });
+  }
+</script>
+
+
+
+</body>
+
+</html>

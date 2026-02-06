@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <style>
+      .recycle-bg { fill: #2ecc71; }
+      .recycle-icon { fill: #fff; }
+    </style>
+  </defs>
+  
+  <!-- Background Circle -->
+  <circle cx="100" cy="100" r="95" class="recycle-bg"/>
+  
+  <!-- Recycle Symbol - Three Arrows in a Triangle -->
+  <g transform="translate(100, 100)" class="recycle-icon">
+    <!-- Arrow 1 (Top) -->
+    <path d="M 0,-40 L 15,-20 L 10,-10 A 30,30 0 0,1 30,0 L 20,0 A 40,40 0 0,0 5,-30 Z" />
+    
+    <!-- Arrow 2 (Bottom Right) -->
+    <path d="M 35,25 L 35,45 L 45,35 A 30,30 0 0,1 15,35 L 24,40 A 40,40 0 0,0 40,20 Z" />
+    
+    <!-- Arrow 3 (Bottom Left) -->
+    <path d="M -35,25 L -35,45 L -45,35 A 30,30 0 0,0 -15,35 L -24,40 A 40,40 0 0,1 -40,20 Z" />
+  </g>
+  
+  <!-- Text -->
+  <text x="100" y="180" font-size="18" font-weight="bold" text-anchor="middle" fill="#2ecc71">RECYCLE</text>
+</svg>

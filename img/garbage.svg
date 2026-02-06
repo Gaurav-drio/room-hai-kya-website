@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <style>
+      .trash-bg { fill: #e74c3c; }
+      .trash-icon { fill: #fff; }
+      .trash-lid { fill: #c0392b; }
+    </style>
+  </defs>
+  
+  <!-- Background Circle -->
+  <circle cx="100" cy="100" r="95" class="trash-bg"/>
+  
+  <!-- Trash Can Icon -->
+  <g transform="translate(100, 100)">
+    <!-- Lid Handle -->
+    <rect x="-8" y="-45" width="16" height="8" rx="4" class="trash-lid"/>
+    
+    <!-- Can Body -->
+    <rect x="-28" y="-35" width="56" height="50" rx="3" class="trash-icon"/>
+    
+    <!-- Can Top/Rim -->
+    <rect x="-30" y="-37" width="60" height="4" rx="2" class="trash-lid"/>
+    
+    <!-- Vertical Lines (decoration) -->
+    <line x1="-15" y1="-33" x2="-15" y2="10" stroke="#c0392b" stroke-width="2"/>
+    <line x1="0" y1="-33" x2="0" y2="10" stroke="#c0392b" stroke-width="2"/>
+    <line x1="15" y1="-33" x2="15" y2="10" stroke="#c0392b" stroke-width="2"/>
+    
+    <!-- Bottom of Can -->
+    <ellipse cx="0" cy="15" rx="28" ry="8" class="trash-icon"/>
+    
+    <!-- Crumpled paper inside -->
+    <circle cx="-8" cy="0" r="6" fill="#bdc3c7" opacity="0.6"/>
+    <circle cx="8" cy="5" r="5" fill="#bdc3c7" opacity="0.6"/>
+    <circle cx="0" cy="8" r="4" fill="#bdc3c7" opacity="0.6"/>
+  </g>
+  
+  <!-- Text -->
+  <text x="100" y="180" font-size="16" font-weight="bold" text-anchor="middle" fill="#e74c3c">GARBAGE</text>
+</svg>
