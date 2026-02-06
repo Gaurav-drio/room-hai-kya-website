@@ -29,6 +29,6 @@ As of now, we are launching this website focusing on specific localities in Pune
 
 ## Contributors 👏
 
-<a href="https://github.com/Abhijeetkokat007/Room-on-Rent-IGCP1-First-group-project">
-  <img src="https://contrib.rocks/image?repo=Abhijeetkokat007/Room-on-Rent-IGCP1-First-group-project" />
+<a href="https://github.com/Gaurav-drio/room-hai-kya-website">
+  
 </a>
