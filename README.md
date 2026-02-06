@@ -1,6 +1,6 @@
 ﻿# 🏠Room Hai Kya?
 
-## 🏡Find Your Next Stay With RoomOnRent🏡
+## 🏡Find Your Next Stay With Room Hai Kya?🏡
 **Homepage**
 <img src="./outputs/home-page.png" /><br />
 **Categories**
@@ -12,7 +12,7 @@
 
 ## Use Of Project🏘️🌇
 
-**RoomOnRent** is your ultimate destination for finding roommates, flatmates, co-living spaces, or PGs. We understand that finding the perfect living situation can be quite challenging, which is why we have made the process easy and stress-free. Whether you are a student in search of a roommate or a young professional seeking a flatmate, our platform offers a streamlined and efficient way to connect with like-minded individuals who are also looking for shared living spaces.
+**Room Hai Kya?** is your ultimate destination for finding roommates, flatmates, co-living spaces, or PGs. We understand that finding the perfect living situation can be quite challenging, which is why we have made the process easy and stress-free. Whether you are a student in search of a roommate or a young professional seeking a flatmate, our platform offers a streamlined and efficient way to connect with like-minded individuals who are also looking for shared living spaces.
 
 ## Description 📝
 We have created this project using `HTML` and `CSS`,
@@ -30,5 +30,4 @@ As of now, we are launching this website focusing on specific localities in Pune
 ## Contributors 👏
 
 <a href="https://github.com/Gaurav-drio/room-hai-kya-website">
-  
 </a>
