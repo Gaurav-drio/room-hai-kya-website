@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Booking Requests</title>
+    <script src="https://kit.fontawesome.com/61d1b80f50.js" crossorigin="anonymous"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        nav {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+        }
+
+        .brand-heading-1 {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .nav-items {
+            display: flex;
+            gap: 15px;
+        }
+
+        .post-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .post-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.8);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 100px auto 40px;
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1em;
+        }
+
+        .filter-bar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .filter-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .filter-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .requests-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+        }
+
+        .request-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border-left: 5px solid #667eea;
+        }
+
+        .request-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.25);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 15px;
+            color: white;
+        }
+
+        .card-header h3 {
+            font-size: 1.3em;
+            margin-bottom: 5px;
+        }
+
+        .location {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95em;
+            opacity: 0.9;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .property-details {
+            margin-bottom: 15px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .detail-value {
+            color: #666;
+        }
+
+        .price-section {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .price-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .price-label {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .price-amount {
+            font-size: 1.4em;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85em;
+            margin-bottom: 15px;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-confirmed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-completed {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .status-cancelled {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .card-footer {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.95em;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #2c3e50;
+            border: 1px solid #ddd;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-icon {
+            font-size: 4em;
+            color: #ddd;
+            margin-bottom: 20px;
+        }
+
+        .empty-text {
+            color: #999;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        .booking-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .booking-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .footer {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin-top: 80px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .requests-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-bar {
+                flex-direction: column;
+            }
+
+            .filter-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <h1 class="brand-heading-1">🏠 Room Hai Kya?</h1>
+        <div class="nav-items">
+            <a href="/index.html"><button class="post-btn">🏠 Home</button></a>
+            <a href="./userlogin.html"><button class="post-btn">Login</button></a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="header">
+            <h1>My Booking Requests</h1>
+            <p>Track your property bookings and their status</p>
+        </div>
+
+        <div class="filter-bar">
+            <button class="filter-btn active" onclick="filterRequests('all')">All Bookings</button>
+            <button class="filter-btn" onclick="filterRequests('pending')">Pending</button>
+            <button class="filter-btn" onclick="filterRequests('confirmed')">Confirmed</button>
+            <button class="filter-btn" onclick="filterRequests('completed')">Completed</button>
+            <button class="filter-btn" onclick="filterRequests('cancelled')">Cancelled</button>
+        </div>
+
+        <div class="requests-grid" id="requestsContainer">
+            <!-- Cards will be dynamically inserted here -->
+        </div>
+
+        <div id="emptyState" class="empty-state" style="display:none;">
+            <div class="empty-icon">📦</div>
+            <p class="empty-text">No bookings found</p>
+            <a href="/index.html" class="booking-btn">Browse Properties</a>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2025-2026 Room Hai Kya? - Your Perfect Home Awaits!</p>
+    </div>
+
+    <script>
+        let currentFilter = 'all';
+        let bookings = [];
+
+        // Load bookings from localStorage
+        function loadBookings() {
+            const stored = localStorage.getItem('roomHaikya_bookings');
+            bookings = stored ? JSON.parse(stored) : [];
+            renderBookings();
+        }
+
+        // Filter bookings
+        function filterRequests(status) {
+            currentFilter = status;
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            renderBookings();
+        }
+
+        // Render bookings
+        function renderBookings() {
+            const container = document.getElementById('requestsContainer');
+            const filtered = currentFilter === 'all' ? bookings : bookings.filter(b => b.status === currentFilter);
+
+            if (filtered.length === 0) {
+                container.style.display = 'none';
+                document.getElementById('emptyState').style.display = 'block';
+                return;
+            }
+
+            container.style.display = 'grid';
+            document.getElementById('emptyState').style.display = 'none';
+            container.innerHTML = filtered.map(booking => `
+                <div class="request-card">
+                    <div class="card-header">
+                        <h3>${booking.propertyName}</h3>
+                        <div class="location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>${booking.location}</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <span class="status-badge status-${booking.status}">${booking.status.toUpperCase()}</span>
+                        
+                        <div class="property-details">
+                            <div class="detail-row">
+                                <span class="detail-label">Type</span>
+                                <span class="detail-value">${booking.bhkType}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Furnishing</span>
+                                <span class="detail-value">${booking.furnishing}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Booked Date</span>
+                                <span class="detail-value">${new Date(booking.bookedDate).toLocaleDateString()}</span>
+                            </div>
+                        </div>
+
+                        <div class="price-section">
+                            <div class="price-info">
+                                <span class="price-label">Monthly Rent</span>
+                                <span class="price-amount">₹${booking.monthlyRent}</span>
+                            </div>
+                        </div>
+
+                        <div class="property-details">
+                            <div class="detail-row">
+                                <span class="detail-label">Owner</span>
+                                <span class="detail-value">${booking.ownerName}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Contact</span>
+                                <span class="detail-value">${booking.ownerPhone}</span>
+                            </div>
+                        </div>
+
+                        <div class="card-footer">
+                            <button class="btn btn-primary" onclick="contactOwner('${booking.ownerPhone}')">
+                                <i class="fas fa-phone"></i> Contact Owner
+                            </button>
+                            <button class="btn btn-secondary" onclick="cancelBooking('${booking.id}')">
+                                <i class="fas fa-times"></i> Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Add booking from property page
+        function addBooking(propertyData) {
+            const booking = {
+                id: Date.now().toString(),
+                ...propertyData,
+                status: 'pending',
+                bookedDate: new Date().toISOString()
+            };
+            bookings.push(booking);
+            localStorage.setItem('roomHaikya_bookings', JSON.stringify(bookings));
+            alert('✅ Booking added! Check your Requests to track it.');
+            loadBookings();
+        }
+
+        // Contact owner
+        function contactOwner(phone) {
+            window.location.href = `tel:${phone}`;
+        }
+
+        // Cancel booking
+        function cancelBooking(id) {
+            if (confirm('Are you sure you want to cancel this booking?')) {
+                bookings = bookings.map(b => b.id === id ? {...b, status: 'cancelled'} : b);
+                localStorage.setItem('roomHaikya_bookings', JSON.stringify(bookings));
+                loadBookings();
+                alert('Booking cancelled successfully');
+            }
+        }
+
+        // Load on page load
+        window.addEventListener('load', loadBookings);
+
+        // Listen for Book Now events from other pages
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'roomHaikya_bookings') {
+                loadBookings();
+            }
+        });
+    </script>
+</body>
+</html>

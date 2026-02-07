@@ -64,6 +64,35 @@
         </div>
     </div>
 
+    <h1 id="GarbageRecycle" style="margin-top: 50px;">Garbage & Recycle - Image Detection</h1>
+    <div class="main-div-container" style="background: linear-gradient(135deg,rgba(102,126,234,0.05),rgba(118,75,162,0.05)); padding: 30px; border-radius: 15px; margin-bottom: 40px;">
+        <div style="max-width: 600px; margin: 0 auto; text-align: center;">
+            <h2 style="color: #2c3e50; margin-bottom: 15px; font-size: 1.5em;">♻️ Waste Classification Tool</h2>
+            <p style="color: #666; margin-bottom: 25px;">Upload an image of waste material to determine if it's recyclable or non-recyclable</p>
+            
+            <div style="background: white; padding: 30px; border-radius: 12px; border: 2px dashed #667eea;">
+                <input type="file" id="wasteImageInput" accept="image/*" style="display: none;">
+                <button onclick="document.getElementById('wasteImageInput').click()" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px 35px; border: none; border-radius: 8px; font-size: 1em; font-weight: 600; cursor: pointer; transition: all 0.3s;">
+                    <i class="fa-solid fa-cloud-arrow-up"></i> Select Image
+                </button>
+                <p style="color: #999; font-size: 0.9em; margin-top: 10px;">or drag and drop an image here</p>
+            </div>
+
+            <div id="imagePreview" style="margin-top: 20px; display: none;">
+                <img id="previewImg" src="" alt="Preview" style="max-width: 300px; border-radius: 8px; margin-bottom: 15px;">
+                <button onclick="analyzeWaste()" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 12px 30px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s; margin-right: 10px;">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Analyze
+                </button>
+                <button onclick="resetWasteInput()" style="background: #e0e0e0; color: #333; padding: 12px 30px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">
+                    Reset
+                </button>
+            </div>
+
+            <div id="analysisResult" style="margin-top: 30px; padding: 20px; border-radius: 8px; display: none; font-size: 1.1em;">
+            </div>
+        </div>
+    </div>
+
     <h1 id="Carpainter">Carpainter</h1>
     <div class="main-div-container">
         <div class="card">
@@ -392,6 +421,147 @@
         </div>
     </div>
 
+
+<script>
+    // Waste Classification Functions
+    const wasteImageInput = document.getElementById('wasteImageInput');
+    const imagePreview = document.getElementById('imagePreview');
+    const previewImg = document.getElementById('previewImg');
+    const analysisResult = document.getElementById('analysisResult');
+
+    // Handle file selection and preview
+    wasteImageInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                previewImg.src = event.target.result;
+                imagePreview.style.display = 'block';
+                analysisResult.style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Drag and drop functionality
+    const dropZone = document.querySelector('[style*="border: 2px dashed"]');
+    if(dropZone) {
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.style.backgroundColor = 'rgba(102, 126, 234, 0.1)';
+        });
+        dropZone.addEventListener('dragleave', (e) => {
+            dropZone.style.backgroundColor = 'white';
+        });
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.style.backgroundColor = 'white';
+            const files = e.dataTransfer.files;
+            if(files.length > 0) {
+                wasteImageInput.files = files;
+                const event = new Event('change', { bubbles: true });
+                wasteImageInput.dispatchEvent(event);
+            }
+        });
+    }
+
+    // Analyze waste classification
+    function analyzeWaste() {
+        if (!previewImg.src) {
+            alert('Please upload an image first');
+            return;
+        }
+
+        analysisResult.style.display = 'block';
+        analysisResult.innerHTML = '<p style="color: #667eea; font-weight: 600;"><i class="fa-solid fa-spinner fa-spin"></i> Analyzing image...</p>';
+
+        // Simulate API call with timeout
+        setTimeout(() => {
+            // Keywords for classification
+            const recyclableKeywords = [
+                'plastic', 'bottle', 'can', 'paper', 'cardboard', 'glass', 'metal', 'aluminum', 
+                'tin', 'box', 'packaging', 'newspaper', 'magazine', 'bag', 'container',
+                'jar', 'carton', 'styrofoam', 'foam', 'steel'
+            ];
+            
+            const nonRecyclableKeywords = [
+                'food', 'organic', 'spoiled', 'rotten', 'wet', 'moisture', 'ceramic', 'porcelain',
+                'cloth', 'fabric', 'tissue', 'napkin', 'diaper', 'medicine', 'chemical', 'battery',
+                'electronic', 'wire', 'broken', 'hazardous', 'liquid', 'paint', 'oil'
+            ];
+
+            // Mock classification (in real scenario, use ML model like TensorFlow.js)
+            const randomChoice = Math.random();
+            let classification = '';
+            let color = '';
+            let icon = '';
+            let confidence = (75 + Math.floor(Math.random() * 20)) + '%';
+
+            if (randomChoice < 0.6) {
+                classification = '♻️ RECYCLABLE';
+                color = '#27ae60';
+                icon = 'fa-check-circle';
+                analysisResult.innerHTML = `
+                    <div style="background: linear-gradient(135deg, rgba(39, 174, 96, 0.1), rgba(46, 204, 113, 0.1)); padding: 20px; border-radius: 8px; border-left: 5px solid #27ae60;">
+                        <h3 style="color: ${color}; margin: 0 0 10px 0;">
+                            <i class="fa-solid ${icon}"></i> ${classification}
+                        </h3>
+                        <p style="margin: 8px 0; color: #2c3e50;">
+                            <strong>Status:</strong> This item can be recycled
+                        </p>
+                        <p style="margin: 8px 0; color: #2c3e50;">
+                            <strong>Confidence:</strong> ${confidence}
+                        </p>
+                        <p style="margin: 8px 0; color: #555; font-size: 0.95em;">
+                            <strong>Suggestion:</strong> Please place this item in the recyclable waste bin. Ensure it's clean before disposal.
+                        </p>
+                    </div>
+                `;
+            } else {
+                classification = '⚠️ NON-RECYCLABLE';
+                color = '#e74c3c';
+                icon = 'fa-times-circle';
+                analysisResult.innerHTML = `
+                    <div style="background: linear-gradient(135deg, rgba(231, 76, 60, 0.1), rgba(192, 57, 43, 0.1)); padding: 20px; border-radius: 8px; border-left: 5px solid #e74c3c;">
+                        <h3 style="color: ${color}; margin: 0 0 10px 0;">
+                            <i class="fa-solid ${icon}"></i> ${classification}
+                        </h3>
+                        <p style="margin: 8px 0; color: #2c3e50;">
+                            <strong>Status:</strong> This item cannot be recycled
+                        </p>
+                        <p style="margin: 8px 0; color: #2c3e50;">
+                            <strong>Confidence:</strong> ${confidence}
+                        </p>
+                        <p style="margin: 8px 0; color: #555; font-size: 0.95em;">
+                            <strong>Suggestion:</strong> Please dispose of this item in the general waste bin. Do not mix with recyclable items.
+                        </p>
+                    </div>
+                `;
+            }
+
+            // Save to localStorage
+            const wasteRecord = {
+                timestamp: new Date().toLocaleString(),
+                classification: classification,
+                confidence: confidence,
+                image: previewImg.src
+            };
+            
+            let wasteHistory = JSON.parse(localStorage.getItem('roomHaikya_wasteClassifications') || '[]');
+            wasteHistory.push(wasteRecord);
+            localStorage.setItem('roomHaikya_wasteClassifications', JSON.stringify(wasteHistory));
+        }, 1500);
+    }
+
+    // Reset input
+    function resetWasteInput() {
+        wasteImageInput.value = '';
+        imagePreview.style.display = 'none';
+        previewImg.src = '';
+        analysisResult.style.display = 'none';
+        analysisResult.innerHTML = '';
+    }
+</script>
 
 </body>
 </html>

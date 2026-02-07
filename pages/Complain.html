@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tenant Complaint Form</title>
+    <script src="https://kit.fontawesome.com/61d1b80f50.js" crossorigin="anonymous"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        nav {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+        }
+
+        .brand-heading-1 {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .nav-items {
+            display: flex;
+            gap: 15px;
+        }
+
+        .post-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .post-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.8);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 100px auto 40px;
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1em;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: #667eea;
+            font-size: 1.2em;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+
+        .required {
+            color: #e74c3c;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="date"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        input[type="date"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-row.full {
+            grid-template-columns: 1fr;
+        }
+
+        .rating-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .rating-star {
+            font-size: 1.8em;
+            cursor: pointer;
+            color: #ddd;
+            transition: all 0.2s;
+        }
+
+        .rating-star:hover,
+        .rating-star.active {
+            color: #f39c12;
+            transform: scale(1.2);
+        }
+
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 12px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .checkbox-item label {
+            margin: 0;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 40px;
+            justify-content: center;
+        }
+
+        button {
+            padding: 14px 40px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-width: 200px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-reset {
+            background: #f0f0f0;
+            color: #2c3e50;
+            border: 2px solid #ddd;
+            min-width: 200px;
+        }
+
+        .btn-reset:hover {
+            background: #e0e0e0;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 2px solid #c3e6cb;
+            display: none;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .success-message.show {
+            display: flex;
+        }
+
+        .footer {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin-top: 80px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .checkbox-group {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <h1 class="brand-heading-1">🏠 Room Hai Kya?</h1>
+        <div class="nav-items">
+            <a href="/index.html"><button class="post-btn">🏠 Home</button></a>
+            <a href="./userlogin.html"><button class="post-btn">Login</button></a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="header">
+            <h1>Tenant Complaint Form</h1>
+            <p>Report issues with your rental property or our platform</p>
+        </div>
+
+        <div class="success-message" id="successMessage">
+            <i class="fas fa-check-circle"></i>
+            <span>Your complaint has been submitted successfully! We'll review it shortly.</span>
+        </div>
+
+        <form id="complaintForm" onsubmit="submitComplaint(event)">
+            <!-- Personal Information -->
+            <div class="form-section">
+                <div class="section-title">
+                    <i class="fas fa-user"></i> Personal Information
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Full Name <span class="required">*</span></label>
+                        <input type="text" name="name" required placeholder="Enter your full name">
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number <span class="required">*</span></label>
+                        <input type="tel" name="phone" required placeholder="Enter your phone number">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Email Address <span class="required">*</span></label>
+                    <input type="email" name="email" required placeholder="Enter your email address">
+                </div>
+            </div>
+
+            <!-- Property Information -->
+            <div class="form-section">
+                <div class="section-title">
+                    <i class="fas fa-home"></i> Property Information
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Property Address <span class="required">*</span></label>
+                        <input type="text" name="propertyAddress" required placeholder="Enter property address">
+                    </div>
+                    <div class="form-group">
+                        <label>Owner/Manager Name <span class="required">*</span></label>
+                        <input type="text" name="ownerName" required placeholder="Enter owner name">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Complaint Type -->
+            <div class="form-section">
+                <div class="section-title">
+                    <i class="fas fa-exclamation-circle"></i> Complaint Type
+                </div>
+                <div class="form-group">
+                    <label>Complaint Against <span class="required">*</span></label>
+                    <select name="complaintAgainst" required>
+                        <option value="">-- Select --</option>
+                        <option value="owner">Property Owner/Manager</option>
+                        <option value="platform">Platform (Room Hai Kya?)</option>
+                        <option value="both">Both</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Complaint Category <span class="required">*</span></label>
+                    <select name="category" required>
+                        <option value="">-- Select --</option>
+                        <option value="maintenance">Maintenance Issues</option>
+                        <option value="rent">Rent/Payment Issues</option>
+                        <option value="security">Security/Safety Concerns</option>
+                        <option value="harassment">Harassment or Behavior</option>
+                        <option value="cleanliness">Cleanliness Issues</option>
+                        <option value="facilities">Missing Facilities</option>
+                        <option value="unfair_terms">Unfair Terms/Conditions</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Quality Assessment -->
+            <div class="form-section">
+                <div class="section-title">
+                    <i class="fas fa-star"></i> Quality Assessment
+                </div>
+                <div class="form-group">
+                    <label>Owner Rating <span class="required">*</span></label>
+                    <div class="rating-group" id="ownerRating">
+                        <span class="rating-star" data-value="1">⭐</span>
+                        <span class="rating-star" data-value="2">⭐</span>
+                        <span class="rating-star" data-value="3">⭐</span>
+                        <span class="rating-star" data-value="4">⭐</span>
+                        <span class="rating-star" data-value="5">⭐</span>
+                    </div>
+                    <input type="hidden" name="ownerRating" id="ownerRatingValue" value="0">
+                </div>
+
+                <div class="form-group">
+                    <label>Facility Satisfaction <span class="required">*</span></label>
+                    <div class="rating-group" id="facilityRating">
+                        <span class="rating-star" data-value="1">⭐</span>
+                        <span class="rating-star" data-value="2">⭐</span>
+                        <span class="rating-star" data-value="3">⭐</span>
+                        <span class="rating-star" data-value="4">⭐</span>
+                        <span class="rating-star" data-value="5">⭐</span>
+                    </div>
+                    <input type="hidden" name="facilityRating" id="facilityRatingValue" value="0">
+                </div>
+
+                <div class="form-group">
+                    <label>Issues Experienced <span class="required">*</span></label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="issues" value="water_issues" id="water">
+                            <label for="water">Water Issues</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="issues" value="electrical" id="electrical">
+                            <label for="electrical">Electrical Problems</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="issues" value="furniture" id="furniture">
+                            <label for="furniture">Broken Furniture</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="issues" value="pest" id="pest">
+                            <label for="pest">Pest Issues</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="issues" value="noise" id="noise">
+                            <label for="noise">Noise Complaints</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="issues" value="security" id="sec">
+                            <label for="sec">Security Concerns</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Complaint Details -->
+            <div class="form-section">
+                <div class="section-title">
+                    <i class="fas fa-pen-square"></i> Complaint Details
+                </div>
+                <div class="form-group">
+                    <label>Date of Incident <span class="required">*</span></label>
+                    <input type="date" name="incidentDate" required>
+                </div>
+                <div class="form-group">
+                    <label>Detailed Description <span class="required">*</span></label>
+                    <textarea name="description" required placeholder="Please provide detailed description of the complaint..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Actions Taken (if any)</label>
+                    <textarea name="actionsTaken" placeholder="Describe any actions you've already taken to resolve this..."></textarea>
+                </div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="button-group">
+                <button type="submit" class="btn-submit">
+                    <i class="fas fa-paper-plane"></i> Submit Complaint
+                </button>
+                <button type="reset" class="btn-reset">
+                    <i class="fas fa-redo"></i> Clear Form
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2025-2026 Room Hai Kya? - We Care About Your Rights!</p>
+    </div>
+
+    <script>
+        // Rating system
+        function setupRatingSystem(elementId, inputId) {
+            const ratings = document.querySelectorAll(`#${elementId} .rating-star`);
+            ratings.forEach(star => {
+                star.addEventListener('click', function() {
+                    const value = this.dataset.value;
+                    document.getElementById(inputId).value = value;
+                    ratings.forEach(s => {
+                        if (s.dataset.value <= value) {
+                            s.classList.add('active');
+                        } else {
+                            s.classList.remove('active');
+                        }
+                    });
+                });
+            });
+        }
+
+        setupRatingSystem('ownerRating', 'ownerRatingValue');
+        setupRatingSystem('facilityRating', 'facilityRatingValue');
+
+        // Submit form
+        function submitComplaint(event) {
+            event.preventDefault();
+
+            const formData = new FormData(document.getElementById('complaintForm'));
+            const complaint = {
+                id: Date.now().toString(),
+                ...Object.fromEntries(formData),
+                submittedDate: new Date().toISOString(),
+                status: 'pending'
+            };
+
+            // Store complaint in localStorage
+            let complaints = JSON.parse(localStorage.getItem('roomHaikya_complaints') || '[]');
+            complaints.push(complaint);
+            localStorage.setItem('roomHaikya_complaints', JSON.stringify(complaints));
+
+            // Show success message
+            const successMsg = document.getElementById('successMessage');
+            successMsg.classList.add('show');
+
+            // Reset form
+            document.getElementById('complaintForm').reset();
+            document.querySelectorAll('.rating-star').forEach(s => s.classList.remove('active'));
+            document.getElementById('ownerRatingValue').value = '0';
+            document.getElementById('facilityRatingValue').value = '0';
+
+            // Hide success message after 5 seconds
+            setTimeout(() => {
+                successMsg.classList.remove('show');
+            }, 5000);
+
+            // Optionally redirect after delay
+            setTimeout(() => {
+                window.location.href = '/index.html';
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

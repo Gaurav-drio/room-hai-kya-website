@@ -2,27 +2,64 @@
 <html>
 
 <head>
-    <title>login</title>
+    <title>Login - Room Hai Kya?</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./../css/login.css"/>
+    <link rel="stylesheet" href="./../css/login.css" />
     <script src="https://kit.fontawesome.com/61d1b80f50.js" crossorigin="anonymous"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-auth-compat.js"></script>
+
+    <style>
+        .social-login {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 8px 0;
+        }
+
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700;
+            border: 1px solid #dadce0;
+            transition: all 0.3s ease;
+        }
+
+        .google-btn {
+            background: #fff;
+            color: #202124;
+        }
+
+        .google-btn:hover {
+            background: #f8f9fa;
+            box-shadow: 0 2px 8px rgba(32, 33, 36, 0.1);
+        }
+
+        .social-btn img {
+            width: 22px;
+            height: 22px;
+        }
+    </style>
 </head>
 
 <body>
 
- <!-- ----------------navbar-------------- -->
- <nav>
-  <h1 class="brand-heading-1">🏠 Room Hai Kya?</h1>
-  <img src="../img/home.png" alt="" class="home-png">
-  <div class="nav-items">
-      <a href="/index.html"><button class="post-btn">Home</button></a>
-      <a href="./wallet.html"><button class="post-btn">💰 Wallet</button></a>
-      <a href="./post_property.html"><button class="post-btn">Post Property</button></a>
-      <a href="./userlogin.html"><button class="post-btn">Login here</button></a>
-  </div>
-
-</nav>
+    <nav>
+        <h1 class="brand-heading-1">🏠 Room Hai Kya?</h1>
+        <img src="../img/home.png" alt="" class="home-png">
+        <div class="nav-items">
+            <a href="/index.html"><button class="post-btn">Home</button></a>
+            <a href="./wallet.html"><button class="post-btn">💰 Wallet</button></a>
+            <a href="./post_property.html"><button class="post-btn">Post Property</button></a>
+            <a href="./userlogin.html"><button class="post-btn">Login here</button></a>
+        </div>
+    </nav>
 
     <div class="log-in-main-contener">
         <div class="main-form">
@@ -34,11 +71,13 @@
                     <input type="tel" id="userPhone" placeholder="Enter Mobile No" class="input" required /><br />
                     <input type="text" id="userAddress" placeholder="Enter Address" class="input" required /><br />
                     <input type="email" id="userEmail" placeholder="Enter Email" class="input" required /><br /> <br>
-                    <input type="submit" value="Login" required class="input bold-1 btn-login" /><br /> <br>
-                    <p class="pera-font">Login With
-                        <img src="./../img/Google-logo.png" class="image-log-1" />
-                        <img src="./../img/fecebook.png" class="image-log-2" />
-                    </p>
+                    <input type="submit" value="Login" class="input bold-1 btn-login" /><br /> <br>
+
+                    <div class="social-login">
+                        <button type="button" id="googleLogin" class="social-btn google-btn">
+                            <img src="./../img/Google-logo.png" alt="Google"> Sign in with Google
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
@@ -48,7 +87,25 @@
     </div>
 
     <script>
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
+        // 1. Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAeptNjyJkHK7WtDgdACHc86jYbmbV96Jo",
+            authDomain: "gsking-c1b2f.firebaseapp.com",
+            projectId: "gsking-c1b2f",
+            storageBucket: "gsking-c1b2f.firebasestorage.app",
+            messagingSenderId: "13572645868",
+            appId: "1:13572645868:web:070b95ad61fbafa93016c9",
+            measurementId: "G-5KYVC2TMDW"
+        };
+
+        // 2. Initialize Firebase safely
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const auth = firebase.auth();
+
+        // Standard Manual Login Form
+        document.getElementById('loginForm').addEventListener('submit', function (e) {
             e.preventDefault();
             const userData = {
                 name: document.getElementById('userName').value,
@@ -62,77 +119,53 @@
             alert('Login successful! Welcome ' + userData.name);
             window.location.href = '/index.html';
         });
+
+        // --- 3. GOOGLE AUTHENTICATION LOGIC ---
+        document.getElementById('googleLogin').addEventListener('click', () => {
+            const provider = new firebase.auth.GoogleAuthProvider();
+
+            // Forces account selection pop-up
+            provider.setCustomParameters({ prompt: 'select_account' });
+
+            auth.signInWithPopup(provider)
+                .then((result) => {
+                    const user = result.user;
+
+                    const userData = {
+                        name: user.displayName,
+                        email: user.email,
+                        photo: user.photoURL,
+                        uid: user.uid,
+                        points: 0,
+                        lastLogin: new Date().toISOString()
+                    };
+
+                    // Store user data locally
+                    localStorage.setItem('roomHaikya_user', JSON.stringify(userData));
+
+                    alert('Success! Welcome ' + user.displayName);
+                    window.location.href = '/index.html';
+                }).catch((error) => {
+                    console.error("Auth Error:", error.code);
+
+                    if (error.code === 'auth/configuration-not-found') {
+                        alert("CONFIGURATION ERROR: You must enable 'Google' in the Firebase Console under Authentication > Sign-in Method.");
+                    } else if (error.code === 'auth/unauthorized-domain') {
+                        alert("DOMAIN ERROR: Add '127.0.0.1' to Authorized Domains in Firebase Console Settings.");
+                    } else {
+                        alert("Login failed: " + error.message);
+                    }
+                });
+        });
     </script>
 
-    <!-- footer-->
-  <div class="container-foot">
-    <div class="container-foot1">
-      <div class="con-foot">
-        <h1 class="heding1-t"> 🏠<span class="tex-red">Room Hai Kya?</span></h1><br/> <br>
-        <span class="color-light">Room Hai Kya?  is India's fastest growing Managed Home <br/>
-           Rental Network' attempting to provide better rental <br/>
-           solutions via design & technology.<br/><br/>
-          We help find,books rental homes of choice across <br/>
-        Indian cities. We assist with move-in, provide home  <br/>
-        maintence service from cleaning, damages to rent <br/>
-        payment & even move-out.<br/><br/>
-        Whatever be your budget, Whatever you may call a <br/>
-        home  (a bed, a room of an entire house), we have<br/>
-        something for you!
-        </span>
-      </div  class="con-foot">
-      <div  class="con-foot">
-        <h2 class="heding1-t">Room Hai Kya?</h2><br>
-        <a  class="foot-anchor color-light"  href="#">our service</a><br>
-        <a  class="foot-anchor color-light" href="#" >Price Trends</a><br>
-        <a  class="foot-anchor color-light" href="#">Post your proprety</a><br>
-        <a  class="foot-anchor color-light" href="#">Builders in Maharashtra</a><br>
-        <a  class="foot-anchor color-light" href="#">Area Converter</a><br>
-        <a  class="foot-anchor color-light" href="#">Articles</a><br>
-        <a class="foot-anchor color-light" href="#">Customer Service</a><br>
-        <a class="foot-anchor color-light" href="#">Sitemap</a><br>
-  
-      </div>
-      <div  class="con-foot">
-      <h2 class="heding1-t">Website</h2> <br/>
-      
-  
-      <a class="foot-anchor color-light" href="#"> About us  </a><br>
-      <a class="foot-anchor color-light" href="#"> Contact us  </a><br>
-      <a class="foot-anchor color-light" href="#"> Terms & Condition  </a><br>
-      <a class="foot-anchor color-light" href="#"> Request info  </a><br>
-      <a class="foot-anchor color-light" href="#"> Feedback  </a><br>
-      <a class="foot-anchor color-light" href="#"> Report a Problem  </a><br>
-      <a class="foot-anchor color-light" href="#"> Privacy Policy  </a><br>
-      <a class="foot-anchor color-light" href="#"> Grievance  </a><br>
-      <a class="foot-anchor color-light" href="#"> Safety Guide  </a><br>
+    <div class="container-foot">
+        <div class="fotr-cont">
+            <span class="foot-tex color-light">©2023-2024 <span style="color: #d8232a;">Room-On-Rent</span> Gulab-Group
+                Technology Pvt. Ltd.</span>
+        </div>
     </div>
-  
-    <div  class="con-foot">
-      <h2 class="heding1-t"> Contact Us</h2><br/>
-      <a class="foot-anchor color-light" href="tel:9373700515">Toll Free-9373700515</a><br/>
-      
-     
-      <a class="foot-anchor color-light" href="mailto:abhijeetbk154@gmail.com">Email - roomonrent@gmail.com</a><br/> <br><br>
-  
-      <h2 class="heding1-t "> Connect With us</h2><br/> <br><br>
-      
-      <a  href=" "><i class="fa-brands fa-facebook foot-icon"></i></a>
-      <a class="foot-anchor" href=" https://www.youtube.com/channel/UCbKy0fUfvXZlZzyaZ1c7OyQ"><i class="fa-brands fa-youtube foot-icon"></i></a>
-      <a class="foot-anchor" href="https://www.twitter.com/abhijeetkokat "><i class="fa-brands fa-twitter foot-icon"></i></a>
-      <a class="foot-anchor" href="https://www.instagram.com/abhijeet_kokat_007/"><i class="fa-brands fa-instagram foot-icon"></i></a>
-      <a class="foot-anchor" href=" https://github.com/Abhijeetkokat007/Room-on-Rent-IGCP1-First-group-project"><i class="fa-brands fa-github foot-icon"></i></a>
-      
-  
-    </div>
-  
-      </div>
-      <div class="fotr-cont">
-          <span class="foot-tex color-light">©2023-2024 <span style="color: #d8232a;">Room-On-Rent</span> Gulab-Group
-          Technology Pvt. Ltd.</span>
-      </div>
-    </div>
-    
+
 </body>
 
 </html>

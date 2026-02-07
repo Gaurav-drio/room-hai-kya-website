@@ -21,7 +21,7 @@
             height: 60px;
             font-size: 24px;
             cursor: pointer;
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 8px 25px rgb(#667eea);
             z-index: 1000;
             transition: all 0.3s ease;
             display: flex;
@@ -264,6 +264,50 @@
         }
 
         /* Logo and Header Styling */
+
+    /* Container to keep text and image together on the left */
+.logo-container {
+    display: flex;
+    align-items: center; /* Vertically aligns logo and text */
+    gap: 15px;           /* Spacing between text and image */
+}
+
+.logo {
+    width: 45px;         /* Match your brand-heading height */
+    height: 45px;
+    object-fit: contain;
+}
+
+.header-div {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    position: relative;
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+    flex-wrap: wrap;
+}
+
+.brand-heading {
+    margin: 0;
+    font-size: 32px;
+    color: white;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+
+.logo-text {
+    background: linear-gradient(135deg, #fff 0%, #f0f0f0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-shadow: none;
+}
+
         .header-div {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             padding: 20px 40px;
@@ -273,6 +317,7 @@
             position: relative;
             box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
             flex-wrap: wrap;
+
         }
 
         .logo-text {
@@ -662,6 +707,7 @@
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
             transition: all 0.3s;
             font-weight: 500;
+            flex-shrink: 0;
         }
 
         .in-1:focus {
@@ -816,7 +862,7 @@
             display: inline-block;
             margin-top: 15px;
             padding: 10px 25px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(50deg, #667eea 0%, #764ba2 100%);
             color: white;
             text-decoration: none;
             border-radius: 25px;
@@ -1001,48 +1047,50 @@
         }
 
         .poster-subdiv {
-            flex: 1;
-            min-width: 300px;
+            flex: 1 1 48%;
+            max-width: 520px;
             color: white;
+            padding-right: 10px;
         }
 
         .poster-subdiv h1 {
-            font-size: 2em;
-            font-weight: 900;
-            margin-bottom: 20px;
-            line-height: 1.3;
+            font-size: 1.8em;
+            font-weight: 800;
+            margin-bottom: 14px;
+            line-height: 1.25;
         }
 
         .poster-subdiv span {
-            font-size: 1.1em;
-            line-height: 1.8;
+            font-size: 1em;
+            line-height: 1.6;
             opacity: 0.95;
         }
 
         .btn-listyouspace {
-            margin-top: 30px;
-            padding: 15px 40px;
+            margin-top: 22px;
+            padding: 12px 28px;
             background: white;
             color: #667eea;
             border: none;
-            border-radius: 30px;
-            font-weight: bold;
-            font-size: 1.1em;
+            border-radius: 26px;
+            font-weight: 700;
+            font-size: 1em;
             cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.22s;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
         }
 
         .btn-listyouspace:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-            background: #f0f0f0;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.18);
+            background: #f7f7f7;
         }
 
         .misco-img {
-            max-width: 100%;
-            flex: 1;
-            min-width: 250px;
+            max-width: 420px;
+            width: 100%;
+            flex: 0 0 auto;
+            min-width: 220px;
             filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.15));
         }
 
@@ -1555,7 +1603,7 @@
                 padding: 20px 10px;
             }
 
-            .findmyroom-tex h1 {
+        #667eea    .findmyroom-tex h1 {
                 font-size: 1.5em;
             }
 
@@ -1568,7 +1616,10 @@
 
 <body>
     <div class="header-div">
-        <h1 class="brand-heading">🏠 Room Hai Kya?</h1>
+        <div style="display: flex; align-items: center; gap: 20px;">
+            <img src="./img/logo.png" alt="Room Hai Kya Logo" class="logo" style="width: 85px; height: 85px; object-fit: contain; display: block; filter: brightness(1.1);">
+            <h1 class="brand-heading">Room Hai Kya?</h1>
+        </div>
         <span class="btns">
             <a href="./pages/games.html" class="login-btn"><span class="user"><b>🎮 Games</b></span></a>
             <a href="./pages/about.html" class="login-btn"><span class="user"><b>ℹ️ About</b></span></a>
@@ -1579,8 +1630,9 @@
                 <div class="profile-dropdown" id="profileDropdown">
                     <a href="./pages/userlogin.html">User Login</a>
                     <a href="./pages/post_property.html">Owner Login</a>
-                    <a href="#" onclick="chatbotBtn.click(); return false;">Post a Complaint</a>
-                    <a href="#" onclick="chatbotBtn.click(); return false;">Help</a>
+                    <a href="./pages/Requests.html">Requests</a>
+                    <a href="./pages/Complain.html">Post a Complaint</a>
+                    <a href="#">Help</a>
                     <a href="#" onclick="document.location.href='tel:9373700515';">Contact</a>
                 </div>
             </div>
@@ -1706,11 +1758,10 @@
         <h1 class="hel-1">Find your perfect Room for Rent</h1>
         <div class="inputBox">
             <input type="text" class="in-1" placeholder="Search your City " id="city-search">
-            <button class="btn-search" id="search-btn">
+            <button class="btn-search" id="search-btn" style="display: flex; align-items: center; gap: 8px; padding: 16px 28px; cursor: pointer; font-weight: 600;">
                 <i class="fa-solid fa-magnifying-glass"></i>
-                Search
+                <span>Search</span>
             </button>
-
         </div>
         <div>
             <div class="header-btn">
@@ -1783,7 +1834,7 @@
             <h2>Choose type of User</h2>
 
             <div class="user-option">
-                <div class="img-wrapper">
+                <div class="img-wrapper" style="cursor: pointer;">
                     <img class="user-type-img" src="./img/index-page-img/owner.png" alt="Owner" />
                 </div>
                 <div class="user-link">
@@ -1793,7 +1844,7 @@
             </div>
 
             <div class="user-option">
-                <div class="img-wrapper">
+                <div class="img-wrapper" style="cursor: pointer;">
                     <img class="user-type-img" src="./img/index-page-img/programmer.png" alt="User" />
                 </div>
                 <div class="user-link">
@@ -1834,7 +1885,7 @@
 
     </div>
 
-    <div class="d-flex poster2-main  ">
+    <div class="d-flex poster2-main " >
 
 
         <div class="poster-subdiv">
@@ -2218,77 +2269,147 @@
             const containsAny = (keywords) => keywords.some(keyword => msg.includes(keyword));
             const containsAll = (keywords) => keywords.every(keyword => msg.includes(keyword));
 
-            // --- 1. Personal & Greeting Responses ---
-            if (containsAny(['hello', 'hi', 'hey', 'greetings'])) {
-                return 'Hello! I can help you find a room, check property availability, or direct you to maintenance. What can I assist you with today?';
+            // --- 1. GREETING & PERSONAL RESPONSES ---
+            if (containsAny(['hello', 'hi', 'hey', 'greetings', 'namaste'])) {
+                return '👋 Hello! Welcome to Room Hai Kya?! I\'m here to help you find your perfect home, answer questions about properties, or guide you through our services. What can I help you with today?';
             }
 
-            if (containsAny(['my name is', 'i am', 'call me'])) {
-                const nameMatch = msg.match(/(my name is|i am|call me)\s+([a-zA-Z\s]+)/);
+            if (containsAny(['my name is', 'i am', 'call me', 'i\'m'])) {
+                const nameMatch = msg.match(/(my name is|i am|call me|i'm)\s+([a-zA-Z\s]+)/);
                 if (nameMatch && nameMatch[2]) {
                     const userName = nameMatch[2].trim().split(' ')[0];
-                    return `Nice to meet you, **${userName}**! Let's find your perfect home. Are you looking to **Rent** or **Post a Property**?`;
+                    return `🎉 Nice to meet you, **${userName}**! I'm excited to help you find your ideal home. Are you looking to **Rent a Room** 🏠 or **Post a Property** 📝?`;
                 }
             }
 
-            if (containsAny(['who are you', 'your name', 'what are you'])) {
-                return 'I am the **Room Hai Kya? Assistant**, your virtual expert for finding homes. I specialize in helping you discover the perfect property on Room Hai Kya?!';
+            if (containsAny(['who are you', 'your name', 'what are you', 'tell me about yourself'])) {
+                return '🤖 I\'m the **Room Hai Kya? Assistant** - your AI-powered guide to finding the perfect home in India! I can help you search for properties, answer questions about Room Hai Kya?, explain our services, and guide you through the rental process. Let\'s find your ideal home together!';
             }
 
-            if (containsAny(['thanks', 'thank you', 'bye', 'goodbye'])) {
-                return 'You\'re most welcome! Feel free to reach out anytime. Happy house hunting! 👋';
+            if (containsAny(['thanks', 'thank you', 'appreciate', 'bye', 'goodbye', 'see you'])) {
+                return '🙏 You\'re very welcome! Feel free to reach out anytime you have questions. Happy house hunting and wishing you the best of luck finding your perfect home! 🏡';
             }
 
-            // --- 2. StayLEO Purpose and Mission ---
-            if (containsAny(['what is stayleo', 'what do you do', 'about stayleo', 'mission'])) {
-                return 'Room Hai Kya? is India\'s fastest-growing Property Rental Network. Our goal is to provide better housing solutions via design and technology, all while helping you **avoid broker fees**!';
+            // --- 2. ABOUT ROOM HAI KYA? PLATFORM ---
+            if (containsAny(['what is room hai kya', 'what do you do', 'about room hai kya', 'mission', 'who are you', 'what is this platform'])) {
+                return '🏘️ **Room Hai Kya?** is India\'s fastest-growing Property Rental Network with an innovative approach to finding homes! 🎯 We provide:<br/>✅ **No Broker Fees** - Direct owner-tenant connections<br/>✅ **Verified Listings** - Authentic properties & owners<br/>✅ **Easy Filtering** - By City, BHK, Budget, Furnishing, etc.<br/>✅ **Free Property Posting** - For landlords & owners<br/>✅ **24/7 Support** - Maintenance & customer service<br/><br/>Our goal: **Better housing solutions via smart technology!** 🚀';
             }
 
-            if (containsAny(['broker', 'brokerage', 'commission'])) {
-                return 'Yes! StayLEO connects you directly with verified owners, which means you **avoid paying brokerage fees** entirely. That\'s a huge saving!';
+            if (containsAny(['why room hai kya', 'why should i use', 'benefits', 'advantages'])) {
+                return '💎 **Why Choose Room Hai Kya?**<br/>🔴 **Zero Brokerage** - Save lakhs in commission!<br/>🔴 **Instant Booking** - Real-time property updates<br/>🔴 **Verified Owners** - All landlords are verified<br/>🔴 **Smart Filters** - Find exactly what you want<br/>🔴 **Transparent Pricing** - No hidden charges<br/>🔴 **Mobile Friendly** - Search anytime, anywhere<br/>🔴 **Maintenance Support** - Report issues instantly<br/>🔴 **Community Reviews** - Read tenant experiences<br/><br/>**Join thousands of happy users today!** 🎊';
             }
 
-            // --- 3. Property Search & Types (BHK/Budget) ---
-            if (containsAny(['search', 'find room', 'look for', 'available'])) {
-                return 'You can start by using the search bar to enter your desired **City**, or use the dropdown filters in the navigation bar for **BHK**, **Budget**, and **Property Type**. Which city are you interested in?';
+            // --- 3. PROPERTY SEARCH & BROWSING ---
+            if (containsAny(['search', 'find room', 'look for', 'available', 'search properties', 'find properties'])) {
+                return '🔍 **How to Search for Properties:**<br/>1️⃣ Use the **Search Bar** - Enter your desired city<br/>2️⃣ **Filter by BHK** - Single Room, 1RK, 1BHK, 2BHK, 3BHK, 4BHK+<br/>3️⃣ **Set Your Budget** - ₹2000 to ₹50000+<br/>4️⃣ **Property Type** - Flat, House, Villa, PG, Hostel, etc.<br/>5️⃣ **Tenant Preference** - Bachelor, Family, Single, Married Couple<br/>6️⃣ **Furnishing** - Furnished, Semi-furnished, Unfurnished<br/>7️⃣ **Sort & Filter** - Price, Rating, Latest, etc.<br/><br/>**Tips:** Use multiple filters for better results! 💡';
             }
 
-            if (containsAny(['city', 'location', 'area', 'pune', 'mumbai', 'delhi', 'bangalore'])) {
-                // This is where you acknowledge the location search but guide them to the tool.
-                return 'We have properties in major Indian cities. To see current listings, please type your desired city into the **Search bar** on the main page. I can tell you about our **Property Types** if you like!';
+            if (containsAny(['which cities', 'which cities available', 'where do you operate', 'coverage'])) {
+                return '🌏 **Room Hai Kya? Coverage:**<br/>We operate in **major Indian cities** including:<br/>🔴 **Pune** 🔴 **Mumbai** 🔴 **Delhi** 🔴 **Bangalore** 🔴 **Hyderabad** 🔴 **Chennai** 🔴 **Kolkata** 🔴 **Jaipur** and more!<br/><br/>📍 Which city are you looking for? Type it in the search bar and we\'ll show you all available listings!';
             }
 
-            if (containsAny(['bhk', 'room type', 'bedroom', 'single room', '1bhk', '2bhk', '3bhk'])) {
-                return 'We offer various room types: **Single Rooms**, **1RK**, **1BHK**, **2BHK**, and **3BHK**. What size are you looking for? You can use the **BHK dropdown** to filter easily.';
+            if (containsAny(['bhk', 'room type', 'bedroom', 'single room', '1bhk', '2bhk', '3bhk', '4bhk', '1rk'])) {
+                return '🏠 **Room Types Available:**<br/>🔹 **Single Rooms** - Starting ₹3,000-5,000<br/>🔹 **1RK** - Starting ₹5,000-7,000<br/>🔹 **1BHK** - Starting ₹6,000-10,000<br/>🔹 **2BHK** - Starting ₹12,000-20,000<br/>🔹 **3BHK** - Starting ₹18,000-30,000+<br/>🔹 **4BHK+** - ₹30,000+<br/><br/>Use the **BHK dropdown** on the main page to filter your preferred room type. Which one interests you? 🤔';
             }
 
-            if (containsAny(['budget', 'rent range', 'how much', 'cost', 'price'])) {
-                return 'Our rental properties generally range from **₹3000** for single rooms up to **₹30000+** for larger apartments. Use the **Budget dropdown** in the navigation bar to set your price limit.';
+            if (containsAny(['budget', 'rent range', 'how much', 'cost', 'price', 'affordable', 'cheap'])) {
+                return '💰 **Budget Ranges on Room Hai Kya?:**<br/>🔹 ₹2,000-5,000 - Single rooms, hostels<br/>🔹 ₹5,000-8,000 - 1RK, small flats<br/>🔹 ₹8,000-12,000 - 1BHK apartments<br/>🔹 ₹12,000-20,000 - 2BHK & family homes<br/>🔹 ₹20,000-30,000 - Spacious 3BHK<br/>🔹 ₹30,000+ - Luxury apartments<br/><br/>💡 **Pro Tip:** Properties without broker fees save you 40-50% on your first month! Use the Budget filter to narrow down options. 🎯';
             }
 
-            if (containsAny(['furnished', 'unfurnished', 'semi-furnished'])) {
-                return 'We list homes that are **Furnished**, **Semifurnished**, and **Unfurnished**. You can find filters for this under the **Tenants Preferred** dropdown.';
+            if (containsAny(['furnished', 'unfurnished', 'semi-furnished', 'furnishing'])) {
+                return '🛋️ **Furnishing Options:**<br/>🔸 **Fully Furnished** - Everything included (furniture, appliances, etc.)<br/>🔸 **Semi-Furnished** - Basic furniture & some appliances<br/>🔸 **Unfurnished** - Bare walls, you arrange everything<br/><br/>Each option has pros & cons. Furnished is convenient but costs more. Unfurnished lets you personalize but requires effort. Filter by preference on our main page! 🏠';
             }
 
-            // --- 4. Site Actions & Support ---
-            if (containsAny(['post property', 'list space', 'owner', 'landlord', 'put up'])) {
-                return 'To list a property, please go to the **Owner Login** or click the **Post Property** button on the main page. It\'s a quick, free listing process!';
+            // --- 4. PROPERTY DETAILS & FEATURES ---
+            if (containsAny(['amenities', 'facilities', 'what facilities', 'what amenities', 'parking', 'gym', 'pool', 'balcony', 'garden'])) {
+                return '✨ **Common Amenities on Room Hai Kya?:**<br/>🔹 Parking spaces (covered/open)<br/>🔹 Gym & fitness centers<br/>🔹 Swimming pools<br/>🔹 Balconies/patios<br/>🔹 Gardens & landscaping<br/>🔹 24/7 Security & CCTV<br/>🔹 Wi-Fi connectivity<br/>🔹 Housekeeping services<br/>🔹 Common areas<br/>🔹 Power backup (DG sets)<br/><br/>Use the **Amenities filter** to find properties with specific facilities you want! 🎯';
             }
 
-            if (containsAny(['maintenance', 'issue', 'repair', 'call', 'help line'])) {
-                return 'For any maintenance requests, the quickest way is to click the **"Call for Maintanance"** button below the search bar. This connects you with our support team.';
+            if (containsAny(['verification', 'verified', 'authentic', 'fake', 'scam', 'trust', 'safe'])) {
+                return '🔐 **Property Verification on Room Hai Kya?:**<br/>✅ All owners are **verified & authenticated**<br/>✅ Properties are **physically inspected**<br/>✅ Photos are **recent & genuine**<br/>✅ Details are **verified by our team**<br/>✅ **Anti-fraud protection** enabled<br/>✅ Secure **payment gateway**<br/>✅ Transparent **owner ratings**<br/><br/>Your safety is our priority! All listings are genuine, and we stand behind every property. Feel confident choosing Room Hai Kya?! 🛡️';
             }
 
-            if (containsAny(['user login', 'tenant login'])) {
-                return 'To log in as a tenant/user, please click the **"User Login"** link at the top right of the page.';
+            // --- 5. TENANT & OWNER INFORMATION ---
+            if (containsAny(['tenant preference', 'tenant type', 'who can rent', 'bachelor', 'family', 'couple', 'student'])) {
+                return '👥 **Tenant Preferences:**<br/>🔹 **Bachelors Only** - Single professionals<br/>🔹 **Families** - Married couples & families with kids<br/>🔹 **Single** - Any single person<br/>🔹 **Married Couples** - Newlyweds<br/>🔹 **Immediate** - Move in ASAP<br/>🔹 **Within 1-3 Months** - Flexible timeline<br/><br/>Owners list their preferences to find compatible tenants. Filter by **Tenants Preferred** dropdown to see properties that match your profile! 👌';
             }
 
-            if (containsAny(['about us', 'contact us', 'support'])) {
-                return 'You can find links for **About us** and **Contact us** in the footer of the page. Need immediate assistance? Try the **Toll Free** number listed at the bottom!';
+            if (containsAny(['roommate', 'co-tenant', 'sharing', 'shared flat', 'pgd', 'pg'])) {
+                return '🏘️ **Shared Housing Options:**<br/>We offer **Shared Flats** & **PG Accommodations** perfect for:<br/>🔹 Students looking for PGs<br/>🔹 Bachelors seeking cost-effective living<br/>🔹 Co-living communities<br/>🔹 Paying guest accommodations<br/><br/>These options are **budget-friendly & social**. Filter by **"PG"** or **"Shared Flat"** in the Property Type dropdown to explore! 🤝';
             }
 
-            // --- Default/Fallback Response ---
-            return "I'm still learning! I can provide detailed answers on: **What StayLEO does**, **How to search for rooms (City/BHK/Budget)**, **Post Property**, or **Maintenance**. How can I help you rephrase your question?";
+            if (containsAny(['document', 'documentation', 'aadhar', 'pan', 'lease', 'agreement', 'kyc'])) {
+                return '📄 **Documentation Required:**<br/>As a **Tenant**, you typically need:<br/>🔹 Valid ID proof (Aadhar, Passport, DL)<br/>🔹 Address proof<br/>🔹 Employment letter / Income proof<br/>🔹 Advance + Deposit money<br/>🔹 Lease agreement <br/><br/>As an **Owner**, you need:<br/>🔹 Property documents<br/>🔹 ID proof<br/>🔹 Bank details for tenant payments<br/><br/>Our **User Login** stores KYC securely for easy verification! 🔐';
+            }
+
+            if (containsAny(['lease', 'lease duration', 'lock-in period', 'contract', 'agreement', 'how long'])) {
+                return '📋 **Lease Terms on Room Hai Kya?:**<br/>Most properties offer flexible lease durations:<br/>🔹 **6 Months** - Entry-level commitment<br/>🔹 **1 Year** - Most common option<br/>🔹 **2-3 Years** - Longer stability with discounts<br/>🔹 **Month-to-Month** - Maximum flexibility (less common)<br/><br/>Negotiate terms directly with the owner! We provide a transparent **lease agreement template** to protect both parties. 🤝';
+            }
+
+            // --- 6. BOOKING & PAYMENT ---
+            if (containsAny(['book', 'booking', 'how to book', 'reserve', 'how to rent', 'apply'])) {
+                return '📋 **How to Book a Property:**<br/>1️⃣ **Browse & Shortlist** - Find properties using filters<br/>2️⃣ **Click "Book Now"** - Express your interest<br/>3️⃣ **Contact Owner** - Chat/call for details<br/>4️⃣ **Schedule Visit** - View property in person<br/>5️⃣ **Negotiate** - Discuss rent, amenities, terms<br/>6️⃣ **Finalize Agreement** - Review lease terms<br/>7️⃣ **Pay Advance & Deposit** - Secure through payment gateway<br/>8️⃣ **Get Keys** - Move in! 🔑<br/><br/>Our **Requests page** tracks all your bookings! 📱';
+            }
+
+            if (containsAny(['payment', 'how to pay', 'payment method', 'advance', 'deposit', 'rent payment'])) {
+                return '💳 **Payment Information:**<br/>**Initial Payments:**<br/>🔹 Advance Rent - Usually 1 month (advance)<br/>🔹 Security Deposit - Usually 1-2 months<br/>🔹 Brokerage - **₹0 on Room Hai Kya?** ✨<br/><br/>**Monthly Payments:**<br/>🔹 Most owners prefer bank transfer<br/>🔹 Cheque payments are accepted<br/>🔹 Online payments via UPI/wallet<br/><br/>**Pro Tip:** Read the lease to understand payment terms clearly! No surprises = happy tenants! 😊';
+            }
+
+            // --- 7. PROPERTY POSTING & OWNER ---
+            if (containsAny(['post property', 'list space', 'owner', 'landlord', 'put up', 'sell', 'list'])) {
+                return '📝 **How to Post a Property:**<br/>1️⃣ Click **"Post Property"** button<br/>2️⃣ Enter property details (location, BHK, rent, etc.)<br/>3️⃣ Upload clear photos (minimum 5-10)<br/>4️⃣ Set amenities & tenant preferences<br/>5️⃣ Review & publish **free of charge!** ✨<br/>6️⃣ Receive inquiries from interested tenants<br/>7️⃣ Negotiate & finalize deals<br/><br/>**No posting fee | No hidden charges | Unlimited listings!** 🎉 Click the **Owner Login** to get started!';
+            }
+
+            if (containsAny(['owner login', 'landlord login', 'post property', 'i am an owner'])) {
+                return '🏠 **Owner Features on Room Hai Kya?:**<br/>✅ **Free property posting** - Reach thousands of tenants<br/>✅ **Manage inquiries** - Track interested tenants<br/>✅ **Tenant ratings** - See verified feedback<br/>✅ **Payment tracking** - Know who paid & when<br/>✅ **24/7 support** - We help resolve disputes<br/>✅ **Maintenance requests** - Get issues fixed quickly<br/><br/>Click the **"Owner Login"** link in the top menu to list your property today! It\'s quick & free! 🚀';
+            }
+
+            // --- 8. MAINTENANCE & SUPPORT ---
+            if (containsAny(['maintenance', 'issue', 'repair', 'complaint', 'problem', 'service', 'electrician', 'plumber', 'painter', 'cleaner'])) {
+                return '🔧 **Maintenance Services:**<br/>Getting a repair done? Room Hai Kya? has you covered! 🛠️<br/><br/>Click the **"Call for Maintenance"** button to:<br/>🔹 Report maintenance issues<br/>🔹 Book **plumbers, electricians, cleaners**<br/>🔹 Get **carpenters & mechanics**<br/>🔹 Request **garbage disposal** services<br/>🔹 Schedule **waste classification**<br/><br/>Our network of verified professionals ensures **quick, reliable, affordable** service. Complaints resolved within 24-48 hours! ⚡';
+            }
+
+            if (containsAny(['complain', 'complaint', 'issue with owner', 'issue with tenant', 'dispute'])) {
+                return '⚠️ **Post a Complaint:**<br/>Facing issues with your owner, property, or the platform? We\'re here to help! 📢<br/><br/>Click **Profile Icon → Post a Complaint** to:<br/>🔹 Report owner/tenant behavior<br/>🔹 File maintenance complaints<br/>🔹 Report platform issues<br/>🔹 Rate facilities & services<br/>🔹 Leave feedback<br/><br/>Include details & we\'ll investigate within **48 hours**. Our team prioritizes tenant safety & fairness! 🛡️';
+            }
+
+            if (containsAny(['help', 'support', 'contact', 'phone', 'customer service', 'helpline'])) {
+                return '📞 **Need Help?**<br/>🔹 Click **"Help"** in the top menu for FAQs<br/>🔹 Check **"Contact Us"** for phone & email<br/>🔹 Use the **Maintenance section** for services<br/>🔹 Post a **Complaint** for grievances<br/>🔹 Chat with me (your **AI Assistant**)!<br/><br/>**Toll-Free Number:** Available in the footer (scroll down!)<br/>**Email:** Check the footer contact section<br/>**Hours:** 24/7 automated support + 9AM-9PM human support<br/><br/>We respond to all inquiries within **2-4 hours!** 🚀';
+            }
+
+            // --- 9. FEATURES & TOOLS ---
+            if (containsAny(['filter', 'filters', 'how to use filters', 'search filters'])) {
+                return '🎯 **Using Filters Effectively:**<br/>1️⃣ **BHK Filter** - Choose room type (1BHK, 2BHK, etc.)<br/>2️⃣ **Budget Filter** - Set your price range<br/>3️⃣ **Property Type** - Flat, House, Villa, PG, etc.<br/>4️⃣ **Tenant Preference** - Bachelor, Family, etc.<br/>5️⃣ **Furnishing** - Furnished, Semi, Unfurnished<br/>6️⃣ **Amenities** - Parking, Gym, Pool, etc.<br/>7️⃣ **Availability** - Immediate, 1-3 months, etc.<br/>8️⃣ **Sort By** - Latest, Price, Rating, etc.<br/><br/>💡 **Pro Tip:** Combine multiple filters for best results! 🎪';
+            }
+
+            if (containsAny(['games', 'fun', 'entertainment', 'play game'])) {
+                return '🎮 **Room Hai Kya? Games?**<br/>Yes! We have fun games to keep you entertained! 🕹️<br/><br/>Click the **🎮 Games** button in the top menu to play:<br/>🔹 **Tic Tac Toe** - Classic 3x3 puzzle<br/>🔹 **Snake Game** - Retro gaming fun<br/>🔹 **Guess the Number** - Brain teaser<br/>🔹 **Memory Game** - Test your memory!<br/>🔹 **Rock Paper Scissors** - Beat the computer!<br/><br/>Take a break from house hunting and play! 🎯';
+            }
+
+            if (containsAny(['wallet', 'balance', 'credits', 'points', 'rewards'])) {
+                return '💰 **Wallet & Rewards:**<br/>Click the **💰 Wallet** button to:<br/>🔹 Check your **balance & credits**<br/>🔹 View **transaction history**<br/>🔹 Earn **rewards on bookings**<br/>🔹 Get **cashback offers**<br/>🔹 Redeem **discount vouchers**<br/><br/>Every booking earns you points! Save & spend on future rentals! 🎁';
+            }
+
+            if (containsAny(['blog', 'articles', 'tips', 'guide', 'advice', 'lesson'])) {
+                return '📚 **Room Hai Kya? Blog & Guides:**<br/>Check out our **Explore Latest Updates** section featuring:<br/>🔹 **House Hunting Tips** - Find homes faster<br/>🔹 **Tenant Rights** - Know your legal protections<br/>🔹 **Budget Planning** - Afford your ideal home<br/>🔹 **Rental Agreements** - Understand terms<br/>🔹 **Moving Checklists** - Prepare for relocation<br/>🔹 **City Guides** - Explore neighborhoods<br/>🔹 **Landlord Tips** - For property owners<br/><br/>Click **"Explore Latest Updates"** in the menu! 📖';
+            }
+
+            // --- 10. ACCOUNT & USER ---
+            if (containsAny(['user login', 'tenant login', 'sign up', 'register', 'account', 'create account'])) {
+                return '🔐 **User Account Features:**<br/>Click **"User Login"** to:<br/>🔹 Create a **secure account**<br/>🔹 Sign in with **Google** or email<br/>🔹 Save **favorite properties**<br/>🔹 Track **booking requests**<br/>🔹 View **complaint history**<br/>🔹 Store **KYC documents**<br/>🔹 Rate & review **properties**<br/>🔹 Chat with **property owners**<br/><br/>**Google Sign-In Available!** One-click login with your Google account! 🔐';
+            }
+
+            if (containsAny(['request', 'requests', 'booking request', 'view booking'])) {
+                return '📋 **Requests Page Features:**<br/>After logging in, visit the **Requests section** to:<br/>🔹 View all your **booking requests**<br/>🔹 Track status: **Pending, Confirmed, Completed**<br/>🔹 **Contact property owners** directly<br/>🔹 **Cancel bookings** if needed<br/>🔹 See booking **details & timelines**<br/>🔹 Manage **multiple applications**<br/><br/>Never lose track of your property hunt! All your bookings in one place! 📱';
+            }
+
+            // --- 11. COMMON QUESTIONS ---
+            if (containsAny(['can i', 'is it possible', 'do you', 'does room hai kya'])) {
+                return '🤔 **Common Questions:**<br/>✅ Can I book without broker fees? **YES!**<br/>✅ Can I see multiple properties? **Absolutely!**<br/>✅ Can I negotiate rent? **Of course!**<br/>✅ Is payment safe? **100% secure gateway!**<br/>✅ Can I view property info before booking? **Yes in detail!**<br/>✅ Can owners decline me? **They can screen tenants**<br/>✅ Can I cancel my booking? **Yes, with notice**<br/>✅ Is my data protected? **Fully encrypted!**<br/><br/>Any other questions? Just ask me! 💬';
+            }
+
+            // --- DEFAULT FALLBACK ---
+            return "🤔 **I didn\'t quite understand that!** But I can help you with:<br/>✅ Finding properties by city/BHK/budget<br/>✅ Explaining Room Hai Kya? features<br/>✅ Booking & payment information<br/>✅ Maintenance & complaint services<br/>✅ Account & login help<br/>✅ Owner properties posting<br/><br/>Try rephrasing your question or ask me about any of the above topics! 😊";
         }
 
         function sendMessage() {
@@ -2455,7 +2576,10 @@
                 window.location.href = './pages/post_property.html';
             });
         }
+
+        
     </script>
+
 
 
 
